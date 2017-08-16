@@ -22,7 +22,7 @@
  * =================================================================
  *
  * @category   BSS
- * @package    Bss_CookieNotice
+ * @package    Bss_CustomOrderNumber
  * @author     Extension Team
  * @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
  * @license    http://bsscommerce.com/Bss-Commerce-License.txt
@@ -34,7 +34,23 @@
             <order>
                 <enable>1</enable>
                 <format></format>
+                <start>1</start>
+                <increment>1</increment>
+                <padding>5</padding>
+                <reset>0</reset>
             </order>
+            <invoice>
+            	<enable>1</enable>
+            	<same_order>1</same_order>
+            </invoice>
+            <shipment>
+            	<enable>1</enable>
+            	<same_order>1</same_order>
+            </shipment>
+            <credit_memo>
+            	<enable>1</enable>
+            	<same_order>1</same_order>
+            </credit_memo>
         </ordernumber>
     </default>
 </config>
