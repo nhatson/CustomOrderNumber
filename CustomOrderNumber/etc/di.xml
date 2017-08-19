@@ -28,5 +28,8 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-	<preference for="Magento\SalesSequence\Model\ResourceModel\Meta" type="Bss\CustomOrderNumber\Override\SalesSequence\Model\ResourceModel\Meta" />
+<!-- 	<preference for="Magento\SalesSequence\Model\ResourceModel\Meta" type="Bss\CustomOrderNumber\Override\SalesSequence\Model\ResourceModel\Meta" />
+	<type name="Magento\SalesSequence\Model\Sequence">
+		<plugin name="Bss_Custom_Sequence" type="Bss\CustomOrderNumber\Plugin\SequencePlugin" />
+	</type> -->
 </config>

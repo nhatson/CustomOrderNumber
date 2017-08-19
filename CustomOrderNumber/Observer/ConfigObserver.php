@@ -37,10 +37,16 @@ class ConfigObserver implements ObserverInterface
 // ON SCHEDULE EVERY 1 SECOND
 // DO
 // update cart set product_id = 2 WHERE created_at <= DATE_SUB(NOW(), INTERVAL 1 SECOND) ;
-        $this->_resources = \Magento\Framework\App\ObjectManager::getInstance()
-        ->get('Magento\Framework\App\ResourceConnection');
-        $connection= $this->_resources->getConnection();
-        $sql = "UPDATE `sales_sequence_profile` SET `prefix` = 'CLG-' WHERE `meta_id` = 5;";
+        // $this->_resources = \Magento\Framework\App\ObjectManager::getInstance()
+        // ->get('Magento\Framework\App\ResourceConnection');
+        // $connection= $this->_resources->getConnection();
+        // $sql = "SELECT  `sequence_value` FROM `sequence_order_1` WHERE `sequence_value` = '10'";
+        // $queryResult = mysqli_query($connection, $sql);
+        // $row = mysqli_fetch_array($queryResult);
+        // var_dump($row);
+        // die('bss');
+        // $sql = "UPDATE `sales_sequence_profile` SET `prefix` = 'CLG-' WHERE `meta_id` = 5;";
+
 //         $sql = "CREATE EVENT new;
 //                 ON SCHEDULE
 //       EVERY 1 MINUTE
@@ -48,6 +54,6 @@ class ConfigObserver implements ObserverInterface
 // update 'sales_sequence_profile' 
 // set prefix= 'aa' 
 // where `meta_id` = 5;";
-        $connection->query($sql);
+        // $connection->query($sql);
     }
 }

@@ -3,4 +3,16 @@
     <event name="admin_system_config_changed_section_ordernumber">
         <observer name="custom_admin_system_config_save_section_ordernumber" instance="Bss\CustomOrderNumber\Observer\ConfigObserver"/>
     </event>
+    <event name="sales_order_place_after">
+		<observer name="bss_custom_order" instance="Bss\CustomOrderNumber\Observer\OrderObserver" />
+	</event>
+	<event name="sales_order_invoice_pay">
+		<observer name="bss_custom_invoice" instance="Bss\CustomOrderNumber\Observer\InvoiceObserver" />
+	</event>
+	<event name="sales_order_shipment_save_after">
+		<observer name="bss_custom_shipment" instance="Bss\CustomOrderNumber\Observer\ShipmentObserver" />
+	</event>
+	<event name="sales_order_creditmemo_refund">
+		<observer name="bss_custom_creditmemo" instance="Bss\CustomOrderNumber\Observer\CreditmemoObserver" />
+	</event>
 </config>

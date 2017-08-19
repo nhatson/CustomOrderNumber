@@ -10,12 +10,12 @@ class Meta extends \Magento\SalesSequence\Model\ResourceModel\Meta
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $helper = $objectManager->get('Bss\CustomOrderNumber\Helper\Data');
+        $storeId = $object->getStoreId();
         $entityType = $object->getEntityType();  //order/invoice/creditmemo/shipment
         $activeProfile = $this->resourceProfile->loadActiveProfile($object->getId());
 
         if($entityType == 'order' && $helper->isOrderEnable()){
             $format = $helper->getOrderFormat();
-            $format = $helper->replace($format);
 
             $format = $helper->replace($format);
 
@@ -44,7 +44,6 @@ class Meta extends \Magento\SalesSequence\Model\ResourceModel\Meta
                 $replaceWith = $helper->getInvoiceReplaceWith();
                 $format = str_replace($replace, $replaceWith, $format);
 
-                $storeId = $object->getStoreId();
                 $format = $helper->replace($format, $storeId);
 
                 $explode = explode('{counter}', $format);
@@ -57,14 +56,19 @@ class Meta extends \Magento\SalesSequence\Model\ResourceModel\Meta
 
                 $startValue = $helper->getOrderStart();
                 $step = $helper->getOrderIncrement();
+
                 $activeProfile->setPrefix($prefix);
                 $activeProfile->setSuffix($suffix);
                 $activeProfile->setStartValue($startValue);
                 $activeProfile->setStep($step);
 
             } 
+
             if(!$helper->isInvoiceSameOrder()) {
                 $format = $helper->getInvoiceFormat();
+
+                $format = $helper->replace($format, $storeId);
+
                 $explode = explode('{counter}', $format);
                 $prefix = $explode[0];
                 if (isset($explode[1])){
@@ -72,8 +76,10 @@ class Meta extends \Magento\SalesSequence\Model\ResourceModel\Meta
                 } else {
                     $suffix = "";
                 }
+
                 $startValue = $helper->getInvoiceStart();
                 $step = $helper->getInvoiceIncrement();
+
                 $activeProfile->setPrefix($prefix);
                 $activeProfile->setSuffix($suffix);
                 $activeProfile->setStartValue($startValue);
@@ -82,39 +88,112 @@ class Meta extends \Magento\SalesSequence\Model\ResourceModel\Meta
         }
 
         if($entityType == 'shipment' && $helper->isShipmentEnable()){
-            $format = $helper->getOrderFormat();
-            $explode = explode('{counter}', $format);
-            $prefix = $explode[0];
-            if (isset($explode[1])){
-                $suffix = $explode[1];   
-            } else {
-                $suffix = "";
-            }
-            $activeProfile->setPrefix($prefix);
-            $activeProfile->setSuffix($suffix);
-            $activeProfile->setStartValue('1');
-            $activeProfile->setStep('1');
+            if($helper->isShipmentSameOrder() && $helper->isOrderEnable()){
+                
+                $format = $helper->getOrderFormat();
+                $replace = $helper->getShipmentReplace();
+                $replaceWith = $helper->getShipmentReplaceWith();
+                $format = str_replace($replace, $replaceWith, $format);
+
+                $format = $helper->replace($format, $storeId);
+
+                $explode = explode('{counter}', $format);
+                $prefix = $explode[0];
+                if (isset($explode[1])){
+                    $suffix = $explode[1];   
+                } else {
+                    $suffix = "";
+                }
+
+                $startValue = $helper->getOrderStart();
+                $step = $helper->getOrderIncrement();
+
+                $activeProfile->setPrefix($prefix);
+                $activeProfile->setSuffix($suffix);
+                $activeProfile->setStartValue($startValue);
+                $activeProfile->setStep($step);
+
+            } 
+            
+            if(!$helper->isShipmentSameOrder()) {
+                $format = $helper->getShipmentFormat();
+
+                $format = $helper->replace($format, $storeId);
+
+                $explode = explode('{counter}', $format);
+                $prefix = $explode[0];
+                if (isset($explode[1])){
+                    $suffix = $explode[1];   
+                } else {
+                    $suffix = "";
+                }
+
+                $startValue = $helper->getShipmentStart();
+                $step = $helper->getShipmentIncrement();
+
+                $activeProfile->setPrefix($prefix);
+                $activeProfile->setSuffix($suffix);
+                $activeProfile->setStartValue($startValue);
+                $activeProfile->setStep($step);
+            }         
         }
 
         if($entityType == 'creditmemo' && $helper->isCreditMemoEnable()){
-            $format = $helper->getOrderFormat();
-            $explode = explode('{counter}', $format);
-            $prefix = $explode[0];
-            if (isset($explode[1])){
-                $suffix = $explode[1];   
-            } else {
-                $suffix = "";
-            }
-            $activeProfile->setPrefix($prefix);
-            $activeProfile->setSuffix($suffix);
-            $activeProfile->setStartValue('1');
-            $activeProfile->setStep('1');
+            if($helper->isCreditMemoSameOrder() && $helper->isOrderEnable()){
+                
+                $format = $helper->getOrderFormat();
+                $replace = $helper->getCreditMemoReplace();
+                $replaceWith = $helper->getCreditMemoReplaceWith();
+                $format = str_replace($replace, $replaceWith, $format);
+
+                $format = $helper->replace($format, $storeId);
+
+                $explode = explode('{counter}', $format);
+                $prefix = $explode[0];
+                if (isset($explode[1])){
+                    $suffix = $explode[1];   
+                } else {
+                    $suffix = "";
+                }
+
+                $startValue = $helper->getOrderStart();
+                $step = $helper->getOrderIncrement();
+
+                $activeProfile->setPrefix($prefix);
+                $activeProfile->setSuffix($suffix);
+                $activeProfile->setStartValue($startValue);
+                $activeProfile->setStep($step);
+
+            } 
+
+            if(!$helper->isCreditMemoSameOrder()) {
+                $format = $helper->getCreditMemoFormat();
+
+                $format = $helper->replace($format, $storeId);
+
+                $explode = explode('{counter}', $format);
+                $prefix = $explode[0];
+                if (isset($explode[1])){
+                    $suffix = $explode[1];   
+                } else {
+                    $suffix = "";
+                }
+
+                $startValue = $helper->getCreditMemoStart();
+                $step = $helper->getCreditMemoIncrement();
+
+                $activeProfile->setPrefix($prefix);
+                $activeProfile->setSuffix($suffix);
+                $activeProfile->setStartValue($startValue);
+                $activeProfile->setStep($step);
+            }         
         }
 
         $object->setData(
             'active_profile',
             $activeProfile
             );
+        
         return $this;
     }
 }

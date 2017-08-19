@@ -6,20 +6,11 @@ namespace Bss\CustomOrderNumber\Override\SalesSequence\Model;
  */
 class Sequence extends \Magento\SalesSequence\Model\Sequence
 {
-    protected $helper;
-
-    public function __construct(
-        \Bss\CookieNotice\Helper\Data $helper
-    ) {
-        $this->helper = $helper;
-    }
-
-
 
     public function getCurrentValue()
     {
-        $padding = $this->helper->getOrderPadding();
-        die($padding);
+        
+        die('333');
         return sprintf(
             "%s%'.05d%s",
             "aaa",
@@ -27,17 +18,4 @@ class Sequence extends \Magento\SalesSequence\Model\Sequence
             "xxxx"
         );
     }
-    public function getNextValue()
-    {
-    }
-
-    /**
-     * Calculate current value depends on start value
-     *
-     * @return string
-     */
-    private function calculateCurrentValue()
-    {
-    }
-
 }

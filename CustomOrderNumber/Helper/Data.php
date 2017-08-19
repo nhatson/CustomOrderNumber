@@ -265,14 +265,14 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
-    public function isCreditMemoEnable()
+    public function isCreditmemoEnable()
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/credit_memo/enable',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function isCreditMemoSameOrder()
+    public function isCreditmemoSameOrder()
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/credit_memo/same_order',
@@ -285,49 +285,49 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return int
      */
-    public function getCreditMemoFormat()
+    public function getCreditmemoFormat()
     {
         return $this->scopeConfig->getValue(
             'ordernumber/credit_memo/format',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getCreditMemoStart()
+    public function getCreditmemoStart()
     {
         return $this->scopeConfig->getValue(
             'ordernumber/credit_memo/start',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getCreditMemoIncrement()
+    public function getCreditmemoIncrement()
     {
         return $this->scopeConfig->getValue(
             'ordernumber/credit_memo/increment',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getCreditMemoPadding()
+    public function getCreditmemoPadding()
     {
         return $this->scopeConfig->getValue(
             'ordernumber/credit_memo/padding',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getCreditMemoReset()
+    public function getCreditmemoReset()
     {
         return $this->scopeConfig->getValue(
             'ordernumber/credit_memo/reset',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getCreditMemoReplace()
+    public function getCreditmemoReplace()
     {
         return $this->scopeConfig->getValue(
             'ordernumber/credit_memo/replace',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getCreditMemoReplaceWith()
+    public function getCreditmemoReplaceWith()
     {
         return $this->scopeConfig->getValue(
             'ordernumber/credit_memo/replace_with',
