@@ -12,6 +12,7 @@ use Magento\Framework\App\ResourceConnection as AppResource;
 class CreditmemoObserver implements ObserverInterface
 {
     protected $helper;
+    protected $connection;
 
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
@@ -74,10 +75,11 @@ class CreditmemoObserver implements ObserverInterface
             $this->connection->insert($table,[]);
 
             $lastIncrementId = $this->connection->lastInsertId($table);
+            
             if (!isset($lastIncrementId)) {
                 return;
             }
-            
+
             $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
         
             $resutl = sprintf(

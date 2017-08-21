@@ -39,7 +39,7 @@ class ResetNow extends \Magento\Config\Block\System\Config\Form\Field
      */
     public function getAjaxCheckUrl()
     {
-        return $this->getUrl('addbutton/listdata'); //hit controller by ajax call on button click.
+        return $this->getUrl('mageworx_alsobought/system_config/collect');
     }
      /**
      * Get the button and scripts contents

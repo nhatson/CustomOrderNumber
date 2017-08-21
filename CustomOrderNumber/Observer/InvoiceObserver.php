@@ -72,13 +72,13 @@ class InvoiceObserver implements ObserverInterface
 
             $table = 'sequence_invoice_'.$storeId;
             $this->connection->insert($table,[]);
-            // $sql = "SELECT * FROM ".$table." ORDER BY sequence_value DESC LIMIT 1";
-            // $result1 = $this->connection->fetchAll($sql);
             $lastIncrementId = $this->connection->lastInsertId($table);
-           
-            // $this->connection->truncateTable($table);
+            
+            if (!isset($lastIncrementId)) {
+                return;
+            }
 
-            $currentId = ($lastId - $startValue)*$step + $startValue;
+            $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
         
             $resutl = sprintf(
                 $pattern,

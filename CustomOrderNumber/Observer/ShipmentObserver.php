@@ -12,6 +12,7 @@ use Magento\Framework\App\ResourceConnection as AppResource;
 class ShipmentObserver implements ObserverInterface
 {
     protected $helper;
+    protected $connection;
 
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
@@ -71,14 +72,15 @@ class ShipmentObserver implements ObserverInterface
             $pattern = "%s%'.0".$padding."d%s";
 
             $table = 'sequence_shipment_'.$storeId;
-            // $this->connection->insert($table,[]);
             $sql = "SELECT * FROM ".$table." ORDER BY sequence_value DESC LIMIT 1";
-            $result1 = $this->connection->fetchAll($sql);
-            $lastId = $result1['0']['sequence_value'];
+            $lastRow = $this->connection->fetchAll($sql);
+            $lastIncrementId = $lastRow['0']['sequence_value'];
             
-            // $this->connection->truncateTable($table);
+            if (!isset($lastIncrementId)) {
+                return;
+            }
 
-            $currentId = ($lastId - $startValue)*$step + $startValue;
+            $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
         
             $resutl = sprintf(
                 $pattern,
