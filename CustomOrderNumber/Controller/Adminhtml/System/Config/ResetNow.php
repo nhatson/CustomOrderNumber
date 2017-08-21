@@ -53,7 +53,7 @@ class ResetNow extends Action
         $lastCollectTime = $this->helper->getLastCollectTime();
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
-
+        
         return $result->setData(['success' => true, 'time' => $lastCollectTime]);
     }
 

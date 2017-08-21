@@ -28,18 +28,23 @@
  */
 namespace Bss\CustomOrderNumber\Helper;
 
+use Magento\Framework\App\ResourceConnection as AppResource;
+
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      */
-    protected $datetime; 
+    protected $datetime;
+    protected $connection;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\Stdlib\DateTime\DateTime $datetime
+        \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
+        AppResource $resource
     ) {
         $this->datetime = $datetime;
+        $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
         parent::__construct($context);
     }
 
@@ -48,6 +53,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
+    public function getLastCollectTime()
+    {
+        $this->connection->truncateTable('sequence_order_2');
+    }
+
+
     public function replace($format, $storeId)
     {
         $timezone = $this->scopeConfig->getValue(

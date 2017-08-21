@@ -72,7 +72,7 @@ class ResetNow extends Field
             'Magento\Backend\Block\Widget\Button'
         )->setData(
             [
-                'id' => 'resetnow_button',
+                'id' => 'resetnow_order',
                 'label' => __('Reset Now'),
             ]
         );
