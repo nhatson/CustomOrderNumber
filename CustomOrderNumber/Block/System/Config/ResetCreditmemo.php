@@ -10,12 +10,12 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
-class ResetNow extends Field
+class ResetCreditmemo extends Field
 {
     /**
      * @var string
      */
-    protected $_template = 'Bss_CustomOrderNumber::system/config/resetnow.phtml';
+    protected $_template = 'Bss_CustomOrderNumber::system/config/resetcreditmemo.phtml';
 
     /**
      * @param Context $context
@@ -58,7 +58,7 @@ class ResetNow extends Field
      */
     public function getAjaxUrl()
     {
-        return $this->getUrl('bss_customordernumber/system_config/resetnow');
+        return $this->getUrl('bss_customordernumber/system_config/resetcreditmemo');
     }
 
     /**
@@ -72,7 +72,7 @@ class ResetNow extends Field
             'Magento\Backend\Block\Widget\Button'
         )->setData(
             [
-                'id' => 'resetnow_order',
+                'id' => 'resetnow_creditmemo',
                 'label' => __('Reset Now'),
             ]
         );

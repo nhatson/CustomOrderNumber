@@ -53,11 +53,24 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function getLastCollectTime()
+    public function resetOrder()
     {
         $this->connection->truncateTable('sequence_order_2');
     }
 
+    public function resetInvoice()
+    {
+        $this->connection->truncateTable('sequence_invoice_2');
+    }
+    public function resetShipment()
+    {
+        $this->connection->truncateTable('sequence_shipment_2');
+    }
+
+    public function resetCreditmemo()
+    {
+        $this->connection->truncateTable('sequence_creditmemo_2');
+    }
 
     public function replace($format, $storeId)
     {
@@ -279,14 +292,14 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function isCreditmemoEnable()
     {
         return $this->scopeConfig->isSetFlag(
-            'ordernumber/credit_memo/enable',
+            'ordernumber/creditmemo/enable',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
     public function isCreditmemoSameOrder()
     {
         return $this->scopeConfig->isSetFlag(
-            'ordernumber/credit_memo/same_order',
+            'ordernumber/creditmemo/same_order',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
@@ -299,49 +312,49 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getCreditmemoFormat()
     {
         return $this->scopeConfig->getValue(
-            'ordernumber/credit_memo/format',
+            'ordernumber/creditmemo/format',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
     public function getCreditmemoStart()
     {
         return $this->scopeConfig->getValue(
-            'ordernumber/credit_memo/start',
+            'ordernumber/creditmemo/start',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
     public function getCreditmemoIncrement()
     {
         return $this->scopeConfig->getValue(
-            'ordernumber/credit_memo/increment',
+            'ordernumber/creditmemo/increment',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
     public function getCreditmemoPadding()
     {
         return $this->scopeConfig->getValue(
-            'ordernumber/credit_memo/padding',
+            'ordernumber/creditmemo/padding',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
     public function getCreditmemoReset()
     {
         return $this->scopeConfig->getValue(
-            'ordernumber/credit_memo/reset',
+            'ordernumber/creditmemo/reset',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
     public function getCreditmemoReplace()
     {
         return $this->scopeConfig->getValue(
-            'ordernumber/credit_memo/replace',
+            'ordernumber/creditmemo/replace',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
     public function getCreditmemoReplaceWith()
     {
         return $this->scopeConfig->getValue(
-            'ordernumber/credit_memo/replace_with',
+            'ordernumber/creditmemo/replace_with',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }

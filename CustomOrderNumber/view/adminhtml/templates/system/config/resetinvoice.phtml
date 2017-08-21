@@ -1,0 +1,51 @@
+<?php
+/**
+ * Copyright © 2016 bss. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+?>
+<?php /* @var $block \bss\customordernumber\Block\System\Config\Collect */ ?>
+
+<script>
+    require([
+        'jquery',
+        'prototype'
+    ], function(jQuery){
+
+        var invoiceSpan = jQuery('#invoice_span');
+
+        jQuery('#resetnow_invoice').click(function () {
+            var params = {};
+            new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
+                parameters:     params,
+                loaderArea:     false,
+                asynchronous:   true,
+                onCreate: function() {
+                    invoiceSpan.find('.success').hide();
+                    invoiceSpan.find('.processing').show();
+                    jQuery('#invoice_message').text('');
+                },
+                onSuccess: function(response) {
+                    invoiceSpan.find('.processing').hide();
+
+                    var resultText = '';
+                    if (response.status > 200) {
+                        resultText = response.statusText;
+                    } else {
+                        resultText = 'Success';
+                        invoiceSpan.find('.success').show();
+                    }
+                    jQuery('#invoice_message').text(resultText);
+                }
+            });
+        });
+
+    });
+</script>
+
+<?php echo $block->getButtonHtml() ?>
+<span id="invoice_span">
+    <img class="processing" hidden="hidden" alt="" style="margin:0 5px" src="<?php echo $block->getViewFileUrl('images/process_spinner.gif') ?>"/>
+    <img class="success" hidden="hidden" alt="" style="margin:-3px 5px" src="<?php echo $block->getViewFileUrl('images/rule_component_apply.gif') ?>"/>
+    <span id="invoice_message"></span>
+</span>

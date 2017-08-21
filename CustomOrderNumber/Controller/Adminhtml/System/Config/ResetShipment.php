@@ -11,7 +11,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Bss\CustomOrderNumber\Helper\Data;
 
-class ResetNow extends Action
+class ResetShipment extends Action
 {
 
     protected $resultJsonFactory;
@@ -50,11 +50,11 @@ class ResetNow extends Action
             $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
         }
 
-        $lastCollectTime = $this->helper->getLastCollectTime();
+        $resetShipment = $this->helper->resetShipment();
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         
-        return $result->setData(['success' => true, 'time' => $lastCollectTime]);
+        return $result->setData(['success' => true, 'resetnow' => $resetShipment]);
     }
 
     /**
@@ -72,4 +72,3 @@ class ResetNow extends Action
         return $this->_authorization->isAllowed('Bss_CustomOrderNumber::config');
     }
 }
-?>

@@ -1,0 +1,51 @@
+<?php
+/**
+ * Copyright © 2016 bss. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+?>
+<?php /* @var $block \bss\customordernumber\Block\System\Config\Collect */ ?>
+
+<script>
+    require([
+        'jquery',
+        'prototype'
+    ], function(jQuery){
+
+        var creditmemoSpan = jQuery('#creditmemo_span');
+
+        jQuery('#resetnow_creditmemo').click(function () {
+            var params = {};
+            new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
+                parameters:     params,
+                loaderArea:     false,
+                asynchronous:   true,
+                onCreate: function() {
+                    creditmemoSpan.find('.success').hide();
+                    creditmemoSpan.find('.processing').show();
+                    jQuery('#creditmemo_message').text('');
+                },
+                onSuccess: function(response) {
+                    creditmemoSpan.find('.processing').hide();
+
+                    var resultText = '';
+                    if (response.status > 200) {
+                        resultText = response.statusText;
+                    } else {
+                        resultText = 'Success';
+                        creditmemoSpan.find('.success').show();
+                    }
+                    jQuery('#creditmemo_message').text(resultText);
+                }
+            });
+        });
+
+    });
+</script>
+
+<?php echo $block->getButtonHtml() ?>
+<span id="creditmemo_span">
+    <img class="processing" hidden="hidden" alt="" style="margin:0 5px" src="<?php echo $block->getViewFileUrl('images/process_spinner.gif') ?>"/>
+    <img class="success" hidden="hidden" alt="" style="margin:-3px 5px" src="<?php echo $block->getViewFileUrl('images/rule_component_apply.gif') ?>"/>
+    <span id="creditmemo_message"></span>
+</span>

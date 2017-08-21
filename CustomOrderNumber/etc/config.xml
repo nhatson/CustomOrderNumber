@@ -47,10 +47,10 @@
             	<enable>1</enable>
             	<same_order>1</same_order>
             </shipment>
-            <credit_memo>
+            <creditmemo>
             	<enable>1</enable>
             	<same_order>1</same_order>
-            </credit_memo>
+            </creditmemo>
         </ordernumber>
     </default>
 </config>
