@@ -36,7 +36,7 @@
         <section id="ordernumber" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Order Number</label>
             <tab>bss_ordernumber</tab>
-            <resource>Bss_CookieNotice::ordernumber</resource>
+            <resource>Bss_CustomOrderNumber::config</resource>
             <group id="order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Order</label>
                 <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -62,9 +62,13 @@
                     <label>Reset Counter Number</label>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\Reset</source_model>
                 </field>
-                 <field id="reset_now" translate="label" type="button" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                <!-- <field id="reset_now" translate="label" type="button" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Reset Now</label>
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\Form\ResetNow</frontend_model>
+                </field> -->
+                <field id="reset_now" translate="label comment" type="button" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <frontend_model>Bss\CustomOrderNumber\Block\System\Config\ResetNow</frontend_model>
+                    <label>Reset Counter Number Now</label>
                 </field>
             </group>
             <group id="invoice" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -111,13 +115,13 @@
                     </depends>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\Reset</source_model>
                 </field>
-                 <field id="reset_now" translate="label" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                <!-- <field id="reset_now" translate="label" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Reset Now</label>
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\Form\ResetNow</frontend_model>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
-                </field>
+                </field> -->
                 <field id="replace" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace Part Of Order Number</label>
                     <depends>
@@ -175,13 +179,13 @@
                     </depends>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\Reset</source_model>
                 </field>
-                 <field id="reset_now" translate="label" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                <!-- <field id="reset_now" translate="label" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Reset Now</label>
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\Form\ResetNow</frontend_model>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
-                </field>
+                </field> -->
                 <field id="replace" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace Part Of Order Number</label>
                     <depends>
@@ -239,13 +243,13 @@
                     </depends>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\Reset</source_model>
                 </field>
-                 <field id="reset_now" translate="label" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                <!-- <field id="reset_now" translate="label" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Reset Now</label>
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\Form\ResetNow</frontend_model>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
-                </field>
+                </field> -->
                 <field id="replace" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace Part Of Order Number</label>
                     <depends>

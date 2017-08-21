@@ -57,7 +57,7 @@ class OrderObserver implements ObserverInterface
             $sql = "SELECT * FROM ".$table." ORDER BY sequence_value DESC LIMIT 1";
             $lastRow = $this->connection->fetchAll($sql);
             $lastIncrementId = $lastRow['0']['sequence_value'];
-            // $xxx= $suffix.$aaa;
+
             if (!isset($lastIncrementId)) {
                 return;
             }
