@@ -33,18 +33,14 @@ class CreditmemoObserver implements ObserverInterface
             }
 
             $storeId = '1';
-
-            if($this->helper->isCreditmemoSameOrder() && $this->helper->isOrderEnable())
+            $creditmemoInstance = $observer->getCreditmemo();
+            if($this->helper->isCreditmemoSameOrder())
             {
-                $format = $this->helper->getOrderFormat();
+                $orderIncrement = $creditmemoInstance->getOrder()->getIncrementId();
+
                 $replace = $this->helper->getCreditmemoReplace();
                 $replaceWith = $this->helper->getCreditmemoReplaceWith();
-                $format = str_replace($replace, $replaceWith, $format);
-
-                $startValue = $this->helper->getOrderStart();
-                $step = $this->helper->getOrderIncrement();
-
-                $padding = $this->helper->getOrderPadding();
+                $resutl = str_replace($replace, $replaceWith, $orderIncrement);
 
             } 
 
@@ -56,41 +52,38 @@ class CreditmemoObserver implements ObserverInterface
                 $step = $this->helper->getCreditmemoIncrement();
 
                 $padding = $this->helper->getCreditmemoPadding();
-            }
+                $format = $this->helper->replace($format, $storeId);
+                $explode = explode('{counter}', $format);
 
-            $format = $this->helper->replace($format, $storeId);
-            $explode = explode('{counter}', $format);
+                $prefix = $explode[0];
 
-            $prefix = $explode[0];
-            
-            if (isset($explode[1])){
-                $suffix = $explode[1];   
-            } else {
-                $suffix = "";
-            }
+                if (isset($explode[1])){
+                    $suffix = $explode[1];   
+                } else {
+                    $suffix = "";
+                }
 
-            $pattern = "%s%'.0".$padding."d%s";
+                $pattern = "%s%'.0".$padding."d%s";
+                $table = 'sequence_creditmemo_'.$storeId;
+                $this->connection->insert($table,[]);
 
-            $table = 'sequence_creditmemo_'.$storeId;
-            $this->connection->insert($table,[]);
+                $lastIncrementId = $this->connection->lastInsertId($table);
 
-            $lastIncrementId = $this->connection->lastInsertId($table);
-            
-            if (!isset($lastIncrementId)) {
-                return;
-            }
+                if (!isset($lastIncrementId)) {
+                    return;
+                }
 
-            $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
-        
-            $resutl = sprintf(
-                $pattern,
-                $prefix,
-                $currentId,
-                $suffix
-            );
+                $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
 
-            $creditmemoInstance = $observer->getCreditmemo();
-            $creditmemoInstance->setData("increment_id", $resutl)->save();
+                $resutl = sprintf(
+                    $pattern,
+                    $prefix,
+                    $currentId,
+                    $suffix
+                );
+            }          
+
+            $creditmemoInstance->setIncrementId($resutl);
         }           
     }
 }

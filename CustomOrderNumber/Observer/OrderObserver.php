@@ -27,7 +27,6 @@ class OrderObserver implements ObserverInterface
 
     public function execute(Observer $observer)
     {   
-
         if($this->helper->isOrderEnable())
         {
             $storeIdd = $this->storeManager->getStore()->getStoreId();
@@ -54,9 +53,11 @@ class OrderObserver implements ObserverInterface
             $pattern = "%s%'.0".$padding."d%s";
 
             $table = 'sequence_order_'.$storeId;
-            $sql = "SELECT * FROM ".$table." ORDER BY sequence_value DESC LIMIT 1";
-            $lastRow = $this->connection->fetchAll($sql);
-            $lastIncrementId = $lastRow['0']['sequence_value'];
+            // $sql = "SELECT * FROM ".$table." ORDER BY sequence_value DESC LIMIT 1";
+            // $lastRow = $this->connection->fetchAll($sql);
+            // $lastIncrementId = $lastRow['0']['sequence_value'];
+            $this->connection->insert($table,[]);
+            $lastIncrementId = $this->connection->lastInsertId($table);
 
             if (!isset($lastIncrementId)) {
                 return;
@@ -72,7 +73,7 @@ class OrderObserver implements ObserverInterface
             );
 
             $orderInstance = $observer->getOrder();
-            $orderInstance->setData("increment_id", $resutl)->save();
+            $orderInstance->setIncrementId($resutl); 
         }           
     }
 }

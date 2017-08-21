@@ -23,7 +23,6 @@ class InvoiceObserver implements ObserverInterface
 
     public function execute(Observer $observer)
     {   
-
         if($this->helper->isInvoiceEnable())
         {
             if($this->helper->isInvoiceSameOrder() && (!$this->helper->isOrderEnable()))
@@ -32,63 +31,60 @@ class InvoiceObserver implements ObserverInterface
             }
 
             $storeId = '1';
-
-            if($this->helper->isInvoiceSameOrder() && $this->helper->isOrderEnable())
+            $invoiceInstance = $observer->getInvoice();
+            
+            if($this->helper->isInvoiceSameOrder())
             {
-                $format = $this->helper->getOrderFormat();
+               
+                $orderIncrement = $invoiceInstance->getOrder()->getIncrementId();
+
                 $replace = $this->helper->getInvoiceReplace();
                 $replaceWith = $this->helper->getInvoiceReplaceWith();
-                $format = str_replace($replace, $replaceWith, $format);
-
-                $startValue = $this->helper->getOrderStart();
-                $step = $this->helper->getOrderIncrement();
-
-                $padding = $this->helper->getOrderPadding();
+                $resutl = str_replace($replace, $replaceWith, $orderIncrement);
 
             } 
 
             if(!$this->helper->isInvoiceSameOrder()) 
             {
+
                 $format = $this->helper->getInvoiceFormat();
 
                 $startValue = $this->helper->getInvoiceStart();
                 $step = $this->helper->getInvoiceIncrement();
 
                 $padding = $this->helper->getInvoicePadding();
+                $format = $this->helper->replace($format, $storeId);
+                $explode = explode('{counter}', $format);
+
+                $prefix = $explode[0];
+
+                if (isset($explode[1])){
+                    $suffix = $explode[1];   
+                } else {
+                    $suffix = "";
+                }
+
+                $pattern = "%s%'.0".$padding."d%s";
+
+                $table = 'sequence_invoice_'.$storeId;
+                $this->connection->insert($table,[]);
+                $lastIncrementId = $this->connection->lastInsertId($table);
+
+                if (!isset($lastIncrementId)) {
+                    return;
+                }
+
+                $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
+
+                $resutl = sprintf(
+                    $pattern,
+                    $prefix,
+                    $currentId,
+                    $suffix
+                    );
             }
 
-            $format = $this->helper->replace($format, $storeId);
-            $explode = explode('{counter}', $format);
-
-            $prefix = $explode[0];
-            
-            if (isset($explode[1])){
-                $suffix = $explode[1];   
-            } else {
-                $suffix = "";
-            }
-
-            $pattern = "%s%'.0".$padding."d%s";
-
-            $table = 'sequence_invoice_'.$storeId;
-            $this->connection->insert($table,[]);
-            $lastIncrementId = $this->connection->lastInsertId($table);
-            
-            if (!isset($lastIncrementId)) {
-                return;
-            }
-
-            $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
-        
-            $resutl = sprintf(
-                $pattern,
-                $prefix,
-                $currentId,
-                $suffix
-            );
-
-            $invoiceInstance = $observer->getInvoice();
-            $invoiceInstance->setData("increment_id", $resutl)->save();
+            $invoiceInstance->setIncrementId($resutl);       
         }           
     }
 }

@@ -24,7 +24,6 @@ class ShipmentObserver implements ObserverInterface
 
     public function execute(Observer $observer)
     {   
-
         if($this->helper->isShipmentEnable())
         {
             if($this->helper->isShipmentSameOrder() && (!$this->helper->isOrderEnable()))
@@ -33,18 +32,15 @@ class ShipmentObserver implements ObserverInterface
             }
 
             $storeId = '1';
+            $shipmentInstance = $observer->getShipment();
 
-            if($this->helper->isShipmentSameOrder() && $this->helper->isOrderEnable())
+            if($this->helper->isShipmentSameOrder())
             {
-                $format = $this->helper->getOrderFormat();
+                $orderIncrement = $shipmentInstance->getOrder()->getIncrementId();
+
                 $replace = $this->helper->getShipmentReplace();
                 $replaceWith = $this->helper->getShipmentReplaceWith();
-                $format = str_replace($replace, $replaceWith, $format);
-
-                $startValue = $this->helper->getOrderStart();
-                $step = $this->helper->getOrderIncrement();
-
-                $padding = $this->helper->getOrderPadding();
+                $resutl = str_replace($replace, $replaceWith, $orderIncrement);
 
             } 
 
@@ -56,40 +52,37 @@ class ShipmentObserver implements ObserverInterface
                 $step = $this->helper->getShipmentIncrement();
 
                 $padding = $this->helper->getShipmentPadding();
+
+                $format = $this->helper->replace($format, $storeId);
+                $explode = explode('{counter}', $format);
+                $prefix = $explode[0];
+
+                if (isset($explode[1])){
+                    $suffix = $explode[1];   
+                } else {
+                    $suffix = "";
+                }
+
+                $pattern = "%s%'.0".$padding."d%s";
+                $table = 'sequence_shipment_'.$storeId;
+                $this->connection->insert($table,[]);
+                $lastIncrementId = $this->connection->lastInsertId($table);
+
+                if (!isset($lastIncrementId)) {
+                    return;
+                }
+
+                $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
+
+                $resutl = sprintf(
+                    $pattern,
+                    $prefix,
+                    $currentId,
+                    $suffix
+                );
             }
 
-            $format = $this->helper->replace($format, $storeId);
-            $explode = explode('{counter}', $format);
-
-            $prefix = $explode[0];
-            
-            if (isset($explode[1])){
-                $suffix = $explode[1];   
-            } else {
-                $suffix = "";
-            }
-
-            $pattern = "%s%'.0".$padding."d%s";
-
-            $table = 'sequence_shipment_'.$storeId;
-            $sql = "SELECT * FROM ".$table." ORDER BY sequence_value DESC LIMIT 1";
-            $lastRow = $this->connection->fetchAll($sql);
-            $lastIncrementId = $lastRow['0']['sequence_value'];
-            
-            if (!isset($lastIncrementId)) {
-                return;
-            }
-
-            $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
-        
-            $resutl = sprintf(
-                $pattern,
-                $prefix,
-                $currentId,
-                $suffix
-            );
-            $shipmentInstance = $observer->getShipment();
-            $shipmentInstance->setData("increment_id",$resutl)->save();
+            $shipmentInstance->setIncrementId($resutl); 
         }           
     }
 }
