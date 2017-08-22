@@ -12,6 +12,7 @@ use Magento\Framework\App\ResourceConnection as AppResource;
 class InvoiceObserver implements ObserverInterface
 {
     protected $helper;
+    protected $connection;
 
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
@@ -30,22 +31,18 @@ class InvoiceObserver implements ObserverInterface
                 return;
             }
 
-            $storeId = '1';
             $invoiceInstance = $observer->getInvoice();
             
             if($this->helper->isInvoiceSameOrder())
-            {
-               
+            {          
                 $orderIncrement = $invoiceInstance->getOrder()->getIncrementId();
 
                 $replace = $this->helper->getInvoiceReplace();
                 $replaceWith = $this->helper->getInvoiceReplaceWith();
                 $resutl = str_replace($replace, $replaceWith, $orderIncrement);
 
-            } 
-
-            if(!$this->helper->isInvoiceSameOrder()) 
-            {
+            } else {
+                $storeId = $invoiceInstance->getOrder()->getStoreId();
 
                 $format = $this->helper->getInvoiceFormat();
 
@@ -65,12 +62,18 @@ class InvoiceObserver implements ObserverInterface
                 }
 
                 $pattern = "%s%'.0".$padding."d%s";
+                if ($this->helper->isIndividualInvoiceEnable())
+                {
+                    $table = 'sequence_invoice_'.$storeId;
+                } else {
+                    $table = 'sequence_invoice_0';
+                }
 
-                $table = 'sequence_invoice_'.$storeId;
                 $this->connection->insert($table,[]);
                 $lastIncrementId = $this->connection->lastInsertId($table);
 
-                if (!isset($lastIncrementId)) {
+                if (!isset($lastIncrementId)) 
+                {
                     return;
                 }
 

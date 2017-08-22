@@ -42,10 +42,9 @@ class CreditmemoObserver implements ObserverInterface
                 $replaceWith = $this->helper->getCreditmemoReplaceWith();
                 $resutl = str_replace($replace, $replaceWith, $orderIncrement);
 
-            } 
+            } else {
+                $storeId = $invoiceInstance->getOrder()->getStoreId();
 
-            if(!$this->helper->isCreditmemoSameOrder()) 
-            {
                 $format = $this->helper->getCreditmemoFormat();
 
                 $startValue = $this->helper->getCreditmemoStart();
@@ -64,7 +63,13 @@ class CreditmemoObserver implements ObserverInterface
                 }
 
                 $pattern = "%s%'.0".$padding."d%s";
-                $table = 'sequence_creditmemo_'.$storeId;
+                if ($this->helper->isIndividualCreditmemoEnable())
+                {
+                    $table = 'sequence_creditmemo_'.$storeId;
+                } else {
+                    $table = 'sequence_creditmemo_0';
+                }
+
                 $this->connection->insert($table,[]);
 
                 $lastIncrementId = $this->connection->lastInsertId($table);

@@ -12,20 +12,42 @@ class ConfigObserver implements ObserverInterface
      */
     protected $logger;
     protected $datetime;
-
+    protected $storeManager;
+    protected $request;
     /**
      * @param Logger $logger
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
-        Logger $logger
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        Logger $logger,
+        \Magento\Framework\App\Request\Http $request
         ) {
-        $this->logger = $logger;
-        $this->datetime = $datetime;
-    }
+            $this->logger = $logger;
+            $this->datetime = $datetime;
+            $this->storeManager = $storeManager;
+            $this->request=$request;
+        }
 
     public function execute(EventObserver $observer)
     {   
+//         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+// $currentCustomer = $objectManager->get('Magento\Customer\Model\Session')->getCustomer();
+//         if (strlen($code = Mage::getSingleton('adminhtml/config_data')->getStore())) // store level
+//         {
+//             $store_id = Mage::getModel('core/store')->load($code)->getId();
+//         }
+//         elseif (strlen($code = Mage::getSingleton('adminhtml/config_data')->getWebsite())) // website level
+//         {
+//             $website_id = Mage::getModel('core/website')->load($code)->getId();
+//             $store_id = Mage::app()->getWebsite($website_id)->getDefaultStore()->getId();
+//         }
+//         else // default level
+//         {
+            echo $this->request->getParam('store', 1);
+
+        // die($this->request->getParam('store', 1));
         // $date = $this->datetime->gmtDate();
         // $date2 = $this->datetime->gmtTimestamp();
         // echo '<pre>';

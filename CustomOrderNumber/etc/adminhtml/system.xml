@@ -62,9 +62,13 @@
                     <label>Reset Counter Number</label>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\ResetSelect</source_model>
                 </field>
-                <field id="reset_now" translate="label comment" type="button" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <frontend_model>Bss\CustomOrderNumber\Block\System\Config\ResetOrder</frontend_model>
+                <field id="individual" translate="label comment" type="select" sortOrder="7" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>User individual counter number for store view</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="reset_now" translate="label comment" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Reset Counter Number Now</label>
+                    <frontend_model>Bss\CustomOrderNumber\Block\System\Config\ResetOrder</frontend_model>               
                 </field>
             </group>
             <group id="invoice" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -111,20 +115,24 @@
                     </depends>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\ResetSelect</source_model>
                 </field>
-                <field id="reset_now" translate="label comment" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="individual" translate="label comment" type="select" sortOrder="7" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>User individual counter number for store view</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="reset_now" translate="label comment" type="button" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\ResetInvoice</frontend_model>
                     <label>Reset Counter Number Now</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                 </field>
-                <field id="replace" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="replace" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace Part Of Order Number</label>
                     <depends>
                         <field id="same_order">1</field>
                     </depends>
                 </field>
-                <field id="replace_with" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="replace_with" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace With</label>
                     <depends>
                         <field id="same_order">1</field>
@@ -175,20 +183,24 @@
                     </depends>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\ResetSelect</source_model>
                 </field>
-                <field id="reset_now" translate="label comment" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="individual" translate="label comment" type="select" sortOrder="8" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>User individual counter number for store view</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="reset_now" translate="label comment" type="button" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\ResetShipment</frontend_model>
                     <label>Reset Counter Number Now</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                 </field>
-                <field id="replace" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="replace" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace Part Of Order Number</label>
                     <depends>
                         <field id="same_order">1</field>
                     </depends>
                 </field>
-                <field id="replace_with" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="replace_with" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace With</label>
                     <depends>
                         <field id="same_order">1</field>
@@ -239,20 +251,24 @@
                     </depends>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\ResetSelect</source_model>
                 </field>
-                <field id="reset_now" translate="label comment" type="button" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="individual" translate="label comment" type="select" sortOrder="8" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>User individual counter number for store view</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="reset_now" translate="label comment" type="button" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\ResetCreditmemo</frontend_model>
                     <label>Reset Counter Number Now</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                 </field>
-                <field id="replace" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="replace" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace Part Of Order Number</label>
                     <depends>
                         <field id="same_order">1</field>
                     </depends>
                 </field>
-                <field id="replace_with" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="replace_with" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace With</label>
                     <depends>
                         <field id="same_order">1</field>

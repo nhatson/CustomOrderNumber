@@ -31,7 +31,6 @@ class ShipmentObserver implements ObserverInterface
                 return;
             }
 
-            $storeId = '1';
             $shipmentInstance = $observer->getShipment();
 
             if($this->helper->isShipmentSameOrder())
@@ -42,19 +41,18 @@ class ShipmentObserver implements ObserverInterface
                 $replaceWith = $this->helper->getShipmentReplaceWith();
                 $resutl = str_replace($replace, $replaceWith, $orderIncrement);
 
-            } 
+            } else {
+                $storeId = $invoiceInstance->getOrder()->getStoreId();
 
-            if(!$this->helper->isShipmentSameOrder()) 
-            {
                 $format = $this->helper->getShipmentFormat();
 
                 $startValue = $this->helper->getShipmentStart();
                 $step = $this->helper->getShipmentIncrement();
 
                 $padding = $this->helper->getShipmentPadding();
-
                 $format = $this->helper->replace($format, $storeId);
                 $explode = explode('{counter}', $format);
+                
                 $prefix = $explode[0];
 
                 if (isset($explode[1])){
@@ -64,7 +62,14 @@ class ShipmentObserver implements ObserverInterface
                 }
 
                 $pattern = "%s%'.0".$padding."d%s";
-                $table = 'sequence_shipment_'.$storeId;
+
+                if ($this->helper->isIndividualShipmentEnable())
+                {
+                    $table = 'sequence_shipment_'.$storeId;
+                } else {
+                    $table = 'sequence_shipment_0';
+                }
+
                 $this->connection->insert($table,[]);
                 $lastIncrementId = $this->connection->lastInsertId($table);
 

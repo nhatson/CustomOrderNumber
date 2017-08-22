@@ -149,6 +149,14 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    public function isIndividualOrderEnable()
+    {
+        return $this->scopeConfig->isSetFlag(
+            'ordernumber/order/individual',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
     public function isInvoiceEnable()
     {
         return $this->scopeConfig->isSetFlag(
@@ -194,6 +202,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->scopeConfig->getValue(
             'ordernumber/invoice/padding',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+    public function isIndividualInvoiceEnable()
+    {
+        return $this->scopeConfig->isSetFlag(
+            'ordernumber/invoice/individual',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
@@ -267,6 +282,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
+    public function isIndividualShipmentEnable()
+    {
+        return $this->scopeConfig->isSetFlag(
+            'ordernumber/shipment/individual',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
     public function getShipmentReset()
     {
         return $this->scopeConfig->getValue(
@@ -334,6 +356,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->scopeConfig->getValue(
             'ordernumber/creditmemo/padding',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+    public function isIndividualCreditmemoEnable()
+    {
+        return $this->scopeConfig->isSetFlag(
+            'ordernumber/creditmemo/individual',
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }

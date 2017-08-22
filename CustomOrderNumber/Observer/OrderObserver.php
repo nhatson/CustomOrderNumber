@@ -52,7 +52,12 @@ class OrderObserver implements ObserverInterface
 
             $pattern = "%s%'.0".$padding."d%s";
 
-            $table = 'sequence_order_'.$storeId;
+            if ($this->helper->isIndividualOrderEnable())
+            {
+                $table = 'sequence_order_'.$storeId;
+            } else {
+                $table = 'sequence_order_0';
+            }
             // $sql = "SELECT * FROM ".$table." ORDER BY sequence_value DESC LIMIT 1";
             // $lastRow = $this->connection->fetchAll($sql);
             // $lastIncrementId = $lastRow['0']['sequence_value'];
