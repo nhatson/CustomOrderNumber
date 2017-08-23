@@ -3,7 +3,8 @@ namespace Bss\CustomOrderNumber\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer as EventObserver;
-use Psr\Log\LoggerInterface as Logger;
+use Bss\CustomOrderNumber\Helper\Data;
+use Magento\Framework\App\ResourceConnection as AppResource;
 
 class ConfigObserver implements ObserverInterface
 {
@@ -12,70 +13,139 @@ class ConfigObserver implements ObserverInterface
      */
     protected $logger;
     protected $datetime;
-    protected $storeManager;
     protected $request;
+    protected $helper;
+    protected $storeManager;
     /**
      * @param Logger $logger
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
+        \Magento\Framework\App\Request\Http $request,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        Logger $logger,
-        \Magento\Framework\App\Request\Http $request
+        Data $helper,
+        AppResource $resource
         ) {
-            $this->logger = $logger;
             $this->datetime = $datetime;
+            $this->request = $request;
+            $this->helper = $helper;
             $this->storeManager = $storeManager;
-            $this->request=$request;
+            $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
+
         }
 
     public function execute(EventObserver $observer)
     {   
-//         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $timezone = $this->helper->timezone();
+        date_default_timezone_set($timezone);
+        $df = "G:i:s";
+        $ts1 = strtotime(date($df));
+        $ts2 = strtotime(gmdate($df));
+        $ts3 = ($ts1-$ts2)/3600; 
+        if ($ts3 >=0 ) {
+            $sql = "SET time_zone = '+".$ts3.":00';"; 
+        } else {
+            $sql = "SET time_zone = '-".$ts3.":00';"; 
+        }
+        $this->connection->query($sql);
+        $sql= "SET GLOBAL event_scheduler = 0;";
+        $this->connection->query($sql);
 
-// $currentCustomer = $objectManager->get('Magento\Customer\Model\Session')->getCustomer();
-//         if (strlen($code = Mage::getSingleton('adminhtml/config_data')->getStore())) // store level
-//         {
-//             $store_id = Mage::getModel('core/store')->load($code)->getId();
-//         }
-//         elseif (strlen($code = Mage::getSingleton('adminhtml/config_data')->getWebsite())) // website level
-//         {
-//             $website_id = Mage::getModel('core/website')->load($code)->getId();
-//             $store_id = Mage::app()->getWebsite($website_id)->getDefaultStore()->getId();
-//         }
-//         else // default level
-//         {
-            echo $this->request->getParam('store', 1);
+        $storeId = 0;
 
-        // die($this->request->getParam('store', 1));
-        // $date = $this->datetime->gmtDate();
-        // $date2 = $this->datetime->gmtTimestamp();
-        // echo '<pre>';
-        // print_r($date);
-        // echo '<pre>';print_r($date2);
-        // die();
+        $orderReset = $this->helper->getOrderReset($storeId);
+        $invoiceReset = $this->helper->getInvoiceReset($storeId);
+        $shipmentReset = $this->helper->getShipmentReset($storeId);
+        $creditmemoReset = $this->helper->getShipmentReset($storeId);
+        $nameTable = array('sequence_order_' => $orderReset,
+                            'sequence_invoice_' => $invoiceReset,
+                            'sequence_shipment_' => $shipmentReset,
+                            'sequence_creditmemo_' => $creditmemoReset);
+        foreach ($nameTable as $key => $value) 
+        {
+            switch ($value) 
+            {
+                case '0':
+                    $sql = "Drop event if exists ".$key.$storeId;
+                    $this->connection->query($sql);
+                    break;
+                
+                case '1':
+                    $sql = "CREATE OR REPLACE EVENT ".$key.$storeId."
+                        ON SCHEDULE EVERY 1 DAY
+                        STARTS '2017-01-01 00:00:00'
+                        DO TRUNCATE ".$key.$storeId.";";
+                    $this->connection->query($sql);
+                    break;
+                case '2':
+                    $sql = "CREATE OR REPLACE EVENT ".$key.$storeId."
+                        ON SCHEDULE EVERY 1 MONTH
+                        STARTS '2017-01-01 00:00:00'
+                        DO TRUNCATE ".$key.$storeId.";";
+                    $this->connection->query($sql);
+                    break;
+                case '3':
+                    $sql = "CREATE OR REPLACE EVENT ".$key.$storeId."
+                        ON SCHEDULE EVERY 1 YEAR
+                        STARTS '2017-01-01 00:00:00'
+                        DO TRUNCATE ".$key.$storeId.";";
+                    $this->connection->query($sql);
+                    break;
+                default:
+                    $sql = "Drop event if exists ".$key.$storeId."";
+                    $this->connection->query($sql);
+                    break;
+            }
+        }  
 
-// CREATE OR REPLACE EVENT aaaaa
-// ON SCHEDULE EVERY 1 SECOND
-// DO
-// update cart set product_id = 2 WHERE created_at <= DATE_SUB(NOW(), INTERVAL 1 SECOND) ;
-        // $this->_resources = \Magento\Framework\App\ObjectManager::getInstance()
-        // ->get('Magento\Framework\App\ResourceConnection');
-        // $connection= $this->_resources->getConnection();
-        // $sql = "SELECT  `sequence_value` FROM `sequence_order_1` WHERE `sequence_value` = '10'";
-        // $queryResult = mysqli_query($connection, $sql);
-        // $row = mysqli_fetch_array($queryResult);
-        // var_dump($row);
-        // die('bss');
-        // $sql = "UPDATE `sales_sequence_profile` SET `prefix` = 'CLG-' WHERE `meta_id` = 5;";
-
-//         $sql = "CREATE EVENT new;
-//                 ON SCHEDULE
-//       EVERY 1 MINUTE
-//         DO
-// update 'sales_sequence_profile' 
-// set prefix= 'aa' 
-// where `meta_id` = 5;";
-        // $connection->query($sql);
+        $stores = $this->storeManager->getStores();
+        foreach($stores as $store) 
+        {
+            $storeId = $store->getStoreId();
+            $orderReset = $this->helper->getOrderReset($storeId);
+            $invoiceReset = $this->helper->getInvoiceReset($storeId);
+            $shipmentReset = $this->helper->getShipmentReset($storeId);
+            $creditmemoReset = $this->helper->getShipmentReset($storeId);
+            $nameTable = array('sequence_order_' => $orderReset,
+                                'sequence_invoice_' => $invoiceReset,
+                                'sequence_shipment_' => $shipmentReset,
+                                'sequence_creditmemo_' => $creditmemoReset);           
+            foreach ($nameTable as $key => $value) 
+            {
+                switch ($value) 
+                {
+                    case '0':
+                        $sql = "Drop event if exists ".$key.$storeId;
+                        $this->connection->query($sql);
+                        break;
+                    
+                    case '1':
+                        $sql = "CREATE OR REPLACE EVENT ".$key.$storeId."
+                            ON SCHEDULE EVERY 1 DAY
+                            STARTS '2017-01-01 00:00:00'
+                            DO TRUNCATE ".$key.$storeId.";";
+                        $this->connection->query($sql);
+                        break;
+                    case '2':
+                        $sql = "CREATE OR REPLACE EVENT ".$key.$storeId."
+                            ON SCHEDULE EVERY 1 MONTH
+                            STARTS '2017-01-01 00:00:00'
+                            DO TRUNCATE ".$key.$storeId.";";
+                        $this->connection->query($sql);
+                        break;
+                    case '3':
+                        $sql = "CREATE OR REPLACE EVENT ".$key.$storeId."
+                            ON SCHEDULE EVERY 1 YEAR
+                            STARTS '2017-01-01 00:00:00'
+                            DO TRUNCATE ".$key.$storeId.";";
+                        $this->connection->query($sql);
+                        break;
+                    default:
+                        $sql = "Drop event if exists ".$key.$storeId."";
+                        $this->connection->query($sql);
+                        break;
+                }
+            } 
+        }
     }
 }

@@ -29,8 +29,7 @@ class OrderObserver implements ObserverInterface
     {   
         if($this->helper->isOrderEnable())
         {
-            $storeIdd = $this->storeManager->getStore()->getStoreId();
-            $storeId = '1';
+            $storeId = $this->storeManager->getStore()->getStoreId();
 
             $format = $this->helper->getOrderFormat();
 

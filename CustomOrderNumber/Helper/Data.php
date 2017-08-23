@@ -37,14 +37,17 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $datetime;
     protected $connection;
+    protected $request;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
-        AppResource $resource
+        AppResource $resource,
+        \Magento\Framework\App\Request\Http $request
     ) {
         $this->datetime = $datetime;
         $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
+        $this->request=$request;
         parent::__construct($context);
     }
 
@@ -53,25 +56,37 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function resetOrder()
+    public function resetOrder($storeId)
     {
-        $this->connection->truncateTable('sequence_order_2');
+        $table = 'sequence_order_'.$storeId;
+        $this->connection->truncateTable($table);
+
     }
 
     public function resetInvoice()
     {
-        $this->connection->truncateTable('sequence_invoice_2');
+        $table = 'sequence_invoice_'.$storeId;
+        $this->connection->truncateTable($table);
+        return $storeIdd;
     }
     public function resetShipment()
     {
-        $this->connection->truncateTable('sequence_shipment_2');
+        $table = 'sequence_shipment_'.$storeId;
+        $this->connection->truncateTable($table);
     }
 
     public function resetCreditmemo()
     {
-        $this->connection->truncateTable('sequence_creditmemo_2');
+        $table = 'sequence_creditmemo_'.$storeId;
+        $this->connection->truncateTable($table);
     }
-
+    public function timezone()
+    {
+        return $this->scopeConfig->getValue(
+            'general/locale/timezone',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
     public function replace($format, $storeId)
     {
         $timezone = $this->scopeConfig->getValue(
@@ -141,11 +156,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getOrderReset()
+    public function getOrderReset($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/order/reset',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId 
         );
     }
 
@@ -212,11 +227,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getInvoiceReset()
+    public function getInvoiceReset($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/invoice/reset',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function getInvoiceReplace()
@@ -289,11 +304,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getShipmentReset()
+    public function getShipmentReset($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/shipment/reset',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function getShipmentReplace()
@@ -366,11 +381,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function getCreditmemoReset()
+    public function getCreditmemoReset($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/creditmemo/reset',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function getCreditmemoReplace()
