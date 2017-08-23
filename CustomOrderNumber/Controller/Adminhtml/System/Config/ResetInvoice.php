@@ -44,27 +44,12 @@ class ResetInvoice extends Action
      */
     public function execute()
     {
-        try {
-            $this->_getSyncSingleton()->collectRelations();
-        } catch (\Exception $e) {
-            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
-        }
-
-        $resetInvoice = $this->helper->resetInvoice();
+        $storeId = $this->getRequest()->getParam('storeId');
+        $resetInvoice = $this->helper->resetInvoice($storeId);
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         
         return $result->setData(['success' => true, 'resetnow' => $resetInvoice]);
-    }
-
-    /**
-     * Return product relation singleton
-     *
-     * @return \Bss\CustomOrderNumber\Model\Relation
-     */
-    protected function _getSyncSingleton()
-    {
-        return $this->_objectManager->get('Bss\CustomOrderNumber\Model\Relation');
     }
 
     protected function _isAllowed()

@@ -15,7 +15,7 @@
         var shipmentSpan = jQuery('#shipment_span');
 
         jQuery('#resetnow_shipment').click(function () {
-            var params = {};
+            var params = {storeId: <?php echo "'".$this->getRequest()->getParam('store', 0)."'"; ?>};
             new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
                 parameters:     params,
                 loaderArea:     false,

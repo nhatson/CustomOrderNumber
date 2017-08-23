@@ -80,4 +80,3 @@ class ResetCreditmemo extends Field
         return $button->toHtml();
     }
 }
-?>

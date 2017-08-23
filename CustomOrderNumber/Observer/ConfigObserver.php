@@ -11,7 +11,6 @@ class ConfigObserver implements ObserverInterface
     /**
      * @var Logger
      */
-    protected $logger;
     protected $datetime;
     protected $request;
     protected $helper;
@@ -45,7 +44,7 @@ class ConfigObserver implements ObserverInterface
         if ($ts3 >=0 ) {
             $sql = "SET time_zone = '+".$ts3.":00';"; 
         } else {
-            $sql = "SET time_zone = '-".$ts3.":00';"; 
+            $sql = "SET time_zone = '".$ts3.":00';"; 
         }
         $this->connection->query($sql);
         $sql= "SET GLOBAL event_scheduler = 0;";

@@ -36,7 +36,7 @@
         <section id="ordernumber" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Order Number</label>
             <tab>bss_ordernumber</tab>
-            <resource>Bss_CustomOrderNumber::config</resource>
+            <resource>Bss_CustomOrderNumber::ordernumber</resource>
             <group id="order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Order</label>
                 <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">

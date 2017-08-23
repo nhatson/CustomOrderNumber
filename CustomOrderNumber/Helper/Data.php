@@ -37,17 +37,14 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $datetime;
     protected $connection;
-    protected $request;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
-        AppResource $resource,
-        \Magento\Framework\App\Request\Http $request
+        AppResource $resource
     ) {
         $this->datetime = $datetime;
         $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
-        $this->request=$request;
         parent::__construct($context);
     }
 
@@ -63,19 +60,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     }
 
-    public function resetInvoice()
+    public function resetInvoice($storeId)
     {
         $table = 'sequence_invoice_'.$storeId;
         $this->connection->truncateTable($table);
-        return $storeIdd;
     }
-    public function resetShipment()
+    public function resetShipment($storeId)
     {
         $table = 'sequence_shipment_'.$storeId;
         $this->connection->truncateTable($table);
     }
 
-    public function resetCreditmemo()
+    public function resetCreditmemo($storeId)
     {
         $table = 'sequence_creditmemo_'.$storeId;
         $this->connection->truncateTable($table);
