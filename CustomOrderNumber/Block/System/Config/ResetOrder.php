@@ -16,6 +16,7 @@ class ResetOrder extends Field
      * @var string
      */
     protected $_template = 'Bss_CustomOrderNumber::system/config/resetorder.phtml';
+    protected $helper;
 
     /**
      * @param Context $context
@@ -23,8 +24,10 @@ class ResetOrder extends Field
      */
     public function __construct(
         Context $context,
+        \Bss\CustomOrderNumber\Helper\Data $helper,
         array $data = []
     ) {
+        $this->helper = $helper;
         parent::__construct($context, $data);
     }
 
@@ -79,5 +82,8 @@ class ResetOrder extends Field
 
         return $button->toHtml();
     }
+    public function isOrderEnable($storeId)
+    {
+        return $this->helper->isOrderEnable($storeId);
+    }
 }
-?>

@@ -16,6 +16,7 @@ class ResetInvoice extends Field
      * @var string
      */
     protected $_template = 'Bss_CustomOrderNumber::system/config/resetinvoice.phtml';
+    protected $helper;
 
     /**
      * @param Context $context
@@ -23,8 +24,10 @@ class ResetInvoice extends Field
      */
     public function __construct(
         Context $context,
+        \Bss\CustomOrderNumber\Helper\Data $helper,
         array $data = []
     ) {
+        $this->helper = $helper;
         parent::__construct($context, $data);
     }
 
@@ -79,5 +82,8 @@ class ResetInvoice extends Field
 
         return $button->toHtml();
     }
+    public function isInvoiceEnable($storeId)
+    {
+        return $this->helper->isInvoiceEnable($storeId);
+    }
 }
-?>

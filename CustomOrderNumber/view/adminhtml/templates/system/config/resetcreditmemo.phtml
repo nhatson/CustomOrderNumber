@@ -5,7 +5,7 @@
  */
 ?>
 <?php /* @var $block \bss\customordernumber\Block\System\Config\Collect */ ?>
-
+<?php if($block->isCreditmemoEnable($block->getRequest()->getParam('store', 0))) { ?>
 <script>
     require([
         'jquery',
@@ -15,7 +15,7 @@
         var creditmemoSpan = jQuery('#creditmemo_span');
 
         jQuery('#resetnow_creditmemo').click(function () {
-            var params = {storeId: <?php echo "'".$this->getRequest()->getParam('store', 0)."'"; ?>};
+            var params = {storeId: <?php echo "'".$block->getRequest()->getParam('store', 0)."'"; ?>};
             new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
                 parameters:     params,
                 loaderArea:     false,
@@ -42,7 +42,7 @@
 
     });
 </script>
-
+<?php } ?>
 <?php echo $block->getButtonHtml() ?>
 <span id="creditmemo_span">
     <img class="processing" hidden="hidden" alt="" style="margin:0 5px" src="<?php echo $block->getViewFileUrl('images/process_spinner.gif') ?>"/>

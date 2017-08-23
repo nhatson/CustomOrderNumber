@@ -111,11 +111,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $format;
     }
 
-    public function isOrderEnable()
+    public function isOrderEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/order/enable',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
 
@@ -168,11 +168,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
-    public function isInvoiceEnable()
+    public function isInvoiceEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/invoice/enable',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function isInvoiceSameOrder()
@@ -245,11 +245,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
-    public function isShipmentEnable()
+    public function isShipmentEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/shipment/enable',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function isShipmentSameOrder()
@@ -329,11 +329,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function isCreditmemoSameOrder()
+    public function isCreditmemoSameOrder($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/creditmemo/same_order',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
 

@@ -37,7 +37,7 @@ class ConfigObserver implements ObserverInterface
     {   
         $timezone = $this->helper->timezone();
         date_default_timezone_set($timezone);
-        $df = "G:i:s";
+        $df = "Y-m-d H:i:s";
         $ts1 = strtotime(date($df));
         $ts2 = strtotime(gmdate($df));
         $ts3 = ($ts1-$ts2)/3600; 
@@ -49,17 +49,39 @@ class ConfigObserver implements ObserverInterface
         $this->connection->query($sql);
         $sql= "SET GLOBAL event_scheduler = 0;";
         $this->connection->query($sql);
-
+        $nameTable = [];
         $storeId = 0;
 
         $orderReset = $this->helper->getOrderReset($storeId);
         $invoiceReset = $this->helper->getInvoiceReset($storeId);
         $shipmentReset = $this->helper->getShipmentReset($storeId);
         $creditmemoReset = $this->helper->getShipmentReset($storeId);
-        $nameTable = array('sequence_order_' => $orderReset,
-                            'sequence_invoice_' => $invoiceReset,
-                            'sequence_shipment_' => $shipmentReset,
-                            'sequence_creditmemo_' => $creditmemoReset);
+
+        if ($this->helper->isOrderEnable($storeId)) {
+            $nameTable['sequence_order_'] = $orderReset;
+        } else {
+            $sql = "Drop event if exists sequence_order_".$storeId;
+                    $this->connection->query($sql);
+        }
+        if ($this->helper->isInvoiceEnable($storeId)) {
+            $nameTable['sequence_invoice_'] = $invoiceReset;
+        } else {
+            $sql = "Drop event if exists sequence_invoice_".$storeId;
+                    $this->connection->query($sql);
+        }
+        if ($this->helper->isShipmentEnable($storeId)) {
+            $nameTable['sequence_shipment_'] = $shipmentReset;
+        } else {
+            $sql = "Drop event if exists sequence_shipment_".$storeId;
+                    $this->connection->query($sql);
+        }
+        if ($this->helper->isCreditmemoEnable($storeId)) {
+            $nameTable['sequence_creditmemo_'] = $orderReset;
+        } else {
+            $sql = "Drop event if exists sequence_creditmemo_".$storeId;
+                    $this->connection->query($sql);
+        }
+
         foreach ($nameTable as $key => $value) 
         {
             switch ($value) 
@@ -105,10 +127,35 @@ class ConfigObserver implements ObserverInterface
             $invoiceReset = $this->helper->getInvoiceReset($storeId);
             $shipmentReset = $this->helper->getShipmentReset($storeId);
             $creditmemoReset = $this->helper->getShipmentReset($storeId);
-            $nameTable = array('sequence_order_' => $orderReset,
-                                'sequence_invoice_' => $invoiceReset,
-                                'sequence_shipment_' => $shipmentReset,
-                                'sequence_creditmemo_' => $creditmemoReset);           
+
+            if ($this->helper->isOrderEnable($storeId)) {
+                $nameTable['sequence_order_'] = $orderReset;
+            } else {
+                $sql = "Drop event if exists sequence_order_".$storeId;
+                $this->connection->query($sql);
+            }
+            
+            if ($this->helper->isInvoiceEnable($storeId)) {
+                $nameTable['sequence_invoice_'] = $invoiceReset;
+            } else {
+                $sql = "Drop event if exists sequence_invoice_".$storeId;
+                $this->connection->query($sql);
+            }
+
+            if ($this->helper->isShipmentEnable($storeId)) {
+                $nameTable['sequence_shipment_'] = $shipmentReset;
+            } else {
+                $sql = "Drop event if exists sequence_shipment_".$storeId;
+                $this->connection->query($sql);
+            }
+
+            if ($this->helper->isCreditmemoEnable($storeId)) {
+                $nameTable['sequence_creditmemo_'] = $orderReset;
+            } else {
+                $sql = "Drop event if exists sequence_creditmemo_".$storeId;
+                $this->connection->query($sql);
+            }
+
             foreach ($nameTable as $key => $value) 
             {
                 switch ($value) 

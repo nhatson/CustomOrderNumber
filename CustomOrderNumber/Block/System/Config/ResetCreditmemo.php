@@ -16,6 +16,7 @@ class ResetCreditmemo extends Field
      * @var string
      */
     protected $_template = 'Bss_CustomOrderNumber::system/config/resetcreditmemo.phtml';
+    protected $helper;
 
     /**
      * @param Context $context
@@ -23,8 +24,10 @@ class ResetCreditmemo extends Field
      */
     public function __construct(
         Context $context,
+        \Bss\CustomOrderNumber\Helper\Data $helper,
         array $data = []
     ) {
+        $this->helper = $helper;
         parent::__construct($context, $data);
     }
 
@@ -78,5 +81,10 @@ class ResetCreditmemo extends Field
         );
 
         return $button->toHtml();
+    }
+
+    public function isCreditmemoEnable($storeId)
+    {
+        return $this->helper->isCreditmemoEnable($storeId);
     }
 }
