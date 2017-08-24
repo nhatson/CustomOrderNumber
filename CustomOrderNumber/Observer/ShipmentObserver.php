@@ -7,84 +7,63 @@ namespace Bss\CustomOrderNumber\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\App\ResourceConnection as AppResource;
 
 class ShipmentObserver implements ObserverInterface
 {
     protected $helper;
-    protected $connection;
+    protected $sequence;
 
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
-        AppResource $resource
+        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
         ) {
             $this->helper = $helper;
-            $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
+            $this->sequence = $sequence;
         }
 
     public function execute(Observer $observer)
     {   
-        if($this->helper->isShipmentEnable())
+        $shipmentInstance = $observer->getShipment();
+        $storeId = $invoiceInstance->getOrder()->getStoreId();
+        if($this->helper->isShipmentEnable($storeId))
         {
-            if($this->helper->isShipmentSameOrder() && (!$this->helper->isOrderEnable()))
+            if($this->helper->isShipmentSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId)))
             {
                 return;
             }
-
-            $shipmentInstance = $observer->getShipment();
-
-            if($this->helper->isShipmentSameOrder())
+            if($this->helper->isShipmentSameOrder($storeId))
             {
                 $orderIncrement = $shipmentInstance->getOrder()->getIncrementId();
 
-                $replace = $this->helper->getShipmentReplace();
-                $replaceWith = $this->helper->getShipmentReplaceWith();
+                $replace = $this->helper->getShipmentReplace($storeId);
+                $replaceWith = $this->helper->getShipmentReplaceWith($storeId);
                 $resutl = str_replace($replace, $replaceWith, $orderIncrement);
 
             } else {
-                $storeId = $invoiceInstance->getOrder()->getStoreId();
+                $format = $this->helper->getShipmentFormat($storeId);
 
-                $format = $this->helper->getShipmentFormat();
+                $startValue = $this->helper->getShipmentStart($storeId);
+                $step = $this->helper->getShipmentIncrement($storeId);
 
-                $startValue = $this->helper->getShipmentStart();
-                $step = $this->helper->getShipmentIncrement();
-
-                $padding = $this->helper->getShipmentPadding();
-                $format = $this->helper->replace($format, $storeId);
-                $explode = explode('{counter}', $format);
-                
-                $prefix = $explode[0];
-
-                if (isset($explode[1])){
-                    $suffix = $explode[1];   
-                } else {
-                    $suffix = "";
-                }
-
-                $pattern = "%s%'.0".$padding."d%s";
-
-                if ($this->helper->isIndividualShipmentEnable())
+                $padding = $this->helper->getShipmentPadding($storeId);            
+                $pattern = "%0".$padding."d";
+                if ($this->helper->isIndividualShipmentEnable($storeId))
                 {
                     $table = 'sequence_shipment_'.$storeId;
                 } else {
                     $table = 'sequence_shipment_0';
                 }
 
-                $this->connection->insert($table,[]);
-                $lastIncrementId = $this->connection->lastInsertId($table);
+                $lastIncrementId = $this->sequence->lastIncrementId($table);
 
-                if (!isset($lastIncrementId)) {
+                if (!isset($lastIncrementId)) 
+                {
                     return;
                 }
 
                 $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
-
-                $resutl = sprintf(
-                    $pattern,
-                    $prefix,
-                    $currentId,
-                    $suffix
-                );
+                $counter = sprintf($pattern, $currentId);
+                $resutl = $this->helper->replace($format, $storeId, $counter);
             }
 
             $shipmentInstance->setIncrementId($resutl); 

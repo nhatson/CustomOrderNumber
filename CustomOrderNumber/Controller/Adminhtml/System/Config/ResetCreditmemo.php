@@ -9,7 +9,7 @@ namespace Bss\CustomOrderNumber\Controller\Adminhtml\System\Config;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Bss\CustomOrderNumber\Helper\Data;
+use Magento\Framework\App\ResourceConnection as AppResource;
 
 class ResetCreditmemo extends Action
 {
@@ -19,7 +19,7 @@ class ResetCreditmemo extends Action
     /**
      * @var Data
      */
-    protected $helper;
+    protected $connection;
 
     /**
      * @param Context $context
@@ -29,11 +29,11 @@ class ResetCreditmemo extends Action
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        Data $helper
+        AppResource $resource
     )
     {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->helper = $helper;
+        $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
         parent::__construct($context);
     }
 
@@ -45,7 +45,8 @@ class ResetCreditmemo extends Action
     public function execute()
     {
         $storeId = $this->getRequest()->getParam('storeId');
-        $resetCreditmemo = $this->helper->resetCreditmemo($storeId);
+        $table = 'sequence_creditmemo_'.$storeId;     
+        $resetCreditmemo = $this->connection->truncateTable($table);
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         

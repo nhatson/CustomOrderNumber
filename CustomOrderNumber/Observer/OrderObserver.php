@@ -7,21 +7,20 @@ namespace Bss\CustomOrderNumber\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\App\ResourceConnection as AppResource;
 
 class OrderObserver implements ObserverInterface
 {
     protected $helper;
-    protected $connection;
+    protected $sequence;
     protected $storeManager;
 
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        AppResource $resource
+        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
         ) {
             $this->helper = $helper;
-            $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
+            $this->sequence = $sequence;
             $this->storeManager = $storeManager;
         }
 
@@ -37,44 +36,24 @@ class OrderObserver implements ObserverInterface
             $step = $this->helper->getOrderIncrement();
 
             $padding = $this->helper->getOrderPadding();
-
-            $format = $this->helper->replace($format, $storeIdd);
-            $explode = explode('{counter}', $format);
-
-            $prefix = $explode[0];
-            
-            if (isset($explode[1])){
-                $suffix = $explode[1];   
-            } else {
-                $suffix = "";
-            }
-
-            $pattern = "%s%'.0".$padding."d%s";
-
+            $pattern = "%0".$padding."d";
             if ($this->helper->isIndividualOrderEnable())
             {
                 $table = 'sequence_order_'.$storeId;
             } else {
                 $table = 'sequence_order_0';
             }
-            // $sql = "SELECT * FROM ".$table." ORDER BY sequence_value DESC LIMIT 1";
-            // $lastRow = $this->connection->fetchAll($sql);
-            // $lastIncrementId = $lastRow['0']['sequence_value'];
-            $this->connection->insert($table,[]);
-            $lastIncrementId = $this->connection->lastInsertId($table);
+
+            $lastIncrementId = $this->sequence->lastIncrementId($table);
 
             if (!isset($lastIncrementId)) {
                 return;
             }
 
             $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
+            $counter = sprintf($pattern, $currentId);
         
-            $resutl = sprintf(
-                $pattern,
-                $prefix,
-                $currentId,
-                $suffix
-            );
+            $resutl = $this->helper->replace($format, $storeId, $counter);
 
             $orderInstance = $observer->getOrder();
             $orderInstance->setIncrementId($resutl); 

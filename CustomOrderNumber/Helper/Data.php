@@ -28,54 +28,21 @@
  */
 namespace Bss\CustomOrderNumber\Helper;
 
-use Magento\Framework\App\ResourceConnection as AppResource;
-
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      */
     protected $datetime;
-    protected $connection;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
-        AppResource $resource
+        \Magento\Framework\Stdlib\DateTime\DateTime $datetime
     ) {
         $this->datetime = $datetime;
-        $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
         parent::__construct($context);
     }
 
-    /**
-     * Retrieve Module Enable
-     *
-     * @return bool
-     */
-    public function resetOrder($storeId)
-    {
-        $table = 'sequence_order_'.$storeId;
-        $this->connection->truncateTable($table);
-
-    }
-
-    public function resetInvoice($storeId)
-    {
-        $table = 'sequence_invoice_'.$storeId;
-        $this->connection->truncateTable($table);
-    }
-    public function resetShipment($storeId)
-    {
-        $table = 'sequence_shipment_'.$storeId;
-        $this->connection->truncateTable($table);
-    }
-
-    public function resetCreditmemo($storeId)
-    {
-        $table = 'sequence_creditmemo_'.$storeId;
-        $this->connection->truncateTable($table);
-    }
     public function timezone()
     {
         return $this->scopeConfig->getValue(
@@ -83,7 +50,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }
-    public function replace($format, $storeId)
+    public function replace($format, $storeId, $counter)
     {
         $timezone = $this->scopeConfig->getValue(
             'general/locale/timezone',
@@ -102,13 +69,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $m = (int)$mm;
         $yy = date('y', strtotime($date));
         $yyyy = date('Y', strtotime($date));
+        $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{counter}']; 
+        $replace    = [$d, $dd, $m, $mm, $yy, $yyyy, $storeId, $counter];
 
-        $search     = array('{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}'); 
-        $replace    = array($d, $dd, $m, $mm, $yy, $yyyy, $storeId);
+        $result = str_replace($search, $replace, $format);
 
-        $format = str_replace($search, $replace, $format);
-
-        return $format;
+        return $result;
     }
 
     public function isOrderEnable($storeId = null)
@@ -160,11 +126,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
-    public function isIndividualOrderEnable()
+    public function isIndividualOrderEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/order/individual',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
 
@@ -175,11 +141,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function isInvoiceSameOrder()
+    public function isInvoiceSameOrder($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/invoice/same_order',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
 
@@ -188,39 +154,39 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return int
      */
-    public function getInvoiceFormat()
+    public function getInvoiceFormat($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/invoice/format',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getInvoiceStart()
+    public function getInvoiceStart($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/invoice/start',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getInvoiceIncrement()
+    public function getInvoiceIncrement($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/invoice/increment',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getInvoicePadding()
+    public function getInvoicePadding($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/invoice/padding',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function isIndividualInvoiceEnable()
+    public function isIndividualInvoiceEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/invoice/individual',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function getInvoiceReset($storeId = null)
@@ -230,18 +196,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getInvoiceReplace()
+    public function getInvoiceReplace($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/invoice/replace',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getInvoiceReplaceWith()
+    public function getInvoiceReplaceWith($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/invoice/replace_with',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
 
@@ -252,11 +218,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function isShipmentSameOrder()
+    public function isShipmentSameOrder($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/shipment/same_order',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
 
@@ -265,39 +231,39 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return int
      */
-    public function getShipmentFormat()
+    public function getShipmentFormat($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/shipment/format',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getShipmentStart()
+    public function getShipmentStart($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/shipment/start',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getShipmentIncrement()
+    public function getShipmentIncrement($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/shipment/increment',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getShipmentPadding()
+    public function getShipmentPadding($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/shipment/padding',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function isIndividualShipmentEnable()
+    public function isIndividualShipmentEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/shipment/individual',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function getShipmentReset($storeId = null)
@@ -307,26 +273,26 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getShipmentReplace()
+    public function getShipmentReplace($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/shipment/replace',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getShipmentReplaceWith()
+    public function getShipmentReplaceWith($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/shipment/replace_with',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
 
-    public function isCreditmemoEnable()
+    public function isCreditmemoEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/creditmemo/enable',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function isCreditmemoSameOrder($storeId = null)
@@ -342,39 +308,39 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return int
      */
-    public function getCreditmemoFormat()
+    public function getCreditmemoFormat($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/creditmemo/format',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getCreditmemoStart()
+    public function getCreditmemoStart($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/creditmemo/start',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getCreditmemoIncrement()
+    public function getCreditmemoIncrement($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/creditmemo/increment',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getCreditmemoPadding()
+    public function getCreditmemoPadding($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/creditmemo/padding',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function isIndividualCreditmemoEnable()
+    public function isIndividualCreditmemoEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
             'ordernumber/creditmemo/individual',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function getCreditmemoReset($storeId = null)
@@ -384,18 +350,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getCreditmemoReplace()
+    public function getCreditmemoReplace($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/creditmemo/replace',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getCreditmemoReplaceWith()
+    public function getCreditmemoReplaceWith($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/creditmemo/replace_with',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
 }

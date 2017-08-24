@@ -7,84 +7,59 @@ namespace Bss\CustomOrderNumber\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\App\ResourceConnection as AppResource;
 
 class InvoiceObserver implements ObserverInterface
 {
     protected $helper;
-    protected $connection;
-
+    protected $sequence;
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
-        AppResource $resource
+        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
         ) {
             $this->helper = $helper;
-            $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
+            $this->sequence = $sequence;
         }
-
     public function execute(Observer $observer)
     {   
-        if($this->helper->isInvoiceEnable())
+        $invoiceInstance = $observer->getInvoice();
+        $storeId = $invoiceInstance->getOrder()->getStoreId();
+        if($this->helper->isInvoiceEnable($storeId))
         {
-            if($this->helper->isInvoiceSameOrder() && (!$this->helper->isOrderEnable()))
+            if($this->helper->isInvoiceSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId)))
             {
                 return;
-            }
-
-            $invoiceInstance = $observer->getInvoice();
-            
-            if($this->helper->isInvoiceSameOrder())
+            }    
+            if($this->helper->isInvoiceSameOrder($storeId))
             {          
                 $orderIncrement = $invoiceInstance->getOrder()->getIncrementId();
 
-                $replace = $this->helper->getInvoiceReplace();
-                $replaceWith = $this->helper->getInvoiceReplaceWith();
+                $replace = $this->helper->getInvoiceReplace($storeId);
+                $replaceWith = $this->helper->getInvoiceReplaceWith($storeId);
                 $resutl = str_replace($replace, $replaceWith, $orderIncrement);
 
             } else {
-                $storeId = $invoiceInstance->getOrder()->getStoreId();
+                $format = $this->helper->getInvoiceFormat($storeId);
+                $startValue = $this->helper->getInvoiceStart($storeId);
+                $step = $this->helper->getInvoiceIncrement($storeId);
 
-                $format = $this->helper->getInvoiceFormat();
-
-                $startValue = $this->helper->getInvoiceStart();
-                $step = $this->helper->getInvoiceIncrement();
-
-                $padding = $this->helper->getInvoicePadding();
-                $format = $this->helper->replace($format, $storeId);
-                $explode = explode('{counter}', $format);
-
-                $prefix = $explode[0];
-
-                if (isset($explode[1])){
-                    $suffix = $explode[1];   
-                } else {
-                    $suffix = "";
-                }
-
-                $pattern = "%s%'.0".$padding."d%s";
-                if ($this->helper->isIndividualInvoiceEnable())
+                $padding = $this->helper->getInvoicePadding($storeId);
+                $pattern = "%0".$padding."d";
+                if ($this->helper->isIndividualInvoiceEnable($storeId))
                 {
                     $table = 'sequence_invoice_'.$storeId;
                 } else {
                     $table = 'sequence_invoice_0';
                 }
 
-                $this->connection->insert($table,[]);
-                $lastIncrementId = $this->connection->lastInsertId($table);
-
+                $lastIncrementId = $this->sequence->lastIncrementId($table);
                 if (!isset($lastIncrementId)) 
                 {
                     return;
                 }
 
                 $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
-
-                $resutl = sprintf(
-                    $pattern,
-                    $prefix,
-                    $currentId,
-                    $suffix
-                    );
+                $counter = sprintf($pattern, $currentId);
+                $resutl = $this->helper->replace($format, $storeId, $counter);
             }
 
             $invoiceInstance->setIncrementId($resutl);       
