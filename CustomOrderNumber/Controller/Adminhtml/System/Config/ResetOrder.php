@@ -45,7 +45,7 @@ class ResetOrder extends Action
     {
         $storeId = $this->getRequest()->getParam('storeId');
         $table = 'sequence_order_'.$storeId;
-        $resetOrder = $this->connection->truncateTable($table);;
+        $resetOrder = $this->connection->truncateTable($table);
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         

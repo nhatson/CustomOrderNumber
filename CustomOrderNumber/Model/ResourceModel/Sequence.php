@@ -59,6 +59,8 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 
     public function setEvent($storeId)
     {
+        $this->connection->dropTrigger('sequence_order_0');
+        die('bss');
         $triggerName = 'insert_user_trigger';
         $event = 'UPDATE';
         $trigger = $this->triggerFactory->create()

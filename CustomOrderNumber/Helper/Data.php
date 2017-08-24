@@ -69,8 +69,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $m = (int)$mm;
         $yy = date('y', strtotime($date));
         $yyyy = date('Y', strtotime($date));
-        $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{counter}']; 
-        $replace    = [$d, $dd, $m, $mm, $yy, $yyyy, $storeId, $counter];
+        $random = rand();
+        $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{counter}', '{random}']; 
+        $replace    = [$d, $dd, $m, $mm, $yy, $yyyy, $storeId, $counter, $random];
 
         $result = str_replace($search, $replace, $format);
 
