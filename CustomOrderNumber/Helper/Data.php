@@ -33,49 +33,19 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      */
-    protected $datetime;
 
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\Stdlib\DateTime\DateTime $datetime
+        \Magento\Framework\App\Helper\Context $context
     ) {
-        $this->datetime = $datetime;
         parent::__construct($context);
     }
 
-    public function timezone()
+    public function timezone($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'general/locale/timezone',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
-    }
-    public function replace($format, $storeId, $counter)
-    {
-        $timezone = $this->scopeConfig->getValue(
-            'general/locale/timezone',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        );
-
-        if(isset($timezone)){
-            date_default_timezone_set($timezone); 
-        }
-
-        $date = $this->datetime->gmtDate();
-
-        $dd = date('d', strtotime($date));
-        $d = (int)$dd;
-        $mm = date('m', strtotime($date));
-        $m = (int)$mm;
-        $yy = date('y', strtotime($date));
-        $yyyy = date('Y', strtotime($date));
-        $random = rand();
-        $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{counter}', '{random}']; 
-        $replace    = [$d, $dd, $m, $mm, $yy, $yyyy, $storeId, $counter, $random];
-
-        $result = str_replace($search, $replace, $format);
-
-        return $result;
     }
 
     public function isOrderEnable($storeId = null)
@@ -86,37 +56,32 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
-    /**
-     * Get Auto Hide Message
-     *
-     * @return int
-     */
-    public function getOrderFormat()
+    public function getOrderFormat($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/order/format',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getOrderStart()
+    public function getOrderStart($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/order/start',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getOrderIncrement()
+    public function getOrderIncrement($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/order/increment',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
-    public function getOrderPadding()
+    public function getOrderPadding($storeId = null)
     {
         return $this->scopeConfig->getValue(
             'ordernumber/order/padding',
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
     public function getOrderReset($storeId = null)

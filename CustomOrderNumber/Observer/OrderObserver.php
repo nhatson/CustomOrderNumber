@@ -53,30 +53,21 @@ class OrderObserver implements ObserverInterface
         {
             $storeId = $this->storeManager->getStore()->getStoreId();
 
-            $format = $this->helper->getOrderFormat();
-
-            $startValue = $this->helper->getOrderStart();
-            $step = $this->helper->getOrderIncrement();
-
-            $padding = $this->helper->getOrderPadding();
+            $format = $this->helper->getOrderFormat($storeId);
+            $startValue = $this->helper->getOrderStart($storeId);
+            $step = $this->helper->getOrderIncrement($storeId);
+            $padding = $this->helper->getOrderPadding($storeId);
             $pattern = "%0".$padding."d";
-            if ($this->helper->isIndividualOrderEnable())
+
+            if ($this->helper->isIndividualOrderEnable($storeId))
             {
                 $table = 'sequence_order_'.$storeId;
             } else {
                 $table = 'sequence_order_0';
             }
 
-            $lastIncrementId = $this->sequence->lastIncrementId($table);
-
-            if (!isset($lastIncrementId)) {
-                return;
-            }
-
-            $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
-            $counter = sprintf($pattern, $currentId);
-        
-            $resutl = $this->helper->replace($format, $storeId, $counter);
+            $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
+            $resutl = $this->sequence->replace($format, $storeId, $counter, $padding);
 
             $orderInstance = $observer->getOrder();
             $orderInstance->setIncrementId($resutl); 

@@ -77,16 +77,8 @@ class ShipmentObserver implements ObserverInterface
                     $table = 'sequence_shipment_0';
                 }
 
-                $lastIncrementId = $this->sequence->lastIncrementId($table);
-
-                if (!isset($lastIncrementId)) 
-                {
-                    return;
-                }
-
-                $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
-                $counter = sprintf($pattern, $currentId);
-                $resutl = $this->helper->replace($format, $storeId, $counter);
+                $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
+                $resutl = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
 
             $shipmentInstance->setIncrementId($resutl); 

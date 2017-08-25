@@ -57,7 +57,6 @@ class CreditmemoObserver implements ObserverInterface
             if($this->helper->isCreditmemoSameOrder($storeId))
             {
                 $orderIncrement = $creditmemoInstance->getOrder()->getIncrementId();
-
                 $replace = $this->helper->getCreditmemoReplace($storeId);
                 $replaceWith = $this->helper->getCreditmemoReplaceWith($storeId);
                 $resutl = str_replace($replace, $replaceWith, $orderIncrement);
@@ -67,9 +66,9 @@ class CreditmemoObserver implements ObserverInterface
 
                 $startValue = $this->helper->getCreditmemoStart($storeId);
                 $step = $this->helper->getCreditmemoIncrement($storeId);
-
                 $padding = $this->helper->getCreditmemoPadding($storeId);            
                 $pattern = "%0".$padding."d";
+
                 if ($this->helper->isIndividualCreditmemoEnable($storeId))
                 {
                     $table = 'sequence_creditmemo_'.$storeId;
@@ -77,15 +76,8 @@ class CreditmemoObserver implements ObserverInterface
                     $table = 'sequence_creditmemo_0';
                 }
 
-                $lastIncrementId = $this->sequence->lastIncrementId($table);
-                if (!isset($lastIncrementId)) 
-                {
-                    return;
-                }
-
-                $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
-                $counter = sprintf($pattern, $currentId);
-                $resutl = $this->helper->replace($format, $storeId, $counter);
+                $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
+                $resutl = $this->sequence->replace($format, $storeId, $counter, $padding);
             }          
 
             $creditmemoInstance->setIncrementId($resutl);

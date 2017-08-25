@@ -74,15 +74,8 @@ class InvoiceObserver implements ObserverInterface
                     $table = 'sequence_invoice_0';
                 }
 
-                $lastIncrementId = $this->sequence->lastIncrementId($table);
-                if (!isset($lastIncrementId)) 
-                {
-                    return;
-                }
-
-                $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
-                $counter = sprintf($pattern, $currentId);
-                $resutl = $this->helper->replace($format, $storeId, $counter);
+                $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
+                $resutl = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
 
             $invoiceInstance->setIncrementId($resutl);       
