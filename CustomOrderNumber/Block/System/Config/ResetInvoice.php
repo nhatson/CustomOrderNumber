@@ -31,6 +31,7 @@ namespace Bss\CustomOrderNumber\Block\System\Config;
 
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
+use Bss\CustomOrderNumber\Helper\Data;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
 class ResetInvoice extends Field
@@ -39,15 +40,20 @@ class ResetInvoice extends Field
      * @var string
      */
     protected $_template = 'Bss_CustomOrderNumber::system/config/resetinvoice.phtml';
+
+    /**
+     * @var Data
+     */
     protected $helper;
 
     /**
      * @param Context $context
+     * @param Data $helper
      * @param array $data
      */
     public function __construct(
         Context $context,
-        \Bss\CustomOrderNumber\Helper\Data $helper,
+        Data $helper,
         array $data = []
     ) {
         $this->helper = $helper;
@@ -105,6 +111,12 @@ class ResetInvoice extends Field
 
         return $button->toHtml();
     }
+
+    /**
+     * Retrieve Invoice Enable
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isInvoiceEnable($storeId)
     {
         return $this->helper->isInvoiceEnable($storeId);

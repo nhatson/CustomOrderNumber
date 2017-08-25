@@ -33,54 +33,65 @@ use Magento\Framework\Event\ObserverInterface;
 
 class CreditmemoObserver implements ObserverInterface
 {
+    /**
+     * @var \Bss\CustomOrderNumber\Helper\Data
+     */
     protected $helper;
+
+    /**
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
+     */
     protected $sequence;
 
+    /**
+     * @param \Bss\CustomOrderNumber\Helper\Data $helper
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
+     */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
-        ) {
+    ) {
             $this->helper = $helper;
             $this->sequence = $sequence;
-        }
+    }
 
+    /**
+     * Set Increment Id
+     *
+     * @param Observer $observer
+     * @return incrementId
+     */
     public function execute(Observer $observer)
     {   
         $creditmemoInstance = $observer->getCreditmemo();
         $storeId = $creditmemoInstance->getOrder()->getStoreId();
-        if($this->helper->isCreditmemoEnable($storeId))
-        {
-            if($this->helper->isCreditmemoSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId)))
-            {
+        if ($this->helper->isCreditmemoEnable($storeId)) {
+            if ($this->helper->isCreditmemoSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId))) {
                 return;
             }
-            if($this->helper->isCreditmemoSameOrder($storeId))
-            {
+            if ($this->helper->isCreditmemoSameOrder($storeId)) {
                 $orderIncrement = $creditmemoInstance->getOrder()->getIncrementId();
                 $replace = $this->helper->getCreditmemoReplace($storeId);
                 $replaceWith = $this->helper->getCreditmemoReplaceWith($storeId);
-                $resutl = str_replace($replace, $replaceWith, $orderIncrement);
-
+                $result = str_replace($replace, $replaceWith, $orderIncrement);
             } else {
                 $format = $this->helper->getCreditmemoFormat($storeId);
-
                 $startValue = $this->helper->getCreditmemoStart($storeId);
                 $step = $this->helper->getCreditmemoIncrement($storeId);
                 $padding = $this->helper->getCreditmemoPadding($storeId);            
                 $pattern = "%0".$padding."d";
 
-                if ($this->helper->isIndividualCreditmemoEnable($storeId))
-                {
+                if ($this->helper->isIndividualCreditmemoEnable($storeId)) {
                     $table = 'sequence_creditmemo_'.$storeId;
                 } else {
                     $table = 'sequence_creditmemo_0';
                 }
 
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
-                $resutl = $this->sequence->replace($format, $storeId, $counter, $padding);
-            }          
+                $result = $this->sequence->replace($format, $storeId, $counter, $padding);
+            }
 
-            $creditmemoInstance->setIncrementId($resutl);
+            $creditmemoInstance->setIncrementId($result);
         }           
     }
 }

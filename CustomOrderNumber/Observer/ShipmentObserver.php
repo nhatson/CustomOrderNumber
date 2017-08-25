@@ -33,55 +33,65 @@ use Magento\Framework\Event\ObserverInterface;
 
 class ShipmentObserver implements ObserverInterface
 {
+    /**
+     * @var \Bss\CustomOrderNumber\Helper\Data
+     */
     protected $helper;
+
+    /**
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
+     */
     protected $sequence;
 
+    /**
+     * @param \Bss\CustomOrderNumber\Helper\Data $helper
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
+     */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
-        ) {
+    ) {
             $this->helper = $helper;
             $this->sequence = $sequence;
-        }
+    }
 
+    /**
+     * Set Increment Id
+     *
+     * @param Observer $observer
+     * @return incrementId
+     */
     public function execute(Observer $observer)
     {   
         $shipmentInstance = $observer->getShipment();
         $storeId = $invoiceInstance->getOrder()->getStoreId();
-        if($this->helper->isShipmentEnable($storeId))
-        {
-            if($this->helper->isShipmentSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId)))
-            {
+        if ($this->helper->isShipmentEnable($storeId)) {
+            if ($this->helper->isShipmentSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId))) {
                 return;
             }
-            if($this->helper->isShipmentSameOrder($storeId))
-            {
+            if ($this->helper->isShipmentSameOrder($storeId)) {
                 $orderIncrement = $shipmentInstance->getOrder()->getIncrementId();
-
                 $replace = $this->helper->getShipmentReplace($storeId);
                 $replaceWith = $this->helper->getShipmentReplaceWith($storeId);
-                $resutl = str_replace($replace, $replaceWith, $orderIncrement);
-
+                $result = str_replace($replace, $replaceWith, $orderIncrement);
             } else {
                 $format = $this->helper->getShipmentFormat($storeId);
-
                 $startValue = $this->helper->getShipmentStart($storeId);
                 $step = $this->helper->getShipmentIncrement($storeId);
-
                 $padding = $this->helper->getShipmentPadding($storeId);            
                 $pattern = "%0".$padding."d";
-                if ($this->helper->isIndividualShipmentEnable($storeId))
-                {
+
+                if ($this->helper->isIndividualShipmentEnable($storeId)) {
                     $table = 'sequence_shipment_'.$storeId;
                 } else {
                     $table = 'sequence_shipment_0';
                 }
 
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
-                $resutl = $this->sequence->replace($format, $storeId, $counter, $padding);
+                $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
 
-            $shipmentInstance->setIncrementId($resutl); 
+            $shipmentInstance->setIncrementId($result);
         }           
     }
 }

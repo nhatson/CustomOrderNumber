@@ -28,7 +28,7 @@
  */
 ?>
 <?php if($block->isOrderEnable($block->getRequest()->getParam('store', 0))) { ?>
-<script>
+    <script>
     require([
         'jquery',
         'prototype'
@@ -63,11 +63,13 @@
         });
 
     });
-</script>
+    </script>
 <?php } ?>
 <?php echo $block->getButtonHtml() ?>
 <span id="order_span">
-    <img class="processing" hidden="hidden" alt="" style="margin:0 5px" src="<?php echo $block->getViewFileUrl('images/process_spinner.gif') ?>"/>
-    <img class="success" hidden="hidden" alt="" style="margin:-3px 5px" src="<?php echo $block->getViewFileUrl('images/rule_component_apply.gif') ?>"/>
+    <img class="processing" hidden="hidden" alt="" style="margin:0 5px"
+         src="<?php echo $block->getViewFileUrl('images/process_spinner.gif') ?>"/>
+    <img class="success" hidden="hidden" alt="" style="margin:-3px 5px"
+         src="<?php echo $block->getViewFileUrl('images/rule_component_apply.gif') ?>"/>
     <span id="order_message"></span>
 </span>

@@ -33,13 +33,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      */
-
     public function __construct(
         \Magento\Framework\App\Helper\Context $context
     ) {
         parent::__construct($context);
     }
 
+    /**
+     * Get timezone
+     *
+     * @param StoreId $storeId
+     * @return string
+     */
     public function timezone($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -48,6 +53,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    /**
+     * Retrieve Module Enable
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isOrderEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -56,6 +67,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    /**
+     * Get Order Format
+     *
+     * @param StoreId $storeId
+     * @return string
+     */
     public function getOrderFormat($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -63,6 +80,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Order Format
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getOrderStart($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -70,6 +94,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Order Increment
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getOrderIncrement($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -77,6 +108,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Order Padding
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getOrderPadding($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -84,6 +122,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Order Reset
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getOrderReset($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -92,6 +137,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    /**
+     * Retrieve Individual Order Enable
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isIndividualOrderEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -100,6 +151,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    /**
+     * Retrieve Invoice Enable
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isInvoiceEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -107,6 +164,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Retrieve Invoice Same Order
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isInvoiceSameOrder($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -116,9 +180,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Get Auto Hide Message
+     * Get Invoice Format
      *
-     * @return int
+     * @param StoreId $storeId
+     * @return string
      */
     public function getInvoiceFormat($storeId = null)
     {
@@ -127,6 +192,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Invoice Start
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getInvoiceStart($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -134,6 +206,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Invoice Increment
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getInvoiceIncrement($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -141,6 +220,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Invoice Padding
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getInvoicePadding($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -148,6 +234,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Retrieve Individual Invoice Enable
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isIndividualInvoiceEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -155,6 +248,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Invoice Reset
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getInvoiceReset($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -162,6 +262,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Invoice Replace
+     *
+     * @param StoreId $storeId
+     * @return string
+     */
     public function getInvoiceReplace($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -169,6 +276,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Invoice Replace With
+     *
+     * @param StoreId $storeId
+     * @return string
+     */
     public function getInvoiceReplaceWith($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -177,6 +291,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    /**
+     * Retrieve Shipment Enable
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isShipmentEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -184,6 +304,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Retrieve Shipment SameOrder
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isShipmentSameOrder($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -193,9 +320,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Get Auto Hide Message
+     * Get Shipment Format
      *
-     * @return int
+     * @param StoreId $storeId
+     * @return string
      */
     public function getShipmentFormat($storeId = null)
     {
@@ -204,6 +332,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Shipment Start
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getShipmentStart($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -211,6 +346,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Shipment Increment
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getShipmentIncrement($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -218,6 +360,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Shipment Padding
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getShipmentPadding($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -225,6 +374,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Retrieve Individual Shipment Enable
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isIndividualShipmentEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -232,6 +388,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Shipment Reset
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getShipmentReset($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -239,6 +402,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Shipment Replace
+     *
+     * @param StoreId $storeId
+     * @return string
+     */
     public function getShipmentReplace($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -246,6 +416,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Shipment Replace With
+     *
+     * @param StoreId $storeId
+     * @return string
+     */
     public function getShipmentReplaceWith($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -254,6 +431,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    /**
+     * Retrieve Creditmemo Enable
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isCreditmemoEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -261,6 +444,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Retrieve Creditmemo Same Order
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isCreditmemoSameOrder($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -270,9 +460,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * Get Auto Hide Message
+     * Get Creditmemo Format
      *
-     * @return int
+     * @param StoreId $storeId
+     * @return string
      */
     public function getCreditmemoFormat($storeId = null)
     {
@@ -281,6 +472,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Creditmemo Start
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getCreditmemoStart($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -288,6 +486,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Creditmemo Increment
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getCreditmemoIncrement($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -295,6 +500,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Get Creditmemo Padding
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getCreditmemoPadding($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -302,6 +514,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Retrieve Individual Creditmemo Enable
+     *
+     * @param StoreId $storeId
+     * @return bool
+     */
     public function isIndividualCreditmemoEnable($storeId = null)
     {
         return $this->scopeConfig->isSetFlag(
@@ -309,6 +528,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Retrieve Creditmemo Reset
+     *
+     * @param StoreId $storeId
+     * @return int
+     */
     public function getCreditmemoReset($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -316,6 +542,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Retrieve Creditmemo Replace
+     *
+     * @param StoreId $storeId
+     * @return string
+     */
     public function getCreditmemoReplace($storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -323,6 +556,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE, $storeId
         );
     }
+
+    /**
+     * Retrieve Creditmemo Replace With
+     *
+     * @param StoreId $storeId
+     * @return string
+     */
     public function getCreditmemoReplaceWith($storeId = null)
     {
         return $this->scopeConfig->getValue(

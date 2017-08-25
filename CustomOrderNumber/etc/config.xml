@@ -33,7 +33,6 @@
         <ordernumber>
             <order>
                 <enable>1</enable>
-                <format></format>
                 <start>1</start>
                 <increment>1</increment>
                 <padding>5</padding>

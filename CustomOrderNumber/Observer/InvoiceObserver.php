@@ -33,52 +33,65 @@ use Magento\Framework\Event\ObserverInterface;
 
 class InvoiceObserver implements ObserverInterface
 {
+    /**
+     * @var \Bss\CustomOrderNumber\Helper\Data
+     */
     protected $helper;
+
+    /**
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
+     */
     protected $sequence;
+
+    /**
+     * @param \Bss\CustomOrderNumber\Helper\Data $helper
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
+     */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
-        ) {
+    ) {
             $this->helper = $helper;
             $this->sequence = $sequence;
-        }
+    }
+
+    /**
+     * Set Increment Id
+     *
+     * @param Observer $observer
+     * @return incrementId
+     */
     public function execute(Observer $observer)
     {   
         $invoiceInstance = $observer->getInvoice();
         $storeId = $invoiceInstance->getOrder()->getStoreId();
-        if($this->helper->isInvoiceEnable($storeId))
-        {
-            if($this->helper->isInvoiceSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId)))
-            {
+        if ($this->helper->isInvoiceEnable($storeId)) {
+            if ($this->helper->isInvoiceSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId))) {
                 return;
             }    
-            if($this->helper->isInvoiceSameOrder($storeId))
-            {          
+            if ($this->helper->isInvoiceSameOrder($storeId)) {
                 $orderIncrement = $invoiceInstance->getOrder()->getIncrementId();
-
                 $replace = $this->helper->getInvoiceReplace($storeId);
                 $replaceWith = $this->helper->getInvoiceReplaceWith($storeId);
-                $resutl = str_replace($replace, $replaceWith, $orderIncrement);
-
+                $result = str_replace($replace, $replaceWith, $orderIncrement);
             } else {
                 $format = $this->helper->getInvoiceFormat($storeId);
                 $startValue = $this->helper->getInvoiceStart($storeId);
                 $step = $this->helper->getInvoiceIncrement($storeId);
-
                 $padding = $this->helper->getInvoicePadding($storeId);
                 $pattern = "%0".$padding."d";
-                if ($this->helper->isIndividualInvoiceEnable($storeId))
-                {
+
+                if ($this->helper->isIndividualInvoiceEnable($storeId)) {
                     $table = 'sequence_invoice_'.$storeId;
                 } else {
                     $table = 'sequence_invoice_0';
                 }
 
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
-                $resutl = $this->sequence->replace($format, $storeId, $counter, $padding);
+                $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
 
-            $invoiceInstance->setIncrementId($resutl);       
+            $invoiceInstance->setIncrementId($result);
         }           
     }
 }

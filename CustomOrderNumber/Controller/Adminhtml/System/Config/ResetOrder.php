@@ -36,18 +36,20 @@ use Magento\Framework\App\ResourceConnection as AppResource;
 
 class ResetOrder extends Action
 {
-
+    /**
+     * @var JsonFactory
+     */
     protected $resultJsonFactory;
 
     /**
-     * @var Data
+     * @var AppResource
      */
     protected $connection;
 
     /**
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
-     * @param Data $helper
+     * @param AppResource $resource
      */
     public function __construct(
         Context $context,
@@ -60,7 +62,7 @@ class ResetOrder extends Action
     }
 
     /**
-     * Collect relations data
+     * Truncate Table
      *
      * @return \Magento\Framework\Controller\Result\Json
      */
