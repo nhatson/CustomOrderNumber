@@ -28,7 +28,7 @@
  */
 namespace Bss\CustomOrderNumber\Model\Config\Source;
 
-class ResetSelect implements \Magento\Framework\Option\ArrayInterface
+class Frequency implements \Magento\Framework\Option\ArrayInterface
 {
     /**
      * @const Position

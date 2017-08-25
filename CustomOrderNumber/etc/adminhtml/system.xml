@@ -64,7 +64,7 @@
                 </field>
                 <field id="reset" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Reset Counter Number</label>
-                    <source_model>Bss\CustomOrderNumber\Model\Config\Source\ResetSelect</source_model>
+                    <source_model>Bss\CustomOrderNumber\Model\Config\Source\Frequency</source_model>
                     <depends>
                         <field id="individual">1</field>
                     </depends> 
@@ -126,7 +126,7 @@
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
-                    <source_model>Bss\CustomOrderNumber\Model\Config\Source\ResetSelect</source_model>
+                    <source_model>Bss\CustomOrderNumber\Model\Config\Source\Frequency</source_model>
                 </field>
                 <field id="reset_now" translate="label comment" type="button" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\ResetInvoice</frontend_model>
@@ -197,7 +197,7 @@
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
-                    <source_model>Bss\CustomOrderNumber\Model\Config\Source\ResetSelect</source_model>
+                    <source_model>Bss\CustomOrderNumber\Model\Config\Source\Frequency</source_model>
                 </field>
                 <field id="reset_now" translate="label comment" type="button" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\ResetShipment</frontend_model>
@@ -268,7 +268,7 @@
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
-                    <source_model>Bss\CustomOrderNumber\Model\Config\Source\ResetSelect</source_model>
+                    <source_model>Bss\CustomOrderNumber\Model\Config\Source\Frequency</source_model>
                 </field>
                 <field id="reset_now" translate="label comment" type="button" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
                     <frontend_model>Bss\CustomOrderNumber\Block\System\Config\ResetCreditmemo</frontend_model>
