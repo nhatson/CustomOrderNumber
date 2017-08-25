@@ -64,7 +64,7 @@ class ShipmentObserver implements ObserverInterface
     public function execute(Observer $observer)
     {   
         $shipmentInstance = $observer->getShipment();
-        $storeId = $invoiceInstance->getOrder()->getStoreId();
+        $storeId = $shipmentInstance->getOrder()->getStoreId();
         if ($this->helper->isShipmentEnable($storeId)) {
             if ($this->helper->isShipmentSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId))) {
                 return;
