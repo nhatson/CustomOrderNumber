@@ -31,7 +31,7 @@ namespace Bss\CustomOrderNumber\Model\Config\Source;
 class Frequency implements \Magento\Framework\Option\ArrayInterface
 {
     /**
-     * @const Position
+     * @const Frequency
      */
     const CRON_NEVER = '0';
     const CRON_DAILY = '1';

@@ -42,7 +42,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get timezone
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function timezone($storeId = null)
@@ -56,7 +56,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Module Enable
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isOrderEnable($storeId = null)
@@ -70,7 +70,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Order Format
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getOrderFormat($storeId = null)
@@ -84,7 +84,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Order Format
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getOrderStart($storeId = null)
@@ -98,7 +98,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Order Increment
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getOrderIncrement($storeId = null)
@@ -112,7 +112,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Order Padding
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getOrderPadding($storeId = null)
@@ -126,7 +126,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Order Reset
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getOrderReset($storeId = null)
@@ -140,7 +140,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Individual Order Enable
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isIndividualOrderEnable($storeId = null)
@@ -154,7 +154,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Invoice Enable
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isInvoiceEnable($storeId = null)
@@ -168,7 +168,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Invoice Same Order
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isInvoiceSameOrder($storeId = null)
@@ -182,7 +182,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Invoice Format
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getInvoiceFormat($storeId = null)
@@ -196,7 +196,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Invoice Start
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getInvoiceStart($storeId = null)
@@ -210,7 +210,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Invoice Increment
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getInvoiceIncrement($storeId = null)
@@ -224,7 +224,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Invoice Padding
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getInvoicePadding($storeId = null)
@@ -238,7 +238,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Individual Invoice Enable
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isIndividualInvoiceEnable($storeId = null)
@@ -252,7 +252,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Invoice Reset
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getInvoiceReset($storeId = null)
@@ -266,7 +266,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Invoice Replace
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getInvoiceReplace($storeId = null)
@@ -280,7 +280,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Invoice Replace With
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getInvoiceReplaceWith($storeId = null)
@@ -294,7 +294,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Shipment Enable
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isShipmentEnable($storeId = null)
@@ -308,7 +308,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Shipment SameOrder
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isShipmentSameOrder($storeId = null)
@@ -322,7 +322,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Shipment Format
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getShipmentFormat($storeId = null)
@@ -336,7 +336,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Shipment Start
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getShipmentStart($storeId = null)
@@ -350,7 +350,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Shipment Increment
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getShipmentIncrement($storeId = null)
@@ -364,7 +364,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Shipment Padding
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getShipmentPadding($storeId = null)
@@ -378,7 +378,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Individual Shipment Enable
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isIndividualShipmentEnable($storeId = null)
@@ -392,7 +392,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Shipment Reset
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getShipmentReset($storeId = null)
@@ -406,7 +406,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Shipment Replace
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getShipmentReplace($storeId = null)
@@ -420,7 +420,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Shipment Replace With
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getShipmentReplaceWith($storeId = null)
@@ -434,7 +434,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Creditmemo Enable
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isCreditmemoEnable($storeId = null)
@@ -448,7 +448,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Creditmemo Same Order
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isCreditmemoSameOrder($storeId = null)
@@ -462,7 +462,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Creditmemo Format
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getCreditmemoFormat($storeId = null)
@@ -476,7 +476,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Creditmemo Start
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getCreditmemoStart($storeId = null)
@@ -490,7 +490,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Creditmemo Increment
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getCreditmemoIncrement($storeId = null)
@@ -504,7 +504,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Get Creditmemo Padding
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getCreditmemoPadding($storeId = null)
@@ -518,7 +518,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Individual Creditmemo Enable
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isIndividualCreditmemoEnable($storeId = null)
@@ -532,7 +532,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Creditmemo Reset
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return int
      */
     public function getCreditmemoReset($storeId = null)
@@ -546,7 +546,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Creditmemo Replace
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getCreditmemoReplace($storeId = null)
@@ -560,7 +560,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve Creditmemo Replace With
      *
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return string
      */
     public function getCreditmemoReplaceWith($storeId = null)

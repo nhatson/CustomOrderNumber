@@ -34,6 +34,11 @@ use Magento\Framework\App\ResourceConnection as AppResource;
  */
 class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
+     /**
+     * @const ALPHA_NUMERIC
+     */
+    const ALPHA_NUMERIC = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
     /**
      * @var AppResource
      */
@@ -82,7 +87,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function counter($table, $startValue, $step, $pattern)
     {
-        $this->connection->insert($table,[]);
+        $this->connection->insert($table, []);
         $lastIncrementId = $this->connection->lastInsertId($table);
         $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
         $counter = sprintf($pattern, $currentId);
@@ -133,7 +138,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     {
         $timezone = $this->helper->timezone($storeId);
 
-        if(isset($timezone)){
+        if (isset($timezone)) {
             date_default_timezone_set($timezone); 
         }
 
@@ -145,9 +150,9 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $m = (int)$mm;
         $yy = date('y', strtotime($date));
         $yyyy = date('Y', strtotime($date));
-        $rndNumbers = $this->get_rand_numbers($length);
-        $rndLetters = $this->get_rand_numbers($length);
-        $rndAlphanumeric = $this->get_rand_alphanumeric($length);
+        $rndNumbers = $this->rndNumbers($length);
+        $rndLetters = $this->rndLetters($length);
+        $rndAlphanumeric = $this->randAlphanumeric($length);
 
         $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{counter}',
             '{rndNumbers}', '{rndLetters}', '{rndAlphanumeric}'];
@@ -159,115 +164,56 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     }
 
     /**
-     * Retrieve value
+     * Retrieve numbers
      *
-     * @param int $num
-     * @return randValue
+     * @param int $length
+     * @return numbers
      */
-    public function assign_rand_value ($num)
+    public function rndNumbers($length)
     {
-        switch($num) {
-            case "1"  :
-                $randValue = "a";
-                break;
-            case "2"  :
-                $randValue = "b";
-                break;
-            case "3"  :
-                $randValue = "c";
-                break;
-            case "4"  :
-                $randValue = "d";
-                break;
-            case "5"  : $randValue = "e"; break;
-            case "6"  : $randValue = "f"; break;
-            case "7"  : $randValue = "g"; break;
-            case "8"  : $randValue = "h"; break;
-            case "9"  : $randValue = "i"; break;
-            case "10" : $randValue = "j"; break;
-            case "11" : $randValue = "k"; break;
-            case "12" : $randValue = "l"; break;
-            case "13" : $randValue = "m"; break;
-            case "14" : $randValue = "n"; break;
-            case "15" : $randValue = "o"; break;
-            case "16" : $randValue = "p"; break;
-            case "17" : $randValue = "q"; break;
-            case "18" : $randValue = "r"; break;
-            case "19" : $randValue = "s"; break;
-            case "20" : $randValue = "t"; break;
-            case "21" : $randValue = "u"; break;
-            case "22" : $randValue = "v"; break;
-            case "23" : $randValue = "w"; break;
-            case "24" : $randValue = "x"; break;
-            case "25" : $randValue = "y"; break;
-            case "26" : $randValue = "z"; break;
-            case "27" : $randValue = "0"; break;
-            case "28" : $randValue = "1"; break;
-            case "29" : $randValue = "2"; break;
-            case "30" : $randValue = "3"; break;
-            case "31" : $randValue = "4"; break;
-            case "32" : $randValue = "5"; break;
-            case "33" : $randValue = "6"; break;
-            case "34" : $randValue = "7"; break;
-            case "35" : $randValue = "8"; break;
-            case "36" : $randValue = "9"; break;
+        $numbers ='';
+        $i=0;
+        while ($i<$length) {
+            $position = rand(0, 9);
+            $numbers=$numbers.substr(self::ALPHA_NUMERIC, $position, 1);
+            $i++;
         }
-        return $randValue;
+        return $numbers;
     }
 
     /**
-     * Retrieve value
+     * Retrieve letters
      *
      * @param int $length
-     * @return rand Value
+     * @return letters
      */
-    public function get_rand_alphanumeric($length)
+    public function rndLetters($length)
     {
-        if ($length>0) {
-            $rand_id="";
-            for ($i=1; $i<=$length; $i++) {
-                mt_srand((double)microtime() * 1000000);
-                $num = mt_rand(1, 36);
-                $rand_id .= $this->assign_rand_value($num);
-            }
+        $letters ='';
+        $i=0;
+        while ($i<$length) {
+            $position = rand(10, 35);
+            $letters=$letters.substr(self::ALPHA_NUMERIC, $position, 1);
+            $i++;
         }
-        return $rand_id;
+        return $letters;
     }
 
     /**
-     * Retrieve value
+     * Retrieve alphanumeric
      *
      * @param int $length
-     * @return rand Value
+     * @return alphanumeric
      */
-    public function get_rand_numbers($length)
+    public function rndAlphanumeric($length)
     {
-        if ($length>0) {
-            $rand_id="";
-            for ($i=1; $i<=$length; $i++) {
-                mt_srand((double)microtime() * 1000000);
-                $num = mt_rand(27, 36);
-                $rand_id .= $this->assign_rand_value($num);
-            }
+        $alphanumeric ='';
+        $i=0;
+        while ($i<$length) {
+            $position = rand(0, 35);
+            $alphanumeric=$alphanumeric.substr(self::ALPHA_NUMERIC, $position, 1);
+            $i++;
         }
-        return $rand_id;
-    }
-    /**
-     * Retrieve value
-     *
-     * @param int $length
-     * @return rand Value
-     */
-    public function get_rand_letters($length)
-    {
-        if ($length>0) {
-            $rand_id="";
-            for($i=1; $i<=$length; $i++) {
-                mt_srand((double)microtime() * 1000000);
-                $num = mt_rand(1, 26);
-                $rand_id .= $this->assign_rand_value($num);
-            }
-        }
-        return $rand_id;
+        return $alphanumeric;
     }
 }
