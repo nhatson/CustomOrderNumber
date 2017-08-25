@@ -39,104 +39,28 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $this->connection->insert($table,[]);
         return $this->connection->lastInsertId($table);
     }
-    public function setGlobal()
+    
+    public function setCron($storeId, $frequency)
     {
-        $timezone = $this->helper->timezone();
-        date_default_timezone_set($timezone);
-        $df = "Y-m-d H:i:s";
-        $ts1 = strtotime(date($df));
-        $ts2 = strtotime(gmdate($df));
-        $ts3 = ($ts1-$ts2)/3600; 
-        if ($ts3 >=0 ) {
-            $sql = "SET time_zone = '+".$ts3.":00';"; 
-        } else {
-            $sql = "SET time_zone = '".$ts3.":00';"; 
-        }
-        $this->connection->query($sql);
-        $sql= "SET GLOBAL event_scheduler = 0;";
-        $this->connection->query($sql);
-    }
-
-    public function setEvent($storeId)
-    {
-        $this->connection->dropTrigger('sequence_order_0');
-        die('bss');
-        $triggerName = 'insert_user_trigger';
-        $event = 'UPDATE';
-        $trigger = $this->triggerFactory->create()
-            ->setName($triggerName)
-            ->setTime(\Magento\Framework\DB\Ddl\Trigger::TIME_AFTER)
-            ->setEvent($event)
-            ->setTable($setup->getTable('sitealluser'));
-
-        $trigger->addStatement($this->buildStatement($event));
-
-        $this->connection->dropTrigger($trigger->getName());
-        $this->connection->createTrigger($trigger);
-        die('bss');
-        $orderReset = $this->helper->getOrderReset($storeId);
-        $invoiceReset = $this->helper->getInvoiceReset($storeId);
-        $shipmentReset = $this->helper->getShipmentReset($storeId);
-        $creditmemoReset = $this->helper->getShipmentReset($storeId);
         if ($this->helper->isOrderEnable($storeId)) {
-            $nameTable['sequence_order_'] = $orderReset;
-        } else {
-            $sql = "Drop event if exists sequence_order_".$storeId;
-            $this->connection->query($sql);
+            if ($this->helper->getOrderReset($storeId) == $frequency) {
+                $this->connection->truncateTable('sequence_order_'.$storeId);  
+            }        
         }
-        if ($this->helper->isInvoiceEnable($storeId)) {
-            $nameTable['sequence_invoice_'] = $invoiceReset;
-        } else {
-            $sql = "Drop event if exists sequence_invoice_".$storeId;
-            $this->connection->query($sql);
+        if ($this->helper->isInvoiceEnable($storeId) && (!$this->helper->isInvoiceSameOrder($storeId))) {
+            if ($this->helper->getInvoiceReset($storeId) == $frequency) {
+                $this->connection->truncateTable('sequence_invoice_'.$storeId);
+            }      
         }
-        if ($this->helper->isShipmentEnable($storeId)) {
-            $nameTable['sequence_shipment_'] = $shipmentReset;
-        } else {
-            $sql = "Drop event if exists sequence_shipment_".$storeId;
-            $this->connection->query($sql);
+        if ($this->helper->isShipmentEnable($storeId) && (!$this->helper->isShipmentSameOrder($storeId))) {
+            if ($this->helper->getShipmentReset($storeId) == $frequency) {
+                $this->connection->truncateTable('sequence_shipment_'.$storeId);
+            }      
         }
-        if ($this->helper->isCreditmemoEnable($storeId)) {
-            $nameTable['sequence_creditmemo_'] = $orderReset;
-        } else {
-            $sql = "Drop event if exists sequence_creditmemo_".$storeId;
-            $this->connection->query($sql);
-        }
-        foreach ($nameTable as $key => $value) 
-        {
-            switch ($value) 
-            {
-                case '0':
-                    $sql = "Drop event if exists ".$key.$storeId;
-                    $this->connection->query($sql);
-                    break;
-                
-                case '1':
-                    $sql = "CREATE OR REPLACE EVENT ".$key.$storeId."
-                        ON SCHEDULE EVERY 1 DAY
-                        STARTS '2017-01-01 00:00:00'
-                        DO TRUNCATE ".$key.$storeId.";";
-                    $this->connection->query($sql);
-                    break;
-                case '2':
-                    $sql = "CREATE OR REPLACE EVENT ".$key.$storeId."
-                        ON SCHEDULE EVERY 1 MONTH
-                        STARTS '2017-01-01 00:00:00'
-                        DO TRUNCATE ".$key.$storeId.";";
-                    $this->connection->query($sql);
-                    break;
-                case '3':
-                    $sql = "CREATE OR REPLACE EVENT ".$key.$storeId."
-                        ON SCHEDULE EVERY 1 YEAR
-                        STARTS '2017-01-01 00:00:00'
-                        DO TRUNCATE ".$key.$storeId.";";
-                    $this->connection->query($sql);
-                    break;
-                default:
-                    $sql = "Drop event if exists ".$key.$storeId."";
-                    $this->connection->query($sql);
-                    break;
-            }
-        }  
+        if ($this->helper->isCreditmemoEnable($storeId) && (!$this->helper->isCreditmemoSameOrder($storeId))) {
+            if ($this->helper->getCreditmemoReset($storeId) == $frequency) {
+                $this->connection->truncateTable('sequence_creditmemo_'.$storeId);  
+            } 
+        } 
     }
 }

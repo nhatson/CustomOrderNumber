@@ -1,19 +1,80 @@
 <?php
 namespace Bss\CustomOrderNumber\Cron;
 
-use Magento\Framework\App\ResourceConnection as AppResource;
-
 class Sequence 
 {
-	protected $connection;
+	protected $sequence;
+	protected $storeManager;
     public function __construct (
-    	AppResource $resource
+    	\Magento\Store\Model\StoreManagerInterface $storeManager,
+    	\Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
-    	$this->connection = $resource->getConnection('DEFAULT_CONNECTION');
-    }
- 
-    public function execute() 
+    	$this->storeManager = $storeManager;
+    	$this->sequence = $sequence;
+    }	
+
+ 	public function cronYYYY() 
     {
-    	$this->connection->truncateTable('sequence_order_2');
+    	$frequency = 0;
+    	$storeId = 0;
+    	$this->sequence->setCron($storeId, $frequency);
+    	$stores = $this->storeManager->getStores();
+    	foreach($stores as $store) {
+    		$storeId = $store->getStoreId();
+    		$this->sequence->setCron($storeId, $frequency);
+    	}
+    	return $this;
+    }
+
+    public function cronDaily() 
+    {
+    	$frequency = 1;
+    	$storeId = 0;
+    	$this->sequence->setCron($storeId, $frequency);
+    	$stores = $this->storeManager->getStores();
+    	foreach($stores as $store) {
+    		$storeId = $store->getStoreId();
+    		$this->sequence->setCron($storeId, $frequency);
+    	}
+    	return $this;
+    }
+
+    public function cronWeekly() 
+    {
+    	$frequency = 2;
+    	$storeId = 0;
+    	$this->sequence->setCron($storeId, $frequency);
+    	$stores = $this->storeManager->getStores();
+    	foreach($stores as $store) {
+    		$storeId = $store->getStoreId();
+    		$this->sequence->setCron($storeId, $frequency);
+    	}
+    	return $this;
+    }
+
+    public function cronMonthly() 
+    {
+    	$frequency = 3;
+    	$storeId = 0;
+    	$this->sequence->setCron($storeId, $frequency);
+    	$stores = $this->storeManager->getStores();
+    	foreach($stores as $store) {
+    		$storeId = $store->getStoreId();
+    		$this->sequence->setCron($storeId, $frequency);
+    	}
+    	return $this;
+    }
+
+    public function cronYearly() 
+    {
+    	$frequency = 4;
+    	$storeId = 0;
+    	$this->sequence->setCron($storeId, $frequency);
+    	$stores = $this->storeManager->getStores();
+    	foreach($stores as $store) {
+    		$storeId = $store->getStoreId();
+    		$this->sequence->setCron($storeId, $frequency);
+    	}
+    	return $this;
     }
 }

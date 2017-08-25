@@ -33,10 +33,11 @@ class ResetSelect implements \Magento\Framework\Option\ArrayInterface
     /**
      * @const Position
      */
-    const POSITION_BOTTOM_LEFT = '0';
-    const POSITION_TOP_LEFT = '1';
-    const POSITION_BOTTOM_RIGHT = '2';
-    const POSITION_TOP_RIGHT = '3';
+    const CRON_NEVER = '0';
+    const CRON_DAILY = '1';
+    const CRON_WEEKLY = '2';
+    const CRON_MONTHLY = '3';
+    const CRON_YEARLY = '4';
 
     /**
      * Return array of options as value-label pairs, eg. value => label
@@ -46,10 +47,11 @@ class ResetSelect implements \Magento\Framework\Option\ArrayInterface
     public function toOptionArray()
     {
         return [
-            ['value' => self::POSITION_BOTTOM_LEFT, 'label' => __('Never')],
-            ['value' => self::POSITION_TOP_LEFT, 'label' => __('By Day')],
-            ['value' => self::POSITION_BOTTOM_RIGHT, 'label' => __('By Month')],
-            ['value' => self::POSITION_TOP_RIGHT, 'label' => __('By Year')],
+            ['value' => self::CRON_NEVER, 'label' => __('Never')],
+            ['value' => self::CRON_DAILY, 'label' => __('By Day')],
+            ['value' => self::CRON_WEEKLY, 'label' => __('By Week')],
+            ['value' => self::CRON_MONTHLY, 'label' => __('By Month')],
+            ['value' => self::CRON_YEARLY, 'label' => __('By Year')],
         ];
     }
 }
