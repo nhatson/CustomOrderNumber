@@ -152,7 +152,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $yyyy = date('Y', strtotime($date));
         $rndNumbers = $this->rndNumbers($length);
         $rndLetters = $this->rndLetters($length);
-        $rndAlphanumeric = $this->randAlphanumeric($length);
+        $rndAlphanumeric = $this->rndAlphanumeric($length);
 
         $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{counter}',
             '{rndNumbers}', '{rndLetters}', '{rndAlphanumeric}'];

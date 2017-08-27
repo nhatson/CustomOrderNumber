@@ -29,7 +29,7 @@
 
 namespace Bss\CustomOrderNumber\Cron;
 
-use Bss\CustomOrderNumber\Model\ResourceModel\Sequence as Frequency;
+use Bss\CustomOrderNumber\Model\Config\Source\Frequency;
 
 class Sequence 
 {
@@ -63,7 +63,7 @@ class Sequence
     public function cronDaily() 
     {
         $storeId = 0;
-        $this->sequence->setCron($storeId, $frequency);
+        $this->sequence->setCron($storeId, Frequency::CRON_DAILY);
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
@@ -80,7 +80,7 @@ class Sequence
     public function cronWeekly() 
     {
         $storeId = 0;
-        $this->sequence->setCron($storeId, $frequency);
+        $this->sequence->setCron($storeId, Frequency::CRON_WEEKLY);
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
@@ -101,7 +101,7 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->sequence->setCron($storeId, $frequency);
+            $this->sequence->setCron($storeId, Frequency::CRON_MONTHLY);
         }
         return $this;
     }
@@ -118,7 +118,7 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->sequence->setCron($storeId, $frequency);
+            $this->sequence->setCron($storeId, Frequency::CRON_YEARLY);
         }
         return $this;
     }
