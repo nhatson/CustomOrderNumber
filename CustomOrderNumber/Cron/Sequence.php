@@ -62,8 +62,6 @@ class Sequence
      */
     public function cronDaily() 
     {
-        $storeId = 0;
-        $this->sequence->setCron($storeId, Frequency::CRON_DAILY);
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
@@ -79,8 +77,6 @@ class Sequence
      */
     public function cronWeekly() 
     {
-        $storeId = 0;
-        $this->sequence->setCron($storeId, Frequency::CRON_WEEKLY);
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
@@ -96,8 +92,6 @@ class Sequence
      */
     public function cronMonthly() 
     {
-        $storeId = 0;
-        $this->sequence->setCron($storeId, Frequency::CRON_MONTHLY);
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
@@ -113,8 +107,6 @@ class Sequence
      */
     public function cronYearly() 
     {
-        $storeId = 0;
-        $this->sequence->setCron($storeId, Frequency::CRON_YEARLY);
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();

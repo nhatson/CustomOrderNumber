@@ -89,40 +89,9 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     {
         $this->connection->insert($table, []);
         $lastIncrementId = $this->connection->lastInsertId($table);
-        $currentId = ($lastIncrementId - $startValue)*$step + $startValue;
+        $currentId = ($lastIncrementId - 1)*$step + $startValue;
         $counter = sprintf($pattern, $currentId);
         return $counter;
-    }
-
-    /**
-     * Set Cron
-     *
-     * @param int $storeId
-     * @param int $frequency
-     * @return $this
-     */
-    public function setCron($storeId, $frequency)
-    {
-        if ($this->helper->isOrderEnable($storeId)) {
-            if ($this->helper->getOrderReset($storeId) == $frequency) {
-                $this->connection->truncateTable('sequence_order_'.$storeId);  
-            }        
-        }
-        if ($this->helper->isInvoiceEnable($storeId) && (!$this->helper->isInvoiceSameOrder($storeId))) {
-            if ($this->helper->getInvoiceReset($storeId) == $frequency) {
-                $this->connection->truncateTable('sequence_invoice_'.$storeId);
-            }      
-        }
-        if ($this->helper->isShipmentEnable($storeId) && (!$this->helper->isShipmentSameOrder($storeId))) {
-            if ($this->helper->getShipmentReset($storeId) == $frequency) {
-                $this->connection->truncateTable('sequence_shipment_'.$storeId);
-            }      
-        }
-        if ($this->helper->isCreditmemoEnable($storeId) && (!$this->helper->isCreditmemoSameOrder($storeId))) {
-            if ($this->helper->getCreditmemoReset($storeId) == $frequency) {
-                $this->connection->truncateTable('sequence_creditmemo_'.$storeId);  
-            } 
-        } 
     }
 
     /**
@@ -161,6 +130,68 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $result = str_replace($search, $replace, $format);
 
         return $result;
+    }
+
+    /**
+     * Get Extra
+     *
+     * @param string $table
+     * @return $extra
+     */
+    public function extra($table)
+    {
+        $this->connection->insert($table, []);
+        $extra = '-'.$this->connection->lastInsertId($table);
+        return $extra;
+    }
+
+    /**
+     * Set Cron
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return $this
+     */
+    public function setCron($storeId, $frequency)
+    {
+        if ($this->helper->isOrderEnable($storeId)) {
+            if ($this->helper->getOrderReset($storeId) == $frequency) {
+                if ($storeId == 1) {
+                    $this->connection->truncateTable('sequence_order_0');  
+                } else {
+                    $this->connection->truncateTable('sequence_order_'.$storeId);  
+                }
+            }        
+        }
+        if ($this->helper->isInvoiceEnable($storeId) && (!$this->helper->isInvoiceSameOrder($storeId))) {
+            if ($this->helper->getInvoiceReset($storeId) == $frequency) {
+                if ($storeId == 1) {
+                    $this->connection->truncateTable('sequence_invoice_0');  
+                } else {
+                    $this->connection->truncateTable('sequence_invoice_'.$storeId);  
+                }
+            }      
+        }
+        if ($this->helper->isShipmentEnable($storeId) && (!$this->helper->isShipmentSameOrder($storeId))) {
+            if ($this->helper->getShipmentReset($storeId) == $frequency) {
+                if ($storeId == 1) {
+                    $this->connection->truncateTable('sequence_shipment_0');
+                } else {
+                    $this->connection->truncateTable('sequence_shipment_'.$storeId);                   
+                }
+
+            }      
+        }
+        if ($this->helper->isCreditmemoEnable($storeId) && (!$this->helper->isCreditmemoSameOrder($storeId))) {
+            if ($this->helper->getCreditmemoReset($storeId) == $frequency) {
+                if ($storeId == 1) {
+                    $this->connection->truncateTable('sequence_creditmemo_0');
+                } else {
+                    $this->connection->truncateTable('sequence_creditmemo_'.$storeId);                     
+                }
+
+            } 
+        } 
     }
 
     /**

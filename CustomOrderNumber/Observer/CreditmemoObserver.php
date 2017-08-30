@@ -39,19 +39,27 @@ class CreditmemoObserver implements ObserverInterface
     protected $helper;
 
     /**
+     * @var \Magento\Sales\Api\Data\CreditmemoInterface
+     */
+    protected $creditmemo;
+
+    /**
      * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
     protected $sequence;
 
     /**
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
+     * @param \Magento\Sales\Api\Data\CreditmemoInterface $creditmemo
      * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
+        \Magento\Sales\Api\Data\CreditmemoInterface $creditmemo,
         \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
             $this->helper = $helper;
+            $this->creditmemo = $creditmemo;
             $this->sequence = $sequence;
     }
 
@@ -69,6 +77,7 @@ class CreditmemoObserver implements ObserverInterface
             if ($this->helper->isCreditmemoSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId))) {
                 return;
             }
+            
             if ($this->helper->isCreditmemoSameOrder($storeId)) {
                 $orderIncrement = $creditmemoInstance->getOrder()->getIncrementId();
                 $replace = $this->helper->getCreditmemoReplace($storeId);
@@ -82,13 +91,23 @@ class CreditmemoObserver implements ObserverInterface
                 $pattern = "%0".$padding."d";
 
                 if ($this->helper->isIndividualCreditmemoEnable($storeId)) {
-                    $table = 'sequence_creditmemo_'.$storeId;
+                    if ($storeId == 1) {
+                        $table = 'sequence_creditmemo_0';
+                    } else {
+                        $table = 'sequence_creditmemo_'.$storeId;                        
+                    }
                 } else {
                     $table = 'sequence_creditmemo_0';
                 }
 
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
+            }
+
+            if ($this->creditmemo->loadByIncrementId($result)->getId() !== null) {
+                $tableExtra = 'sequence_creditmemo_1';
+                $extra = $this->sequence->extra($tableExtra);
+                $result = $result.$extra;
             }
 
             $creditmemoInstance->setIncrementId($result);

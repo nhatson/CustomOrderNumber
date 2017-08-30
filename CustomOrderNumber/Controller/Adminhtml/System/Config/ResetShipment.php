@@ -69,12 +69,15 @@ class ResetShipment extends Action
     public function execute()
     {
         $storeId = $this->getRequest()->getParam('storeId');
+        if ($storeId == 1) {
+            $storeId = 0;
+        }
         $table = 'sequence_shipment_'.$storeId;
         $resetShipment = $this->connection->truncateTable($table);
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         
-        return $result->setData(['success' => true, 'resetnow' => $resetShipment]);
+        return $result->setData(['success' => true]);
     }
 
     protected function _isAllowed()

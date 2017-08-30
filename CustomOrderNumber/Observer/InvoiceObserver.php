@@ -39,19 +39,28 @@ class InvoiceObserver implements ObserverInterface
     protected $helper;
 
     /**
+     * @var \Magento\Sales\Api\Data\InvoiceInterface
+     */
+    protected $invoice;
+
+    /**
      * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
     protected $sequence;
 
     /**
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
+     * @param \Magento\Sales\Api\Data\InvoiceInterface $invoice 
      * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */
+
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
+        \Magento\Sales\Api\Data\InvoiceInterface $invoice,
         \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
             $this->helper = $helper;
+            $this->invoice = $invoice;
             $this->sequence = $sequence;
     }
 
@@ -68,7 +77,8 @@ class InvoiceObserver implements ObserverInterface
         if ($this->helper->isInvoiceEnable($storeId)) {
             if ($this->helper->isInvoiceSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId))) {
                 return;
-            }    
+            }
+                
             if ($this->helper->isInvoiceSameOrder($storeId)) {
                 $orderIncrement = $invoiceInstance->getOrder()->getIncrementId();
                 $replace = $this->helper->getInvoiceReplace($storeId);
@@ -82,13 +92,23 @@ class InvoiceObserver implements ObserverInterface
                 $pattern = "%0".$padding."d";
 
                 if ($this->helper->isIndividualInvoiceEnable($storeId)) {
-                    $table = 'sequence_invoice_'.$storeId;
+                    if ($storeId == 1) {
+                        $table = 'sequence_invoice_0';
+                    } else {
+                        $table = 'sequence_invoice_'.$storeId; 
+                    }
                 } else {
                     $table = 'sequence_invoice_0';
                 }
 
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
+            }
+
+            if ($this->invoice->loadByIncrementId($result)->getId() !== null) {
+                $tableExtra = 'sequence_invoice_1';
+                $extra = $this->sequence->extra($tableExtra);
+                $result = $result.$extra;
             }
 
             $invoiceInstance->setIncrementId($result);

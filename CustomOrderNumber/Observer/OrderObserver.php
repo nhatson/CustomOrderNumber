@@ -39,28 +39,36 @@ class OrderObserver implements ObserverInterface
     protected $helper;
 
     /**
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
-     */
-    protected $sequence;
-
-    /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     protected $storeManager;
 
     /**
+     * @var \Magento\Sales\Api\Data\OrderInterface
+     */
+    protected $order;
+
+    /**
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
+     */
+    protected $sequence;
+
+    /**
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Sales\Api\Data\OrderInterface $order 
      * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Sales\Api\Data\OrderInterface $order,
         \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
             $this->helper = $helper;
             $this->storeManager = $storeManager;
             $this->sequence = $sequence;
+            $this->order = $order;
     }
 
     /**
@@ -80,13 +88,25 @@ class OrderObserver implements ObserverInterface
             $pattern = "%0".$padding."d";
 
             if ($this->helper->isIndividualOrderEnable($storeId)) {
-                $table = 'sequence_order_'.$storeId;
+                if ($storeId == 1) {
+                    $table = 'sequence_order_0';
+                } else {
+                    $table = 'sequence_order_'.$storeId; 
+                }  
             } else {
                 $table = 'sequence_order_0';
             }
 
             $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
             $result = $this->sequence->replace($format, $storeId, $counter, $padding);
+            try {
+                if ($this->order->loadByIncrementId($result)->getId() !== null) {
+                    $tableExtra = 'sequence_order_1';
+                    $extra = $this->sequence->extra($tableExtra);
+                    $result = $result.$extra;
+                }             
+            } catch (\Exception $e) {
+            }
 
             $orderInstance = $observer->getOrder();
             $orderInstance->setIncrementId($result);

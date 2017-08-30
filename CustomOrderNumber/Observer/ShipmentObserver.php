@@ -39,19 +39,27 @@ class ShipmentObserver implements ObserverInterface
     protected $helper;
 
     /**
+     * @var \Magento\Sales\Api\Data\ShipmentInterface
+     */   
+    protected $shipment;
+
+    /**
      * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
     protected $sequence;
 
     /**
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
+     * @param \Magento\Sales\Api\Data\ShipmentInterface $shipment
      * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
+        \Magento\Sales\Api\Data\ShipmentInterface $shipment,
         \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
             $this->helper = $helper;
+            $this->shipment = $shipment;
             $this->sequence = $sequence;
     }
 
@@ -69,6 +77,7 @@ class ShipmentObserver implements ObserverInterface
             if ($this->helper->isShipmentSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId))) {
                 return;
             }
+            
             if ($this->helper->isShipmentSameOrder($storeId)) {
                 $orderIncrement = $shipmentInstance->getOrder()->getIncrementId();
                 $replace = $this->helper->getShipmentReplace($storeId);
@@ -82,13 +91,23 @@ class ShipmentObserver implements ObserverInterface
                 $pattern = "%0".$padding."d";
 
                 if ($this->helper->isIndividualShipmentEnable($storeId)) {
-                    $table = 'sequence_shipment_'.$storeId;
+                    if ($storeId == 1) {
+                        $table = 'sequence_shipment_0';                        
+                    } else {
+                        $table = 'sequence_shipment_'.$storeId;
+                    }
                 } else {
-                    $table = 'sequence_shipment_0';
+                    $table = 'sequence_shipment_0'; 
                 }
 
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
+            }
+
+            if ($this->shipment->loadByIncrementId($result)->getId() !== null) {
+                $tableExtra = 'sequence_shipment_1';
+                $extra = $this->sequence->extra($tableExtra);
+                $result = $result.$extra;
             }
 
             $shipmentInstance->setIncrementId($result);

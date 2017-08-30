@@ -69,12 +69,15 @@ class ResetInvoice extends Action
     public function execute()
     {
         $storeId = $this->getRequest()->getParam('storeId');
+        if ($storeId == 1) {
+            $storeId = 0;
+        }
         $table = 'sequence_invoice_'.$storeId;
         $resetInvoice = $this->connection->truncateTable($table);;
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         
-        return $result->setData(['success' => true, 'resetnow' => $resetInvoice]);
+        return $result->setData(['success' => true]);
     }
 
     protected function _isAllowed()
