@@ -78,7 +78,7 @@ class ResetOrder extends Action
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         
-        return $result->setData(['success' => true, 'resetnow' => $resetOrder]);
+        return $result->setData(['success' => true]);
     }
 
     protected function _isAllowed()

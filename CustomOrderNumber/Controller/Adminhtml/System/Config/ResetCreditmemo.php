@@ -70,9 +70,10 @@ class ResetCreditmemo extends Action
     {
         $storeId = $this->getRequest()->getParam('storeId');
         if ($storeId == 1) {
-            $storeId = 0;
-        }
-        $table = 'sequence_creditmemo_'.$storeId;     
+            $table = 'sequence_creditmemo_0';
+        } else {
+            $table = 'sequence_creditmemo_'.$storeId;            
+        }   
         $resetCreditmemo = $this->connection->truncateTable($table);
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();

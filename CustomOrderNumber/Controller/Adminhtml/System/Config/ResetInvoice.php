@@ -70,9 +70,10 @@ class ResetInvoice extends Action
     {
         $storeId = $this->getRequest()->getParam('storeId');
         if ($storeId == 1) {
-            $storeId = 0;
+            $table = 'sequence_invoice_0';
+        } else {
+            $table = 'sequence_invoice_'.$storeId;            
         }
-        $table = 'sequence_invoice_'.$storeId;
         $resetInvoice = $this->connection->truncateTable($table);;
         /** @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();

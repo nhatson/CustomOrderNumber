@@ -33,7 +33,7 @@
         <ordernumber>
             <order>
                 <enable>1</enable>
-                <format>ORD-{dd}{mm}-{counter}-{storeId}</format>
+                <format>ORD-{mm}{yy}-{counter}-{storeId}</format>
                 <start>1</start>
                 <increment>1</increment>
                 <padding>5</padding>

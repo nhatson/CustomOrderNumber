@@ -99,11 +99,13 @@ class CreditmemoObserver implements ObserverInterface
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
-
-            if ($this->creditmemo->loadByIncrementId($result)->getId() !== null) {
-                $tableExtra = 'sequence_creditmemo_1';
-                $extra = $this->sequence->extra($tableExtra);
-                $result = $result.$extra;
+            try {
+                if ($this->creditmemo->loadByIncrementId($result)->getId() !== null) {
+                    $tableExtra = 'sequence_creditmemo_1';
+                    $extra = $this->sequence->extra($tableExtra);
+                    $result = $result.$extra;
+                }                
+            } catch (\Exception $e) {
             }
 
             $creditmemoInstance->setIncrementId($result);

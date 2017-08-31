@@ -28,41 +28,13 @@
  */
 ?>
 <?php if($block->isInvoiceEnable($block->getRequest()->getParam('store', 0))) { ?>
-    <script>
-    require([
-        'jquery',
-        'prototype'
-    ], function(jQuery){
-
-        var invoiceSpan = jQuery('#invoice_span');
-
-        jQuery('#resetnow_invoice').click(function () {
-            var params = {storeId: <?php echo "'".$this->getRequest()->getParam('store', 0)."'"; ?>};
-            new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
-                parameters:     params,
-                loaderArea:     false,
-                asynchronous:   true,
-                onCreate: function() {
-                    invoiceSpan.find('.success').hide();
-                    invoiceSpan.find('.processing').show();
-                    jQuery('#invoice_message').text('');
-                },
-                onSuccess: function(response) {
-                    invoiceSpan.find('.processing').hide();
-
-                    var resultText = '';
-                    if (response.status > 200) {
-                        resultText = response.statusText;
-                    } else {
-                        resultText = 'Success';
-                        invoiceSpan.find('.success').show();
-                    }
-                    jQuery('#invoice_message').text(resultText);
-                }
-            });
-        });
-
-    });
+    <script type="text/x-magento-init">
+    {
+        "*": 
+        {
+            "Bss_CustomOrderNumber/js/resetinvoice": {}
+        }
+    }
     </script>
 <?php } ?>
 <?php echo $block->getButtonHtml() ?>
@@ -72,4 +44,6 @@
     <img class="success" hidden="hidden" alt="" style="margin:-3px 5px"
          src="<?php echo $block->getViewFileUrl('images/rule_component_apply.gif') ?>"/>
     <span id="invoice_message"></span>
+    <span id="urlInvoice" hidden="hidden"><?php echo $block->getAjaxUrl() ?></span>
+    <span id="storeIdInv" hidden="hidden"><?php echo $block->getRequest()->getParam('store', 0) ?></span>
 </span>
