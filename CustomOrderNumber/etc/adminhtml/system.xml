@@ -34,11 +34,11 @@
             <label>Bss Commerce</label>
         </tab>
         <section id="ordernumber" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Order Number</label>
+            <label>Custom Order Number</label>
             <tab>bss_ordernumber</tab>
             <resource>Bss_CustomOrderNumber::ordernumber</resource>
             <group id="order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Order</label>
+                <label>Custom Order Number</label>
                 <field id="enable" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable</label>
                     <comment><![CDATA[Version 1.0.0]]></comment> 
@@ -49,19 +49,19 @@
                     <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}. Example: ORD-{mm}{yy}-{counter}-{storeId} => ORD-0517-00081-1"]]></comment>
                 </field>
                 <field id="start" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Start Number</label>
+                    <label>Start Counter From</label>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="increment" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Increment Number</label>
+                    <label>Counter Increments</label>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="padding" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Padding Number</label>
+                    <label>Number Counter Padding</label>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field> 
                 <field id="individual" translate="label comment" type="select" sortOrder="6" showInDefault="0" showInWebsite="0" showInStore="1">
-                    <label>User individual counter number for store view</label>
+                    <label>Use Different Counter Numbers for Different Store Views</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="reset" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -80,13 +80,13 @@
                 </field>
             </group>
             <group id="invoice" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Invoice</label>
+                <label>Custom Invoice Number</label>
                 <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="same_order" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Same Order Number</label>
+                    <label>Similar to Order Number</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="format" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -97,28 +97,28 @@
                     </depends>
                 </field>
                 <field id="start" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Start Number</label>
+                    <label>Start Counter From</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="increment" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Increment Number</label>
+                    <label>Counter Increments</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="padding" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Padding Number</label>
+                    <label>Number Counter Padding</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="individual" translate="label comment" type="select" sortOrder="7" showInDefault="0" showInWebsite="0" showInStore="1">
-                    <label>User individual counter number for store view</label>
+                    <label>Use Different Counter Numbers for Different Store Views</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="same_order">0</field>
@@ -145,20 +145,20 @@
                     </depends>
                 </field>
                 <field id="replace_with" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Replace With</label>
+                    <label>Part of Oder Number is Replaced by</label>
                     <depends>
                         <field id="same_order">1</field>
                     </depends>
                 </field>
             </group>
             <group id="shipment" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Shipment</label>
+                <label>Custom Shipment Number</label>
                 <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="same_order" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Same Order Number</label>
+                    <label>Similar to Order Number</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="format" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -169,28 +169,28 @@
                     </depends>
                 </field>
                 <field id="start" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Start Number</label>
+                    <label>Start Counter From</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="increment" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Increment Number</label>
+                    <label>Counter Increments</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="padding" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Padding Number</label>
+                    <label>Number Counter Padding</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="individual" translate="label comment" type="select" sortOrder="7" showInDefault="0" showInWebsite="0" showInStore="1">
-                    <label>User individual counter number for store view</label>
+                    <label>Use Different Counter Numbers for Different Store Views</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="same_order">0</field>
@@ -217,20 +217,20 @@
                     </depends>
                 </field>
                 <field id="replace_with" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Replace With</label>
+                    <label>Part of Oder Number is Replaced by</label>
                     <depends>
                         <field id="same_order">1</field>
                     </depends>
                 </field>
             </group>
             <group id="creditmemo" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Credit Memo</label>
+            <label>Custom Credit Memo Number</label>
                 <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="same_order" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Same Order Number</label>
+                    <label>Similar to Order Number</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="format" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -241,28 +241,28 @@
                     </depends>
                 </field>
                 <field id="start" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Start Number</label>
+                    <label>Start Counter From</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="increment" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Increment Number</label>
+                    <label>Counter Increments</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="padding" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Counter Padding Number</label>
+                    <label>Number Counter Padding</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>       
                 <field id="individual" translate="label comment" type="select" sortOrder="8" showInDefault="0" showInWebsite="0" showInStore="1">
-                    <label>User individual counter number for store view</label>
+                    <label>Use Different Counter Numbers for Different Store Views</label>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
@@ -289,7 +289,7 @@
                     </depends>
                 </field>
                 <field id="replace_with" translate="label" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Replace With</label>
+                    <label>Part of Oder Number is Replaced by</label>
                     <depends>
                         <field id="same_order">1</field>
                     </depends>

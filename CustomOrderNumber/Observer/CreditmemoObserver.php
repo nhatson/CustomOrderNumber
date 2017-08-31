@@ -74,10 +74,6 @@ class CreditmemoObserver implements ObserverInterface
         $creditmemoInstance = $observer->getCreditmemo();
         $storeId = $creditmemoInstance->getOrder()->getStoreId();
         if ($this->helper->isCreditmemoEnable($storeId)) {
-            if ($this->helper->isCreditmemoSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId))) {
-                return;
-            }
-            
             if ($this->helper->isCreditmemoSameOrder($storeId)) {
                 $orderIncrement = $creditmemoInstance->getOrder()->getIncrementId();
                 $replace = $this->helper->getCreditmemoReplace($storeId);

@@ -74,11 +74,7 @@ class InvoiceObserver implements ObserverInterface
     {   
         $invoiceInstance = $observer->getInvoice();
         $storeId = $invoiceInstance->getOrder()->getStoreId();
-        if ($this->helper->isInvoiceEnable($storeId)) {
-            if ($this->helper->isInvoiceSameOrder($storeId) && (!$this->helper->isOrderEnable($storeId))) {
-                return;
-            }
-                
+        if ($this->helper->isInvoiceEnable($storeId)) { 
             if ($this->helper->isInvoiceSameOrder($storeId)) {
                 $orderIncrement = $invoiceInstance->getOrder()->getIncrementId();
                 $replace = $this->helper->getInvoiceReplace($storeId);

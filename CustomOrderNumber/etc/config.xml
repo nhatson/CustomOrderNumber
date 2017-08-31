@@ -40,20 +40,20 @@
                 <reset>0</reset>
             </order>
             <invoice>
-            	<enable>1</enable>
-            	<same_order>1</same_order>
+                <enable>1</enable>
+                <same_order>1</same_order>
                 <replace>ORD</replace>
                 <replace_with>INV</replace_with>
             </invoice>
             <shipment>
-            	<enable>1</enable>
-            	<same_order>1</same_order>
+                <enable>1</enable>
+                <same_order>1</same_order>
                 <replace>ORD</replace>
                 <replace_with>SHI</replace_with>
             </shipment>
             <creditmemo>
-            	<enable>1</enable>
-            	<same_order>1</same_order>
+                <enable>1</enable>
+                <same_order>1</same_order>
                 <replace>ORD</replace>
                 <replace_with>CRE</replace_with>
             </creditmemo>
