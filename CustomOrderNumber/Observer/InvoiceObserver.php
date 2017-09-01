@@ -100,11 +100,13 @@ class InvoiceObserver implements ObserverInterface
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
-
-            if ($this->invoice->loadByIncrementId($result)->getId() !== null) {
-                $tableExtra = 'sequence_invoice_1';
-                $extra = $this->sequence->extra($tableExtra);
-                $result = $result.$extra;
+            try {
+                if ($this->invoice->loadByIncrementId($result)->getId() !== null) {
+                    $tableExtra = 'sequence_invoice_1';
+                    $extra = $this->sequence->extra($tableExtra);
+                    $result = $result.$extra;
+                }
+            } catch (\Exception $e) {
             }
 
             $invoiceInstance->setIncrementId($result);

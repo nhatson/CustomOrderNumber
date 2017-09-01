@@ -104,7 +104,7 @@ class CreditmemoObserver implements ObserverInterface
                     $tableExtra = 'sequence_creditmemo_1';
                     $extra = $this->sequence->extra($tableExtra);
                     $result = $result.$extra;
-                }                
+                }
             } catch (\Exception $e) {
             }
 

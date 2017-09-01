@@ -104,7 +104,7 @@ class OrderObserver implements ObserverInterface
                     $tableExtra = 'sequence_order_1';
                     $extra = $this->sequence->extra($tableExtra);
                     $result = $result.$extra;
-                }             
+                }
             } catch (\Exception $e) {
             }
 

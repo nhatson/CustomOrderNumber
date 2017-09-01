@@ -99,11 +99,13 @@ class ShipmentObserver implements ObserverInterface
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
-
-            if ($this->shipment->loadByIncrementId($result)->getId() !== null) {
-                $tableExtra = 'sequence_shipment_1';
-                $extra = $this->sequence->extra($tableExtra);
-                $result = $result.$extra;
+            try {
+                if ($this->shipment->loadByIncrementId($result)->getId() !== null) {
+                    $tableExtra = 'sequence_shipment_1';
+                    $extra = $this->sequence->extra($tableExtra);
+                    $result = $result.$extra;
+                }
+            } catch (\Exception $e) {
             }
 
             $shipmentInstance->setIncrementId($result);

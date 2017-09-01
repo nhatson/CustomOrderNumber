@@ -179,7 +179,6 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 } else {
                     $this->connection->truncateTable('sequence_shipment_'.$storeId);                   
                 }
-
             }      
         }
         if ($this->helper->isCreditmemoEnable($storeId) && (!$this->helper->isCreditmemoSameOrder($storeId))) {
@@ -189,7 +188,6 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 } else {
                     $this->connection->truncateTable('sequence_creditmemo_'.$storeId);                     
                 }
-
             } 
         } 
     }
