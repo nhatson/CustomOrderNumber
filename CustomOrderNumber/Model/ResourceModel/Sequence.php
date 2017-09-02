@@ -146,13 +146,13 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     }
 
     /**
-     * Set Cron
+     * Set CronOrder
      *
      * @param int $storeId
      * @param int $frequency
      * @return $this
      */
-    public function setCron($storeId, $frequency)
+    public function setCronOrder($storeId, $frequency)
     {
         if ($this->helper->isOrderEnable($storeId)) {
             if ($this->helper->getOrderReset($storeId) == $frequency) {
@@ -163,6 +163,17 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 }
             }        
         }
+    }
+
+    /**
+     * Set CronInvoice
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return $this
+     */
+    public function setCronInvoice($storeId, $frequency)
+    {
         if ($this->helper->isInvoiceEnable($storeId) && (!$this->helper->isInvoiceSameOrder($storeId))) {
             if ($this->helper->getInvoiceReset($storeId) == $frequency) {
                 if ($storeId == 1) {
@@ -172,6 +183,17 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 }
             }      
         }
+    }
+
+    /**
+     * Set CronShipment
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return $this
+     */
+    public function setCronShipment($storeId, $frequency)
+    {
         if ($this->helper->isShipmentEnable($storeId) && (!$this->helper->isShipmentSameOrder($storeId))) {
             if ($this->helper->getShipmentReset($storeId) == $frequency) {
                 if ($storeId == 1) {
@@ -181,6 +203,17 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 }
             }      
         }
+    }
+
+    /**
+     * Set CronCreditmemo
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return $this
+     */
+    public function setCronCreditmemo($storeId, $frequency)
+    {
         if ($this->helper->isCreditmemoEnable($storeId) && (!$this->helper->isCreditmemoSameOrder($storeId))) {
             if ($this->helper->getCreditmemoReset($storeId) == $frequency) {
                 if ($storeId == 1) {

@@ -65,7 +65,10 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->sequence->setCron($storeId, Frequency::CRON_DAILY);
+            $this->sequence->setCronOrder($storeId, Frequency::CRON_DAILY);
+            $this->sequence->setCronInvoice($storeId, Frequency::CRON_DAILY);
+            $this->sequence->setCronShipment($storeId, Frequency::CRON_DAILY);
+            $this->sequence->setCronCreditmemo($storeId, Frequency::CRON_DAILY);
         }
         return $this;
     }
@@ -80,7 +83,10 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->sequence->setCron($storeId, Frequency::CRON_WEEKLY);
+            $this->sequence->setCronOrder($storeId, Frequency::CRON_WEEKLY);
+            $this->sequence->setCronInvoice($storeId, Frequency::CRON_WEEKLY);
+            $this->sequence->setCronShipment($storeId, Frequency::CRON_WEEKLY);
+            $this->sequence->setCronCreditmemo($storeId, Frequency::CRON_WEEKLY);
         }
         return $this;
     }
@@ -95,7 +101,10 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->sequence->setCron($storeId, Frequency::CRON_MONTHLY);
+            $this->sequence->setCronOrder($storeId, Frequency::CRON_MONTHLY);
+            $this->sequence->setCronInvoice($storeId, Frequency::CRON_MONTHLY);
+            $this->sequence->setCronShipment($storeId, Frequency::CRON_MONTHLY);
+            $this->sequence->setCronCreditmemo($storeId, Frequency::CRON_MONTHLY);
         }
         return $this;
     }
@@ -110,7 +119,10 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->sequence->setCron($storeId, Frequency::CRON_YEARLY);
+            $this->sequence->setCronOrder($storeId, Frequency::CRON_YEARLY);
+            $this->sequence->setCronInvoice($storeId, Frequency::CRON_YEARLY);
+            $this->sequence->setCronShipment($storeId, Frequency::CRON_YEARLY);
+            $this->sequence->setCronCreditmemo($storeId, Frequency::CRON_YEARLY);
         }
         return $this;
     }
