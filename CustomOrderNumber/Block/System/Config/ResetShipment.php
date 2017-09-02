@@ -114,7 +114,7 @@ class ResetShipment extends Field
 
     /**
      * Retrieve Shipment Enable
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isShipmentEnable($storeId)

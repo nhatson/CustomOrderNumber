@@ -114,7 +114,7 @@ class ResetCreditmemo extends Field
 
     /**
      * Retrieve Creditmemo Enable
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isCreditmemoEnable($storeId)

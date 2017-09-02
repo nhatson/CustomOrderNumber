@@ -114,7 +114,7 @@ class ResetOrder extends Field
 
     /**
      * Retrieve Order Enable
-     * @param StoreId $storeId
+     * @param int $storeId
      * @return bool
      */
     public function isOrderEnable($storeId)
