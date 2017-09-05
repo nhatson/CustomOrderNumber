@@ -100,8 +100,8 @@ class CreditmemoObserver implements ObserverInterface
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
             try {
-                if (count($this->creditmemo->getCollection()->addAttributeToFilter('increment_id', $result)
-                    ->getData('increment_id')) !== 0) {
+                if (!empty($this->creditmemo->getCollection()->addAttributeToFilter('increment_id', $result)
+                    ->getData('increment_id'))) {
                     $tableExtra = 'sequence_creditmemo_1';
                     $extra = $this->sequence->extra($tableExtra);
                     $result = $result.$extra;
