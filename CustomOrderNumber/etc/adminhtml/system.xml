@@ -146,10 +146,11 @@
                         <field id="same_order">0</field>
                     </depends>
                 </field>
-                <field id="reset" translate="label" type="select" sortOrder="8" showInDefault="10" showInWebsite="1" showInStore="1">
+                <field id="reset" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Reset Counter Number</label>
                     <depends>
                         <field id="same_order">0</field>
+                        <field id="individual">1</field>
                     </depends>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\Frequency</source_model>
                 </field>
@@ -159,6 +160,7 @@
                     <label>Reset Counter Number Now</label>
                     <depends>
                         <field id="same_order">0</field>
+                        <field id="individual">1</field>
                     </depends>
                 </field>
             </group>
@@ -229,6 +231,7 @@
                     <label>Reset Counter Number</label>
                     <depends>
                         <field id="same_order">0</field>
+                        <field id="individual">1</field>
                     </depends>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\Frequency</source_model>
                 </field>
@@ -238,6 +241,7 @@
                     <comment><![CDATA[[Store View]]]></comment>
                     <depends>
                         <field id="same_order">0</field>
+                        <field id="individual">1</field>
                     </depends>
                 </field>
             </group>
@@ -308,6 +312,7 @@
                     <label>Reset Counter Number</label>
                     <depends>
                         <field id="same_order">0</field>
+                        <field id="individual">1</field>
                     </depends>
                     <source_model>Bss\CustomOrderNumber\Model\Config\Source\Frequency</source_model>
                 </field>
@@ -317,6 +322,7 @@
                     <comment><![CDATA[[Store View]]]></comment>
                     <depends>
                         <field id="same_order">0</field>
+                        <field id="individual">1</field>
                     </depends>
                 </field>
             </group>
