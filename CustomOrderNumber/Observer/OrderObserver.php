@@ -42,6 +42,7 @@ class OrderObserver implements ObserverInterface
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     protected $storeManager;
+    protected $session;
 
     /**
      * @var \Magento\Sales\Api\Data\OrderInterface
@@ -62,11 +63,13 @@ class OrderObserver implements ObserverInterface
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Backend\Model\Session\Quote $session,
         \Magento\Sales\Api\Data\OrderInterface $order,
         \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
             $this->helper = $helper;
             $this->storeManager = $storeManager;
+            $this->session = $session;
             $this->sequence = $sequence;
             $this->order = $order;
     }
@@ -81,6 +84,13 @@ class OrderObserver implements ObserverInterface
     {   
         if ($this->helper->isOrderEnable()) {
             $storeId = $this->storeManager->getStore()->getStoreId();
+            try {
+                $sessionId = $this->session->getStoreId();
+                if (isset($sessionId)) {
+                    $storeId = $sessionId;
+                }    
+            } catch (\Exception $e) {
+            }
             $format = $this->helper->getOrderFormat($storeId);
             $startValue = $this->helper->getOrderStart($storeId);
             $step = $this->helper->getOrderIncrement($storeId);
@@ -107,7 +117,6 @@ class OrderObserver implements ObserverInterface
                 }
             } catch (\Exception $e) {
             }
-
             $orderInstance = $observer->getOrder();
             $orderInstance->setIncrementId($result);
         }           

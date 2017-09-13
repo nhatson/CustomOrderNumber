@@ -46,7 +46,7 @@
                 </field>
                 <field id="format" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Number Format</label>
-                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}. Example: ORD-{mm}{yy}-{counter}-{storeId} => ORD-0517-00081-1"]]></comment>
+                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}.<br>Example: ORD-{mm}{yy}-{counter}-{storeId} => ORD-0517-00081-1.]]></comment>
                 </field>
                 <field id="start" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Start Counter From</label>
@@ -54,7 +54,7 @@
                 </field>
                 <field id="increment" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Counter Increments</label>
-                    <comment><![CDATA[If the last counter number is 005 and you fill in this field number “4”, the next counter number will be 009.]]></comment>
+                    <comment><![CDATA[If the last counter number is 005 and you fill in this field number “4”, the next counter number will be 009.<br><strong>Note: You should reset counter after setting new increments.</strong>]]></comment>
                     <validate>validate-greater-than-zero required-entry</validate>
                 </field>
                 <field id="padding" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -110,7 +110,7 @@
                 </field>
                 <field id="format" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Number Format</label>
-                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}. Example: ORD-{mm}{yy}-{counter}-{storeId} => ORD-0517-00081-1"]]></comment>
+                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}.<br>Example: INV-{mm}{yy}-{counter}-{storeId} => INV-0517-00081-1]]></comment>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
@@ -124,7 +124,7 @@
                 </field>
                 <field id="increment" translate="label comment" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Counter Increments</label>
-                    <comment><![CDATA[If the last counter number is 005 and you fill in this field number “4”, the next counter number will be 009.]]></comment>
+                    <comment><![CDATA[If the last counter number is 005 and you fill in this field number “4”, the next counter number will be 009.<br><strong>Note: You should reset counter after setting new increments.</strong>]]></comment>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
@@ -191,7 +191,7 @@
                 </field>
                 <field id="format" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Number Format</label>
-                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}. Example: ORD-{mm}{yy}-{counter}-{storeId} => ORD-0517-00081-1"]]></comment>
+                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}.<br>Example: SHI-{mm}{yy}-{counter}-{storeId} => SHI-0517-00081-1.]]></comment>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
@@ -205,7 +205,7 @@
                 </field>
                 <field id="increment" translate="label comment" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Counter Increments</label>
-                    <comment><![CDATA[If the last counter number is 005 and you fill in this field number “4”, the next counter number will be 009.]]></comment>
+                    <comment><![CDATA[If the last counter number is 005 and you fill in this field number “4”, the next counter number will be 009.<br><strong>Note: You should reset counter after setting new increments.</strong>]]></comment>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
@@ -272,7 +272,7 @@
                 </field>
                 <field id="format" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Number Format</label>
-                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}. Example: ORD-{mm}{yy}-{counter}-{storeId} => ORD-0517-00081-1"]]></comment>
+                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}.<br>Example: CRE-{mm}{yy}-{counter}-{storeId} => CRE-0517-00081-1.]]></comment>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
@@ -286,7 +286,7 @@
                 </field>
                 <field id="increment" translate="label comment" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Counter Increments</label>
-                    <comment><![CDATA[If the last counter number is 005 and you fill in this field number “4”, the next counter number will be 009.]]></comment>
+                    <comment><![CDATA[If the last counter number is 005 and you fill in this field number “4”, the next counter number will be 009.<br><strong>Note: You should reset counter after setting new increments.</strong>]]></comment>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
