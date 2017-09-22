@@ -124,8 +124,9 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $rndAlphanumeric = $this->rndAlphanumeric($length);
 
         $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{storeid}','{storeID}','{counter}',
-            '{rndNumbers}', '{rndLetters}', '{rndAlphanumeric}'];
-        $replace    = [$d, $dd, $m, $mm, $yy, $yyyy, $storeId, $storeId, $storeId, $counter, $rndNumbers, $rndLetters, $rndAlphanumeric ];
+            '{rndNumbers}', '{rndnumbers}', '{rndLetters}', '{rndletters}', '{rndAlphanumeric}', '{rndalphanumeric}'];
+        $replace    = [$d, $dd, $m, $mm, $yy, $yyyy, $storeId, $storeId, $storeId, $counter, $rndNumbers, 
+            $rndNumbers, $rndLetters, $rndLetters, $rndAlphanumeric, $rndAlphanumeric];
 
         $result = str_replace($search, $replace, $format);
 
