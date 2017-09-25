@@ -29,10 +29,10 @@ define([
     "jquery",
     "prototype"
 ], function ($) {
-        var invoiceSpan = jQuery('#invoice_span');
-        var urlInvoice = jQuery('#urlInvoice').text();
-        var storeIdInv = jQuery('#storeIdInv').text();
-        jQuery('#resetnow_invoice').click(function () {
+        var invoiceSpan = $('#invoice_span');
+        var urlInvoice = $('#urlInvoice').text();
+        var storeIdInv = $('#storeIdInv').text();
+        $('#resetnow_invoice').click(function () {
             var params = {storeId: storeIdInv};
             new Ajax.Request(urlInvoice, {
                 parameters:     params,
@@ -41,7 +41,7 @@ define([
                 onCreate: function() {
                     invoiceSpan.find('.success').hide();
                     invoiceSpan.find('.processing').show();
-                    jQuery('#invoice_message').text('');
+                    $('#invoice_message').text('');
                 },
                 onSuccess: function(response) {
                     invoiceSpan.find('.processing').hide();
@@ -53,7 +53,7 @@ define([
                         resultText = 'Success';
                         invoiceSpan.find('.success').show();
                     }
-                    jQuery('#invoice_message').text(resultText);
+                    $('#invoice_message').text(resultText);
                 }
             });
         });

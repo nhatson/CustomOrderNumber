@@ -29,10 +29,10 @@ define([
     "jquery",
     "prototype"
 ], function ($) {
-        var creditmemoSpan = jQuery('#creditmemo_span');
-        var urlCreditmemo = jQuery('#urlCreditmemo').text();
-        var storeIdCre = jQuery("#storeIdCre").text();
-        jQuery('#resetnow_creditmemo').click(function () {
+        var creditmemoSpan = $('#creditmemo_span');
+        var urlCreditmemo = $('#urlCreditmemo').text();
+        var storeIdCre = $("#storeIdCre").text();
+        $('#resetnow_creditmemo').click(function () {
             var params = {storeId: storeIdCre};
             new Ajax.Request(urlCreditmemo, {
                 parameters:     params,
@@ -41,7 +41,7 @@ define([
                 onCreate: function() {
                     creditmemoSpan.find('.success').hide();
                     creditmemoSpan.find('.processing').show();
-                    jQuery('#creditmemo_message').text('');
+                    $('#creditmemo_message').text('');
                 },
                 onSuccess: function(response) {
                     creditmemoSpan.find('.processing').hide();
@@ -53,7 +53,7 @@ define([
                         resultText = 'Success';
                         creditmemoSpan.find('.success').show();
                     }
-                    jQuery('#creditmemo_message').text(resultText);
+                    $('#creditmemo_message').text(resultText);
                 }
             });
         });

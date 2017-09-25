@@ -29,10 +29,10 @@ define([
     "jquery",
     "prototype"
 ], function ($) {
-        var shipmentSpan = jQuery('#shipment_span');
-        var urlShipment = jQuery('#urlShipment').text();
-        var storeIdShip = jQuery('#storeIdShip').text();
-        jQuery('#resetnow_shipment').click(function () {
+        var shipmentSpan = $('#shipment_span');
+        var urlShipment = $('#urlShipment').text();
+        var storeIdShip = $('#storeIdShip').text();
+        $('#resetnow_shipment').click(function () {
             var params = {storeId: storeIdShip};
             new Ajax.Request(urlShipment, {
                 parameters:     params,
@@ -41,7 +41,7 @@ define([
                 onCreate: function() {
                     shipmentSpan.find('.success').hide();
                     shipmentSpan.find('.processing').show();
-                    jQuery('#shipment_message').text('');
+                    $('#shipment_message').text('');
                 },
                 onSuccess: function(response) {
                     shipmentSpan.find('.processing').hide();
@@ -53,7 +53,7 @@ define([
                         resultText = 'Success';
                         shipmentSpan.find('.success').show();
                     }
-                    jQuery('#shipment_message').text(resultText);
+                    $('#shipment_message').text(resultText);
                 }
             });
         });
