@@ -37,16 +37,22 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 class ResetShipment extends Field
 {
     /**
+     * Path Template
+     *
      * @var string
      */
     protected $_template = 'Bss_CustomOrderNumber::system/config/resetshipment.phtml';
 
     /**
+     * Helper
+     *
      * @var Data
      */
     protected $helper;
 
     /**
+     * Construct
+     *
      * @param Context $context
      * @param Data $helper
      * @param array $data

@@ -34,27 +34,43 @@ use Magento\Framework\Event\ObserverInterface;
 class OrderObserver implements ObserverInterface
 {
     /**
+     * Helper
+     *
      * @var \Bss\CustomOrderNumber\Helper\Data
      */
     protected $helper;
 
     /**
+     * StoreManager Interface
+     *
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     protected $storeManager;
+
+    /**
+     * Quote
+     *
+     * @var \Magento\Backend\Model\Session\Quote
+     */
     protected $session;
 
     /**
+     * Order Interface
+     *
      * @var \Magento\Sales\Api\Data\OrderInterface
      */
     protected $order;
 
     /**
+     * Sequence
+     *
      * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
     protected $sequence;
 
     /**
+     * Construct
+     *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Sales\Api\Data\OrderInterface $order 
@@ -78,7 +94,7 @@ class OrderObserver implements ObserverInterface
      * Set Increment Id
      *
      * @param Observer $observer
-     * @return incrementId
+     * @return void
      */
     public function execute(Observer $observer)
     {   

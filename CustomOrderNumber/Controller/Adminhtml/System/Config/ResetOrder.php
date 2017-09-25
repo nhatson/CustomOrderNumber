@@ -37,16 +37,22 @@ use Magento\Framework\App\ResourceConnection as AppResource;
 class ResetOrder extends Action
 {
     /**
+     * JsonFactory
+     *
      * @var JsonFactory
      */
     protected $resultJsonFactory;
 
     /**
+     * AppResource
+     *
      * @var AppResource
      */
     protected $connection;
 
     /**
+     * Construct
+     *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param AppResource $resource
@@ -75,7 +81,7 @@ class ResetOrder extends Action
             $table = 'sequence_order_'.$storeId;            
         }
         $resetOrder = $this->connection->truncateTable($table);
-        /** @var \Magento\Framework\Controller\Result\Json $result */
+        /* @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         
         return $result->setData(['success' => true]);

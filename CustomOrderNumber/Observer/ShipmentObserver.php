@@ -34,21 +34,29 @@ use Magento\Framework\Event\ObserverInterface;
 class ShipmentObserver implements ObserverInterface
 {
     /**
+     * Helper
+     *
      * @var \Bss\CustomOrderNumber\Helper\Data
      */
     protected $helper;
 
     /**
+     * Shipment Interface
+     *
      * @var \Magento\Sales\Api\Data\ShipmentInterface
      */   
     protected $shipment;
 
     /**
+     * Sequence
+     *
      * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
     protected $sequence;
 
     /**
+     * Construct
+     *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Sales\Api\Data\ShipmentInterface $shipment
      * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
@@ -67,7 +75,7 @@ class ShipmentObserver implements ObserverInterface
      * Set Increment Id
      *
      * @param Observer $observer
-     * @return incrementId
+     * @return void
      */
     public function execute(Observer $observer)
     {   

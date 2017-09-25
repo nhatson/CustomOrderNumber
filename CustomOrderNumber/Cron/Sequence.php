@@ -34,16 +34,22 @@ use Bss\CustomOrderNumber\Model\Config\Source\Frequency;
 class Sequence 
 {
     /**
+     * Sequence
+     *
      * @var Sequence
      */
     protected $sequence;
 
     /**
+     * StoreManagerInterface
+     *
      * @var StoreManagerInterface
      */
     protected $storeManager;
 
     /**
+     * Construct
+     *
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */

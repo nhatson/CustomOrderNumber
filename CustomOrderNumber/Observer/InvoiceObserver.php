@@ -34,21 +34,29 @@ use Magento\Framework\Event\ObserverInterface;
 class InvoiceObserver implements ObserverInterface
 {
     /**
+     * Helper
+     *
      * @var \Bss\CustomOrderNumber\Helper\Data
      */
     protected $helper;
 
     /**
+     * Invoice Interface
+     *
      * @var \Magento\Sales\Api\Data\InvoiceInterface
      */
     protected $invoice;
 
     /**
+     * Sequence
+     *
      * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
     protected $sequence;
 
     /**
+     * Construct
+     *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Sales\Api\Data\InvoiceInterface $invoice 
      * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
@@ -68,7 +76,7 @@ class InvoiceObserver implements ObserverInterface
      * Set Increment Id
      *
      * @param Observer $observer
-     * @return incrementId
+     * @return void
      */
     public function execute(Observer $observer)
     {   

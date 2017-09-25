@@ -40,21 +40,29 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     const ALPHA_NUMERIC = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
+     * AppResource
+     *
      * @var AppResource
      */
     protected $connection;
 
     /**
+     * Helper
+     *
      * @var \Bss\CustomOrderNumber\Helper\Data
      */
     protected $helper;
 
     /**
+     * DateTime
+     *
      * @var \Magento\Framework\Stdlib\DateTime\DateTime
      */
     protected $datetime;
 
     /**
+     * Construct
+     *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $datetime
      * @param AppResource $resource
@@ -70,7 +78,8 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     }
 
     /**
-     *
+     * Abstract Construct
+     * @return void
      */
     protected function _construct()
     {
@@ -83,7 +92,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @param int $startValue
      * @param int $step
      * @param string $pattern
-     * @return counter
+     * @return int
      */
     public function counter($table, $startValue, $step, $pattern)
     {
@@ -101,7 +110,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @param int $storeId
      * @param string $counter
      * @param int $length
-     * @return currentId
+     * @return string
      */
     public function replace($format, $storeId, $counter, $length)
     {
@@ -137,7 +146,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * Get Extra
      *
      * @param string $table
-     * @return $extra
+     * @return int
      */
     public function extra($table)
     {
@@ -151,7 +160,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      *
      * @param int $storeId
      * @param int $frequency
-     * @return $this
+     * @return void
      */
     public function setCronOrder($storeId, $frequency)
     {
@@ -171,7 +180,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      *
      * @param int $storeId
      * @param int $frequency
-     * @return $this
+     * @return void
      */
     public function setCronInvoice($storeId, $frequency)
     {
@@ -191,7 +200,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      *
      * @param int $storeId
      * @param int $frequency
-     * @return $this
+     * @return void
      */
     public function setCronShipment($storeId, $frequency)
     {
@@ -211,7 +220,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      *
      * @param int $storeId
      * @param int $frequency
-     * @return $this
+     * @return void
      */
     public function setCronCreditmemo($storeId, $frequency)
     {
@@ -230,7 +239,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * Retrieve numbers
      *
      * @param int $length
-     * @return numbers
+     * @return int
      */
     public function rndNumbers($length)
     {
@@ -248,7 +257,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * Retrieve letters
      *
      * @param int $length
-     * @return letters
+     * @return string
      */
     public function rndLetters($length)
     {
@@ -266,7 +275,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * Retrieve alphanumeric
      *
      * @param int $length
-     * @return alphanumeric
+     * @return string
      */
     public function rndAlphanumeric($length)
     {

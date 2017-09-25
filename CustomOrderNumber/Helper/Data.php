@@ -31,6 +31,8 @@ namespace Bss\CustomOrderNumber\Helper;
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
+     * Construct
+     *
      * @param \Magento\Framework\App\Helper\Context $context
      */
     public function __construct(

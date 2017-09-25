@@ -34,21 +34,29 @@ use Magento\Framework\Event\ObserverInterface;
 class CreditmemoObserver implements ObserverInterface
 {
     /**
+     * Helper
+     *
      * @var \Bss\CustomOrderNumber\Helper\Data
      */
     protected $helper;
 
     /**
+     * Creditmemo Interface
+     *
      * @var \Magento\Sales\Api\Data\CreditmemoInterface
      */
     protected $creditmemo;
 
     /**
+     * Sequence
+     *
      * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
     protected $sequence;
 
     /**
+     * Construct
+     *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Sales\Api\Data\CreditmemoInterface $creditmemo
      * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
@@ -67,7 +75,7 @@ class CreditmemoObserver implements ObserverInterface
      * Set Increment Id
      *
      * @param Observer $observer
-     * @return incrementId
+     * @return void
      */
     public function execute(Observer $observer)
     {   
