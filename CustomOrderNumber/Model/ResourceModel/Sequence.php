@@ -59,7 +59,7 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @var \Magento\Framework\Stdlib\DateTime\DateTime
      */
     protected $datetime;
-
+    protected $meta;
     /**
      * Construct
      *
@@ -70,19 +70,31 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
+        \Magento\SalesSequence\Model\ResourceModel\Meta $meta,
         AppResource $resource
     ) {
         $this->helper = $helper;
         $this->datetime = $datetime;
+        $this->meta = $meta;
         $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
     }
 
     /**
      * Abstract Construct
+     *
      * @return void
      */
     protected function _construct()
     {
+        $this->_init('sales_sequence_meta', 'meta_id');
+    }
+
+
+    public function getSequenceTable($entityType, $storeId)
+    {
+        $meta = $this->meta->loadByEntityTypeAndStore($entityType, $storeId);
+        $sequenTable = $meta->getSequenceTable();
+        return $sequenTable;
     }
 
     /**
@@ -94,8 +106,9 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @param string $pattern
      * @return int
      */
-    public function counter($table, $startValue, $step, $pattern)
+    public function counter($entityType, $storeId, $startValue, $step, $pattern)
     {
+        $table = $this->getSequenceTable($entityType, $storeId);
         $this->connection->insert($table, []);
         $lastIncrementId = $this->connection->lastInsertId($table);
         $currentId = ($lastIncrementId - 1)*$step + $startValue;
@@ -148,8 +161,9 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @param string $table
      * @return int
      */
-    public function extra($table)
+    public function extra($entityType, $storeId)
     {
+        $table = $this->getSequenceTable();
         $this->connection->insert($table, []);
         $extra = '-'.$this->connection->lastInsertId($table);
         return $extra;
@@ -164,13 +178,14 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function setCronOrder($storeId, $frequency)
     {
+        $entityType = 'order';
         if ($this->helper->isOrderEnable($storeId)) {
             if ($this->helper->getOrderReset($storeId) == $frequency) {
                 if ($storeId == 1) {
-                    $this->connection->truncateTable('sequence_order_0');  
-                } else {
-                    $this->connection->truncateTable('sequence_order_'.$storeId);  
+                    $storeId = 0;
                 }
+                $table = $this->getSequenceTable($entityType, $storeId);
+                $this->connection->truncateTable($table);
             }        
         }
     }
@@ -184,13 +199,14 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function setCronInvoice($storeId, $frequency)
     {
+        $entityType = 'invoice';
         if ($this->helper->isInvoiceEnable($storeId) && (!$this->helper->isInvoiceSameOrder($storeId))) {
             if ($this->helper->getInvoiceReset($storeId) == $frequency) {
                 if ($storeId == 1) {
-                    $this->connection->truncateTable('sequence_invoice_0');  
-                } else {
-                    $this->connection->truncateTable('sequence_invoice_'.$storeId);  
+                    $storeId = 0;
                 }
+                $table = $this->getSequenceTable($entityType, $storeId);
+                $this->connection->truncateTable($table);
             }      
         }
     }
@@ -204,13 +220,14 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function setCronShipment($storeId, $frequency)
     {
+        $entityType = 'shipment';
         if ($this->helper->isShipmentEnable($storeId) && (!$this->helper->isShipmentSameOrder($storeId))) {
             if ($this->helper->getShipmentReset($storeId) == $frequency) {
                 if ($storeId == 1) {
-                    $this->connection->truncateTable('sequence_shipment_0');
-                } else {
-                    $this->connection->truncateTable('sequence_shipment_'.$storeId);                   
+                    $storeId = 0;
                 }
+                $table = $this->getSequenceTable($entityType, $storeId);
+                $this->connection->truncateTable($table);
             }      
         }
     }
@@ -224,15 +241,24 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function setCronCreditmemo($storeId, $frequency)
     {
-        if ($this->helper->isCreditmemoEnable($storeId) && (!$this->helper->isCreditmemoSameOrder($storeId))) {
-            if ($this->helper->getCreditmemoReset($storeId) == $frequency) {
+        $entityType = 'creditmemo';
+        if ($this->helper->isShipmentEnable($storeId) && (!$this->helper->isShipmentSameOrder($storeId))) {
+            if ($this->helper->getShipmentReset($storeId) == $frequency) {
                 if ($storeId == 1) {
-                    $this->connection->truncateTable('sequence_creditmemo_0');
-                } else {
-                    $this->connection->truncateTable('sequence_creditmemo_'.$storeId);                     
+                    $storeId = 0;
                 }
-            } 
-        } 
+                $table = $this->getSequenceTable($entityType, $storeId);
+                $this->connection->truncateTable($table);
+            }
+        }
+    }
+
+    public function setCron($storeId, $frequency)
+    {
+        $this->setCronOrder($storeId, $frequency);
+        $this->setCronInvoice($storeId, $frequency);
+        $this->setCronShipment($storeId, $frequency);
+        $this->setCronCreditmemo($storeId, $frequency);
     }
 
     /**

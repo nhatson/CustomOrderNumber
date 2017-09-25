@@ -42,6 +42,7 @@ class ResetOrder extends Action
      * @var JsonFactory
      */
     protected $resultJsonFactory;
+    protected $sequence;
 
     /**
      * AppResource
@@ -60,9 +61,11 @@ class ResetOrder extends Action
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
+        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence,
         AppResource $resource
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
+        $this->sequence = $sequence;
         $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
         parent::__construct($context);
     }
@@ -74,12 +77,12 @@ class ResetOrder extends Action
      */
     public function execute()
     {
+        $entityType = 'order';
         $storeId = $this->getRequest()->getParam('storeId');
         if ($storeId == 1) {
-            $table = 'sequence_order_0';
-        } else {
-            $table = 'sequence_order_'.$storeId;            
+            $storeId = 0;
         }
+        $table = $this->sequence->getSequenceTable($entityType, $storeId);
         $resetOrder = $this->connection->truncateTable($table);
         /* @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();

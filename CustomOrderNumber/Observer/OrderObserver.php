@@ -100,35 +100,30 @@ class OrderObserver implements ObserverInterface
     {   
         if ($this->helper->isOrderEnable()) {
             $storeId = $this->storeManager->getStore()->getStoreId();
-            try {
-                $sessionId = $this->session->getStoreId();
-                if (isset($sessionId)) {
-                    $storeId = $sessionId;
-                }    
-            } catch (\Exception $e) {
+            $sessionId = $this->session->getStoreId();
+            if (isset($sessionId)) {
+                $storeId = $sessionId;
             }
             $format = $this->helper->getOrderFormat($storeId);
             $startValue = $this->helper->getOrderStart($storeId);
             $step = $this->helper->getOrderIncrement($storeId);
             $padding = $this->helper->getOrderPadding($storeId);
             $pattern = "%0".$padding."d";
-
+            $entityType = 'order';
             if ($this->helper->isIndividualOrderEnable($storeId)) {
                 if ($storeId == 1) {
-                    $table = 'sequence_order_0';
-                } else {
-                    $table = 'sequence_order_'.$storeId; 
-                }  
+                    $storeId = 0;
+                }
             } else {
-                $table = 'sequence_order_0';
+                $storeId = 0;
             }
 
-            $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
+            $counter = $this->sequence->counter($entityType, $storeId, $startValue, $step, $pattern);
             $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             try {
                 if ($this->order->loadByIncrementId($result)->getId() !== null) {
-                    $tableExtra = 'sequence_order_1';
-                    $extra = $this->sequence->extra($tableExtra);
+                    $storeId = 1;
+                    $extra = $this->sequence->extra($entityType, $storeId);
                     $result = $result.$extra;
                 }
             } catch (\Exception $e) {

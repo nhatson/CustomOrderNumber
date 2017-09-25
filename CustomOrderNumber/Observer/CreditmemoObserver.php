@@ -82,6 +82,7 @@ class CreditmemoObserver implements ObserverInterface
         $creditmemoInstance = $observer->getCreditmemo();
         $storeId = $creditmemoInstance->getOrder()->getStoreId();
         if ($this->helper->isCreditmemoEnable($storeId)) {
+            $entityType = 'creditmemo';
             if ($this->helper->isCreditmemoSameOrder($storeId)) {
                 $orderIncrement = $creditmemoInstance->getOrder()->getIncrementId();
                 $replace = $this->helper->getCreditmemoReplace($storeId);
@@ -96,22 +97,20 @@ class CreditmemoObserver implements ObserverInterface
 
                 if ($this->helper->isIndividualCreditmemoEnable($storeId)) {
                     if ($storeId == 1) {
-                        $table = 'sequence_creditmemo_0';
-                    } else {
-                        $table = 'sequence_creditmemo_'.$storeId;                        
-                    }
+                        $storeId = 0;
+                    } 
                 } else {
-                    $table = 'sequence_creditmemo_0';
+                    $storeId = 0;
                 }
 
-                $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
+                $counter = $this->sequence->counter($entityType, $storeId, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
             try {
                 if (!empty($this->creditmemo->getCollection()->addAttributeToFilter('increment_id', $result)
                     ->getData('increment_id'))) {
-                    $tableExtra = 'sequence_creditmemo_1';
-                    $extra = $this->sequence->extra($tableExtra);
+                    $storeId = 1;
+                    $extra = $this->sequence->extra($entityType, $storeId);
                     $result = $result.$extra;
                 }
             } catch (\Exception $e) {

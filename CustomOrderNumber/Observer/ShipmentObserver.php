@@ -82,6 +82,7 @@ class ShipmentObserver implements ObserverInterface
         $shipmentInstance = $observer->getShipment();
         $storeId = $shipmentInstance->getOrder()->getStoreId();
         if ($this->helper->isShipmentEnable($storeId)) {
+            $entityType = 'shipment';
             if ($this->helper->isShipmentSameOrder($storeId)) {
                 $orderIncrement = $shipmentInstance->getOrder()->getIncrementId();
                 $replace = $this->helper->getShipmentReplace($storeId);
@@ -96,21 +97,19 @@ class ShipmentObserver implements ObserverInterface
 
                 if ($this->helper->isIndividualShipmentEnable($storeId)) {
                     if ($storeId == 1) {
-                        $table = 'sequence_shipment_0';                        
-                    } else {
-                        $table = 'sequence_shipment_'.$storeId;
+                        $storeId = 0;
                     }
                 } else {
-                    $table = 'sequence_shipment_0'; 
+                    $storeId = 0;
                 }
 
-                $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
+                $counter = $this->sequence->counter($entityType, $storeId, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
             try {
                 if ($this->shipment->loadByIncrementId($result)->getId() !== null) {
-                    $tableExtra = 'sequence_shipment_1';
-                    $extra = $this->sequence->extra($tableExtra);
+                    $storeId = 1;
+                    $extra = $this->sequence->extra($entityType, $storeId);
                     $result = $result.$extra;
                 }
             } catch (\Exception $e) {

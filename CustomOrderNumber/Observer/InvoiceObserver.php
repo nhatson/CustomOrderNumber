@@ -82,7 +82,8 @@ class InvoiceObserver implements ObserverInterface
     {   
         $invoiceInstance = $observer->getInvoice();
         $storeId = $invoiceInstance->getOrder()->getStoreId();
-        if ($this->helper->isInvoiceEnable($storeId)) { 
+        if ($this->helper->isInvoiceEnable($storeId)) {
+            $entityType = 'invoice';
             if ($this->helper->isInvoiceSameOrder($storeId)) {
                 $orderIncrement = $invoiceInstance->getOrder()->getIncrementId();
                 $replace = $this->helper->getInvoiceReplace($storeId);
@@ -97,21 +98,19 @@ class InvoiceObserver implements ObserverInterface
 
                 if ($this->helper->isIndividualInvoiceEnable($storeId)) {
                     if ($storeId == 1) {
-                        $table = 'sequence_invoice_0';
-                    } else {
-                        $table = 'sequence_invoice_'.$storeId; 
+                        $storeId = 0;
                     }
                 } else {
-                    $table = 'sequence_invoice_0';
+                    $storeId = 0;
                 }
 
-                $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
+                $counter = $this->sequence->counter($entityType, $storeId, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
             try {
                 if ($this->invoice->loadByIncrementId($result)->getId() !== null) {
-                    $tableExtra = 'sequence_invoice_1';
-                    $extra = $this->sequence->extra($tableExtra);
+                    $storeId = 1;
+                    $extra = $this->sequence->extra($entityType, $storeId);
                     $result = $result.$extra;
                 }
             } catch (\Exception $e) {
