@@ -28,7 +28,6 @@
  */
 namespace Bss\CustomOrderNumber\Model\ResourceModel;
 
-use Magento\Framework\App\ResourceConnection as AppResource;
 /**
  * Class Sequence represents sequence in logic
  */
@@ -81,14 +80,13 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
         \Magento\SalesSequence\Model\ResourceModel\Meta $meta,
-        AppResource $resource,
         \Magento\Framework\Model\ResourceModel\Db\Context $context,
         $connectionName = null
     ) {
         $this->helper = $helper;
         $this->datetime = $datetime;
         $this->meta = $meta;
-        $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
+        $this->connection = $context->getResources()->getConnection();
         parent::__construct($context, $connectionName);
     }
 

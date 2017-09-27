@@ -74,7 +74,7 @@ class ResetOrder extends Action
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->sequence = $sequence;
-        $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
+        $this->connection = $resource->getConnection();
         parent::__construct($context);
     }
 
