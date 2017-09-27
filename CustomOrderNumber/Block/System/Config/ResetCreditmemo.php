@@ -120,6 +120,7 @@ class ResetCreditmemo extends Field
 
     /**
      * Retrieve Creditmemo Enable
+     *
      * @param int $storeId
      * @return bool
      */

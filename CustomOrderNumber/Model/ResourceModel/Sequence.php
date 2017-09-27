@@ -30,7 +30,7 @@ namespace Bss\CustomOrderNumber\Model\ResourceModel;
 
 use Magento\Framework\App\ResourceConnection as AppResource;
 /**
- * Class Meta represents metadata for sequence as sequence table and store id
+ * Class Sequence represents sequence in logic
  */
 class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
@@ -59,24 +59,37 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @var \Magento\Framework\Stdlib\DateTime\DateTime
      */
     protected $datetime;
+
+    /**
+     * Meta
+     *
+     * @var \Magento\SalesSequence\Model\ResourceModel\Meta
+     */
     protected $meta;
+
     /**
      * Construct
      *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $datetime
+     * @param \Magento\SalesSequence\Model\ResourceModel\Meta $meta
      * @param AppResource $resource
+     * @param \Magento\Framework\Model\ResourceModel\Db\Context $context
+     * @param string $connectionName
      */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Framework\Stdlib\DateTime\DateTime $datetime,
         \Magento\SalesSequence\Model\ResourceModel\Meta $meta,
-        AppResource $resource
+        AppResource $resource,
+        \Magento\Framework\Model\ResourceModel\Db\Context $context,
+        $connectionName = null
     ) {
         $this->helper = $helper;
         $this->datetime = $datetime;
         $this->meta = $meta;
         $this->connection = $resource->getConnection('DEFAULT_CONNECTION');
+        parent::__construct($context, $connectionName);
     }
 
     /**
@@ -89,7 +102,13 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $this->_init('sales_sequence_meta', 'meta_id');
     }
 
-
+    /**
+     * Retrieve Sequence Table
+     *
+     * @param string $entityType
+     * @param int $storeId
+     * @return string
+     */
     public function getSequenceTable($entityType, $storeId)
     {
         $meta = $this->meta->loadByEntityTypeAndStore($entityType, $storeId);
@@ -100,7 +119,8 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     /**
      * Retrieve counter
      *
-     * @param string $table
+     * @param string $entityType
+     * @param int $storeId
      * @param int $startValue
      * @param int $step
      * @param string $pattern
@@ -158,12 +178,13 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     /**
      * Get Extra
      *
-     * @param string $table
+     * @param string $entityType
+     * @param int $storeId
      * @return int
      */
     public function extra($entityType, $storeId)
     {
-        $table = $this->getSequenceTable();
+        $table = $this->getSequenceTable($entityType, $storeId);
         $this->connection->insert($table, []);
         $extra = '-'.$this->connection->lastInsertId($table);
         return $extra;
@@ -253,6 +274,13 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         }
     }
 
+    /**
+     * Set Cron
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return void
+     */
     public function setCron($storeId, $frequency)
     {
         $this->setCronOrder($storeId, $frequency);

@@ -120,6 +120,7 @@ class ResetInvoice extends Field
 
     /**
      * Retrieve Invoice Enable
+     *
      * @param int $storeId
      * @return bool
      */

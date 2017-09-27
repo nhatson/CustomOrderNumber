@@ -73,6 +73,7 @@ class OrderObserver implements ObserverInterface
      *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Backend\Model\Session\Quote $session
      * @param \Magento\Sales\Api\Data\OrderInterface $order 
      * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */

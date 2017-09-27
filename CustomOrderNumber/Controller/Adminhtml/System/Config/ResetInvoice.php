@@ -32,6 +32,7 @@ namespace Bss\CustomOrderNumber\Controller\Adminhtml\System\Config;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Bss\CustomOrderNumber\Model\ResourceModel\Sequence;
 use Magento\Framework\App\ResourceConnection as AppResource;
 
 class ResetInvoice extends Action
@@ -42,6 +43,12 @@ class ResetInvoice extends Action
      * @var JsonFactory
      */
     protected $resultJsonFactory;
+
+    /**
+     * Sequence
+     *
+     * @var Sequence
+     */
     protected $sequence;
 
     /**
@@ -56,12 +63,13 @@ class ResetInvoice extends Action
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
+     * @param Sequence $sequence
      * @param AppResource $resource
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence,
+        Sequence $sequence,
         AppResource $resource
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
@@ -83,13 +91,18 @@ class ResetInvoice extends Action
             $storeId = 0;
         }
         $table = $this->sequence->getSequenceTable($entityType, $storeId);
-        $resetInvoice = $this->connection->truncateTable($table);;
+        $this->connection->truncateTable($table);
         /* @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         
         return $result->setData(['success' => true]);
     }
 
+    /**
+     * Allowed
+     *
+     * @return string
+     */
     protected function _isAllowed()
     {
         return $this->_authorization->isAllowed('Bss_CustomOrderNumber::config');

@@ -120,6 +120,7 @@ class ResetOrder extends Field
 
     /**
      * Retrieve Order Enable
+     *
      * @param int $storeId
      * @return bool
      */

@@ -120,6 +120,7 @@ class ResetShipment extends Field
 
     /**
      * Retrieve Shipment Enable
+     *
      * @param int $storeId
      * @return bool
      */

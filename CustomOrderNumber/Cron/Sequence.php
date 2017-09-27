@@ -43,7 +43,7 @@ class Sequence
     /**
      * StoreManagerInterface
      *
-     * @var StoreManagerInterface
+     * @var \Magento\Store\Model\StoreManagerInterface
      */
     protected $storeManager;
 
