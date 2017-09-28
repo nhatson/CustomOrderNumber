@@ -110,7 +110,7 @@
                 </field>
                 <field id="format" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Number Format</label>
-                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}.<br>Example: INV-{mm}{yy}-{counter}-{storeId} => INV-0517-00081-1]]></comment>
+                    <comment><![CDATA[You can use: {d}, {dd}, {m}, {mm}, {yy}, {yyyy}, {storeId}, {counter}, {rndNumbers}, {rndLetters}, {rndAlphanumeric}.<br>Example: INV-{mm}{yy}-{counter}-{storeId} => INV-0517-00081-1.]]></comment>
                     <depends>
                         <field id="same_order">0</field>
                     </depends>
@@ -172,7 +172,7 @@
                 </field>
                 <field id="same_order" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Similar to Order Number</label>
-                    <comment><![CDATA[Decide to use the order number as the invoice number or not.]]></comment>
+                    <comment><![CDATA[Decide to use the order number as the shipment number or not.]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="replace" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -253,7 +253,7 @@
                 </field>
                 <field id="same_order" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Similar to Order Number</label>
-                    <comment><![CDATA[Decide to use the order number as the invoice number or not.]]></comment>
+                    <comment><![CDATA[Decide to use the order number as the creditmemo number or not.]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="replace" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">

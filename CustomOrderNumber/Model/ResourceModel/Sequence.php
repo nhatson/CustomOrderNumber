@@ -116,16 +116,14 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     /**
      * Retrieve counter
      *
-     * @param string $entityType
-     * @param int $storeId
+     * @param string $table
      * @param int $startValue
      * @param int $step
      * @param string $pattern
      * @return int
      */
-    public function counter($entityType, $storeId, $startValue, $step, $pattern)
+    public function counter($table, $startValue, $step, $pattern)
     {
-        $table = $this->getSequenceTable($entityType, $storeId);
         $this->connection->insert($table, []);
         $lastIncrementId = $this->connection->lastInsertId($table);
         $currentId = ($lastIncrementId - 1)*$step + $startValue;
@@ -161,10 +159,6 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $rndNumbers = $this->rndNumbers($length);
         $rndLetters = $this->rndLetters($length);
         $rndAlphanumeric = $this->rndAlphanumeric($length);
-
-        if ($storeId == 0) {
-            $storeId = 1;
-        }
 
         $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{storeid}','{storeID}','{counter}',
             '{rndNumbers}', '{rndnumbers}', '{rndLetters}', '{rndletters}', '{rndAlphanumeric}', '{rndalphanumeric}'];

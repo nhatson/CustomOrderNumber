@@ -113,13 +113,15 @@ class OrderObserver implements ObserverInterface
             $entityType = 'order';
             if ($this->helper->isIndividualOrderEnable($storeId)) {
                 if ($storeId == 1) {
-                    $storeId = 0;
+                    $table = $this->sequence->getSequenceTable($entityType, '0');
+                } else {
+                    $table = $this->sequence->getSequenceTable($entityType, $storeId);
                 }
             } else {
-                $storeId = 0;
+                $table = $this->sequence->getSequenceTable($entityType, '0');
             }
 
-            $counter = $this->sequence->counter($entityType, $storeId, $startValue, $step, $pattern);
+            $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
             $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             try {
                 if ($this->order->loadByIncrementId($result)->getId() !== null) {
