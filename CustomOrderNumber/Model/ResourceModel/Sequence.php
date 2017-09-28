@@ -72,7 +72,6 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $datetime
      * @param \Magento\SalesSequence\Model\ResourceModel\Meta $meta
-     * @param AppResource $resource
      * @param \Magento\Framework\Model\ResourceModel\Db\Context $context
      * @param string $connectionName
      */
@@ -162,6 +161,10 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $rndNumbers = $this->rndNumbers($length);
         $rndLetters = $this->rndLetters($length);
         $rndAlphanumeric = $this->rndAlphanumeric($length);
+
+        if ($storeId == 0) {
+            $storeId = 1;
+        }
 
         $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{storeid}','{storeID}','{counter}',
             '{rndNumbers}', '{rndnumbers}', '{rndLetters}', '{rndletters}', '{rndAlphanumeric}', '{rndalphanumeric}'];
