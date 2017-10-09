@@ -31,11 +31,11 @@ namespace Bss\CustomOrderNumber\Model\ResourceModel;
 class Cron extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
-     * AppResource
+     * ResourceConnection
      *
-     * @var \Magento\Framework\Model\ResourceModel\Db\Context AppResource
+     * @var \Magento\Framework\Model\ResourceModel\Db\Context
      */
-    protected $connection;
+    protected $resourceConnection;
 
     /**
      * Helper
@@ -67,7 +67,7 @@ class Cron extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     ) {
         $this->helper = $helper;
         $this->meta = $meta;
-        $this->connection = $context->getResources()->getConnection();
+        $this->resourceConnection = $context->getResources();
         parent::__construct($context, $connectionName);
     }
 
@@ -98,7 +98,7 @@ class Cron extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 }
                 $meta = $this->meta->loadByEntityTypeAndStore($entityType, $storeId);
                 $sequenceTable = $meta->getSequenceTable();
-                $this->connection->truncateTable($sequenceTable);
+                $this->resourceConnection->getConnection()->truncateTable($sequenceTable);
             }        
         }
     }
@@ -120,7 +120,7 @@ class Cron extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 }
                 $meta = $this->meta->loadByEntityTypeAndStore($entityType, $storeId);
                 $sequenceTable = $meta->getSequenceTable();
-                $this->connection->truncateTable($sequenceTable);
+                $this->resourceConnection->getConnection()->truncateTable($sequenceTable);
             }      
         }
     }
@@ -142,7 +142,7 @@ class Cron extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 }
                 $meta = $this->meta->loadByEntityTypeAndStore($entityType, $storeId);
                 $sequenceTable = $meta->getSequenceTable();
-                $this->connection->truncateTable($sequenceTable);
+                $this->resourceConnection->getConnection()->truncateTable($sequenceTable);
             }      
         }
     }
@@ -164,7 +164,7 @@ class Cron extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
                 }
                 $meta = $this->meta->loadByEntityTypeAndStore($entityType, $storeId);
                 $sequenceTable = $meta->getSequenceTable();
-                $this->connection->truncateTable($sequenceTable);
+                $this->resourceConnection->getConnection()->truncateTable($sequenceTable);
             }
         }
     }

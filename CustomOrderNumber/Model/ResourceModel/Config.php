@@ -39,11 +39,11 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     const ALPHA_NUMERIC = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
-     * AppResource
+     * ResourceConnection
      *
-     * @var \Magento\Framework\Model\ResourceModel\Db\Context AppResource
+     * @var \Magento\Framework\Model\ResourceModel\Db\Context
      */
-    protected $connection;
+    protected $resourceConnection;
 
     /**
      * Helper
@@ -85,7 +85,7 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $this->helper = $helper;
         $this->datetime = $datetime;
         $this->meta = $meta;
-        $this->connection = $context->getResources()->getConnection();
+        $this->resourceConnection = $context->getResources();
         parent::__construct($context, $connectionName);
     }
 
@@ -124,8 +124,8 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function counter($table, $startValue, $step, $pattern)
     {
-        $this->connection->insert($table, []);
-        $lastIncrementId = $this->connection->lastInsertId($table);
+        $this->resourceConnection->getConnection()->insert($table, []);
+        $lastIncrementId = $this->resourceConnection->getConnection()->lastInsertId($table);
         $currentId = ($lastIncrementId - 1)*$step + $startValue;
         $counter = sprintf($pattern, $currentId);
         return $counter;
@@ -180,8 +180,8 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     public function extra($entityType, $storeId)
     {
         $table = $this->getSequenceTable($entityType, $storeId);
-        $this->connection->insert($table, []);
-        $extra = '-'.$this->connection->lastInsertId($table);
+        $this->resourceConnection->getConnection()->insert($table, []);
+        $extra = '-'.$this->resourceConnection->getConnection()->lastInsertId($table);
         return $extra;
     }
 
