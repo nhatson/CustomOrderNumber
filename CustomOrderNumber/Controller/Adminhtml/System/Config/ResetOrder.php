@@ -45,36 +45,26 @@ class ResetOrder extends Action
     protected $resultJsonFactory;
 
     /**
-     * Sequence
+     * ResetOrder
      *
-     * @var Sequence
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\ResetOrder
      */
-    protected $sequence;
-
-    /**
-     * AppResource
-     *
-     * @var AppResource
-     */
-    protected $connection;
+    protected $resetOrder;
 
     /**
      * Construct
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
-     * @param Sequence $sequence
-     * @param AppResource $resource
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\ResetOrder $resetOrder
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        Sequence $sequence,
-        AppResource $resource
+        \Bss\CustomOrderNumber\Model\ResourceModel\ResetOrder $resetOrder
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->sequence = $sequence;
-        $this->connection = $resource->getConnection();
+        $this->resetOrder = $resetOrder;
         parent::__construct($context);
     }
 
@@ -85,16 +75,14 @@ class ResetOrder extends Action
      */
     public function execute()
     {
-        $entityType = 'order';
         $storeId = $this->getRequest()->getParam('storeId');
         if ($storeId == 1) {
             $storeId = 0;
         }
-        $table = $this->sequence->getSequenceTable($entityType, $storeId);
-        $this->connection->truncateTable($table);
+        $this->resetOrder->resetOrder($storeId);
         /* @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
-        
+
         return $result->setData(['success' => true]);
     }
 

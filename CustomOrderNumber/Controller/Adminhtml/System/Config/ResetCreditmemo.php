@@ -32,8 +32,6 @@ namespace Bss\CustomOrderNumber\Controller\Adminhtml\System\Config;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Bss\CustomOrderNumber\Model\ResourceModel\Sequence;
-use Magento\Framework\App\ResourceConnection as AppResource;
 
 class ResetCreditmemo extends Action
 {
@@ -45,18 +43,11 @@ class ResetCreditmemo extends Action
     protected $resultJsonFactory;
 
     /**
-     * Sequence
+     * ResetCreditmemo
      *
-     * @var Sequence
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\ResetCreditmemo
      */
-    protected $sequence;
-
-    /**
-     * AppResource
-     *
-     * @var AppResource
-     */
-    protected $connection;
+    protected $resetCreditmemo;
 
     /**
      * Construct
@@ -69,12 +60,10 @@ class ResetCreditmemo extends Action
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        Sequence $sequence,
-        AppResource $resource
+        \Bss\CustomOrderNumber\Model\ResourceModel\ResetCreditmemo $resetCreditmemo
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->sequence = $sequence;
-        $this->connection = $resource->getConnection();
+        $this->resetCreditmemo = $resetCreditmemo;
         parent::__construct($context);
     }
 
@@ -85,13 +74,11 @@ class ResetCreditmemo extends Action
      */
     public function execute()
     {
-        $entityType = 'creditmemo';
         $storeId = $this->getRequest()->getParam('storeId');
         if ($storeId == 1) {
             $storeId = 0;
         }
-        $table = $this->sequence->getSequenceTable($entityType, $storeId);
-        $this->connection->truncateTable($table);
+        $this->resetCreditmemo->resetCreditmemo($storeId);
         /* @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
 

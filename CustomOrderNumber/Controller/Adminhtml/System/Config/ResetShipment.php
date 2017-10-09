@@ -45,36 +45,26 @@ class ResetShipment extends Action
     protected $resultJsonFactory;
 
     /**
-     * Sequence
+     * ResetShipment
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\ResetShipment
      */
-    protected $sequence;
-
-    /**
-     * AppResource
-     *
-     * @var AppResource
-     */
-    protected $connection;
+    protected $resetShipment;
 
     /**
      * Construct
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
-     * @param Sequence $sequence
-     * @param AppResource $resource
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\ResetShipment $resetShipment
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        Sequence $sequence,
-        AppResource $resource
+        \Bss\CustomOrderNumber\Model\ResourceModel\ResetShipment $resetShipment
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->sequence = $sequence;
-        $this->connection = $resource->getConnection();
+        $this->resetShipment = $resetShipment;
         parent::__construct($context);
     }
 
@@ -85,16 +75,14 @@ class ResetShipment extends Action
      */
     public function execute()
     {
-        $entityType = 'shipment';
         $storeId = $this->getRequest()->getParam('storeId');
         if ($storeId == 1) {
             $storeId = 0;
         }
-        $table = $this->sequence->getSequenceTable($entityType, $storeId);
-        $this->connection->truncateTable($table);
+        $this->resetShipment->resetShipment($storeId);
         /* @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
-        
+
         return $result->setData(['success' => true]);
     }
 

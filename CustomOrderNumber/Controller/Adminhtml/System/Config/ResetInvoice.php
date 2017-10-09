@@ -32,8 +32,6 @@ namespace Bss\CustomOrderNumber\Controller\Adminhtml\System\Config;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Bss\CustomOrderNumber\Model\ResourceModel\Sequence;
-use Magento\Framework\App\ResourceConnection as AppResource;
 
 class ResetInvoice extends Action
 {
@@ -45,38 +43,29 @@ class ResetInvoice extends Action
     protected $resultJsonFactory;
 
     /**
-     * Sequence
+     * ResetInvoice
      *
-     * @var Sequence
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\ResetInvoice
      */
-    protected $sequence;
-
-    /**
-     * AppResource
-     *
-     * @var AppResource
-     */
-    protected $connection;
+    protected $resetInvoice;
 
     /**
      * Construct
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
-     * @param Sequence $sequence
-     * @param AppResource $resource
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\ResetInvoice $resetInvoice
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        Sequence $sequence,
-        AppResource $resource
+        \Bss\CustomOrderNumber\Model\ResourceModel\ResetInvoice $resetInvoice
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->sequence = $sequence;
-        $this->connection = $resource->getConnection();
+        $this->resetInvoice = $resetInvoice;
         parent::__construct($context);
     }
+
 
     /**
      * Truncate Table
@@ -85,16 +74,14 @@ class ResetInvoice extends Action
      */
     public function execute()
     {
-        $entityType = 'invoice';
         $storeId = $this->getRequest()->getParam('storeId');
         if ($storeId == 1) {
             $storeId = 0;
         }
-        $table = $this->sequence->getSequenceTable($entityType, $storeId);
-        $this->connection->truncateTable($table);
+        $this->resetInvoice->resetInvoice($storeId);
         /* @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
-        
+
         return $result->setData(['success' => true]);
     }
 

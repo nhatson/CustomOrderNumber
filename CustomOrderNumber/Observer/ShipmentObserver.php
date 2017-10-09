@@ -48,27 +48,27 @@ class ShipmentObserver implements ObserverInterface
     protected $shipment;
 
     /**
-     * Sequence
+     * Config
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Config
      */
-    protected $sequence;
+    protected $config;
 
     /**
      * Construct
      *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Sales\Api\Data\ShipmentInterface $shipment
-     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Config $config
      */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Sales\Api\Data\ShipmentInterface $shipment,
-        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
+        \Bss\CustomOrderNumber\Model\ResourceModel\Config $config
     ) {
             $this->helper = $helper;
             $this->shipment = $shipment;
-            $this->sequence = $sequence;
+            $this->config = $config;
     }
 
     /**
@@ -97,21 +97,21 @@ class ShipmentObserver implements ObserverInterface
 
                 if ($this->helper->isIndividualShipmentEnable($storeId)) {
                     if ($storeId == 1) {
-                        $table = $this->sequence->getSequenceTable($entityType, '0');
+                        $table = $this->config->getSequenceTable($entityType, '0');
                     } else {
-                        $table = $this->sequence->getSequenceTable($entityType, $storeId);
+                        $table = $this->config->getSequenceTable($entityType, $storeId);
                     }
                 } else {
-                    $table = $this->sequence->getSequenceTable($entityType, '0');
+                    $table = $this->config->getSequenceTable($entityType, '0');
                 }
 
-                $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
-                $result = $this->sequence->replace($format, $storeId, $counter, $padding);
+                $counter = $this->config->counter($table, $startValue, $step, $pattern);
+                $result = $this->config->replace($format, $storeId, $counter, $padding);
             }
             try {
                 if ($this->shipment->loadByIncrementId($result)->getId() !== null) {
                     $storeId = 1;
-                    $extra = $this->sequence->extra($entityType, $storeId);
+                    $extra = $this->config->extra($entityType, $storeId);
                     $result = $result.$extra;
                 }
             } catch (\Exception $e) {
