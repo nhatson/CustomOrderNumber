@@ -45,7 +45,7 @@ class ResetInvoice extends Action
     /**
      * ResetInvoice
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\ResetInvoice
+     * @var ResetInvoice
      */
     protected $resetInvoice;
 

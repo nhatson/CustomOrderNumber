@@ -41,7 +41,7 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     /**
      * AppResource
      *
-     * @var AppResource
+     * @var \Magento\Framework\Model\ResourceModel\Db\Context AppResource
      */
     protected $connection;
 

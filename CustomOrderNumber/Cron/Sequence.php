@@ -36,7 +36,7 @@ class Sequence
     /**
      * Cron
      *
-     * @var cron
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Cron
      */
     protected $cron;
 
@@ -51,14 +51,14 @@ class Sequence
      * Construct
      *
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Bss\CustomOrderNumber\Model\ResourceModel\CronSequence $sequence
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Cron $cron
      */
     public function __construct (
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Bss\CustomOrderNumber\Model\ResourceModel\Cron $cron
     ) {
         $this->storeManager = $storeManager;
-        $this->cronSequence = $cronSequence;
+        $this->cron = $cron;
     }
 
     /**

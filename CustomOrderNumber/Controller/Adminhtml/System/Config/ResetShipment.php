@@ -47,7 +47,7 @@ class ResetShipment extends Action
     /**
      * ResetShipment
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\ResetShipment
+     * @var ResetShipment
      */
     protected $resetShipment;
 

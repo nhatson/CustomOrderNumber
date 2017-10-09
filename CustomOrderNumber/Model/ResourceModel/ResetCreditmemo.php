@@ -33,7 +33,7 @@ class ResetCreditmemo extends \Magento\Framework\Model\ResourceModel\Db\Abstract
     /**
      * AppResource
      *
-     * @var AppResource
+     * @var \Magento\Framework\Model\ResourceModel\Db\Context AppResource
      */
     protected $connection;
 
@@ -47,8 +47,6 @@ class ResetCreditmemo extends \Magento\Framework\Model\ResourceModel\Db\Abstract
     /**
      * Construct
      *
-     * @param \Bss\CustomOrderNumber\Helper\Data $helper
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime $datetime
      * @param \Magento\SalesSequence\Model\ResourceModel\Meta $meta
      * @param \Magento\Framework\Model\ResourceModel\Db\Context $context
      * @param string $connectionName
@@ -83,7 +81,7 @@ class ResetCreditmemo extends \Magento\Framework\Model\ResourceModel\Db\Abstract
     {
         $entityType = 'creditmemo';
         $meta = $this->meta->loadByEntityTypeAndStore($entityType, $storeId);
-        $sequenTable = $meta->getSequenceTable();
-        $this->connection->truncateTable($sequenTable);
+        $sequenceTable = $meta->getSequenceTable();
+        $this->connection->truncateTable($sequenceTable);
     }
 }

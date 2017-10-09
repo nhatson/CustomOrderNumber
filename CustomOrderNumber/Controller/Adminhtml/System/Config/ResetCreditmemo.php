@@ -45,7 +45,7 @@ class ResetCreditmemo extends Action
     /**
      * ResetCreditmemo
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\ResetCreditmemo
+     * @var ResetCreditmemo
      */
     protected $resetCreditmemo;
 
@@ -54,8 +54,7 @@ class ResetCreditmemo extends Action
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
-     * @param Sequence $sequence
-     * @param AppResource $resource
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\ResetCreditmemo $resetCreditmemo
      */
     public function __construct(
         Context $context,

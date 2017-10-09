@@ -47,7 +47,7 @@ class ResetOrder extends Action
     /**
      * ResetOrder
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\ResetOrder
+     * @var ResetOrder
      */
     protected $resetOrder;
 

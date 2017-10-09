@@ -36,7 +36,7 @@ class ResetOrder extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     /**
      * AppResource
      *
-     * @var AppResource
+     * @var \Magento\Framework\Model\ResourceModel\Db\Context AppResource
      */
     protected $connection;
 
@@ -84,7 +84,7 @@ class ResetOrder extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     {
         $entityType = 'order';
         $meta = $this->meta->loadByEntityTypeAndStore($entityType, $storeId);
-        $sequenTable = $meta->getSequenceTable();
-        $this->connection->truncateTable($sequenTable);
+        $sequenceTable = $meta->getSequenceTable();
+        $this->connection->truncateTable($sequenceTable);
     }
 }
