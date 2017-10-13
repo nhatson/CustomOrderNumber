@@ -48,27 +48,27 @@ class CreditmemoObserver implements ObserverInterface
     protected $creditmemo;
 
     /**
-     * Config
+     * Sequence
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Config
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
-    protected $config;
+    protected $sequence;
 
     /**
      * Construct
      *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Sales\Api\Data\CreditmemoInterface $creditmemo
-     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Config $config
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Sales\Api\Data\CreditmemoInterface $creditmemo,
-        \Bss\CustomOrderNumber\Model\ResourceModel\Config $config
+        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
             $this->helper = $helper;
             $this->creditmemo = $creditmemo;
-            $this->config = $config;
+            $this->sequence = $sequence;
     }
 
     /**
@@ -97,22 +97,20 @@ class CreditmemoObserver implements ObserverInterface
 
                 if ($this->helper->isIndividualCreditmemoEnable($storeId)) {
                     if ($storeId == 1) {
-                        $table = $this->config->getSequenceTable($entityType, '0');
-                    } else {
-                        $table = $this->config->getSequenceTable($entityType, $storeId);
-                    }
+                        $storeId = 0;
+                    } 
                 } else {
-                    $table = $this->config->getSequenceTable($entityType, '0');
+                    $storeId = 0;
                 }
 
-                $counter = $this->config->counter($table, $startValue, $step, $pattern);
-                $result = $this->config->replace($format, $storeId, $counter, $padding);
+                $counter = $this->sequence->counter($entityType, $storeId, $startValue, $step, $pattern);
+                $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
             try {
                 if (!empty($this->creditmemo->getCollection()->addAttributeToFilter('increment_id', $result)
                     ->getData('increment_id'))) {
                     $storeId = 1;
-                    $extra = $this->config->extra($entityType, $storeId);
+                    $extra = $this->sequence->extra($entityType, $storeId);
                     $result = $result.$extra;
                 }
             } catch (\Exception $e) {

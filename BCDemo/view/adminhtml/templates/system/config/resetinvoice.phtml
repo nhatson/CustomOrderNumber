@@ -1,6 +1,5 @@
-<?xml version="1.0"?>
-<!--
-**
+<?php
+/**
  * BSS Commerce Co.
  *
  * NOTICE OF LICENSE
@@ -26,12 +25,25 @@
  * @author     Extension Team
  * @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
  * @license    http://bsscommerce.com/Bss-Commerce-License.txt
- *
- -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Bss_CustomOrderNumber" setup_version="1.0.0" />
-    <sequence>
-        <module name="Magento_Sales"/>
-        <module name="Magento_Stores"/>
-    </sequence>
-</config>
+ */
+?>
+<?php if ($block->isInvoiceEnable($block->getRequest()->getParam('store', 0))) { ?>
+    <script type="text/x-magento-init">
+    {
+        "*": 
+        {
+            "Bss_CustomOrderNumber/js/resetinvoice": {}
+        }
+    }
+    </script>
+<?php } ?>
+<?php echo $block->getButtonHtml() ?>
+<span id="invoice_span">
+    <img class="processing" hidden="hidden" alt="" style="margin:0 5px"
+         src="<?php echo $block->getViewFileUrl('images/process_spinner.gif') ?>"/>
+    <img class="success" hidden="hidden" alt="" style="margin:-3px 5px"
+         src="<?php echo $block->getViewFileUrl('images/rule_component_apply.gif') ?>"/>
+    <span id="invoice_message"></span>
+    <span id="urlInvoice" hidden="hidden"><?php echo $block->getAjaxUrl() ?></span>
+    <span id="storeIdInv" hidden="hidden"><?php echo $block->getRequest()->getParam('store', 0) ?></span>
+</span>

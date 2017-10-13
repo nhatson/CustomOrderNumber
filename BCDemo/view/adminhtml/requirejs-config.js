@@ -1,6 +1,4 @@
-<?xml version="1.0"?>
-<!--
-**
+/**
  * BSS Commerce Co.
  *
  * NOTICE OF LICENSE
@@ -26,12 +24,14 @@
  * @author     Extension Team
  * @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
  * @license    http://bsscommerce.com/Bss-Commerce-License.txt
- *
- -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Bss_CustomOrderNumber" setup_version="1.0.0" />
-    <sequence>
-        <module name="Magento_Sales"/>
-        <module name="Magento_Stores"/>
-    </sequence>
-</config>
+ */
+var config = {
+    map: {
+        '*': {
+        	resetorder: 'Bss_CustomOrderNumber/js/resetorder',
+            resetinvoice: 'Bss_CustomOrderNumber/js/resetinvoice',
+            resetshipment: 'Bss_CustomOrderNumber/js/resetshipment',
+            resetcreditmemo: 'Bss_CustomOrderNumber/js/resetcreditmemo'
+        }
+    }
+};

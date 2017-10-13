@@ -1,6 +1,5 @@
-<?xml version="1.0"?>
-<!--
-**
+<?php
+/**
  * BSS Commerce Co.
  *
  * NOTICE OF LICENSE
@@ -22,16 +21,13 @@
  * =================================================================
  *
  * @category   BSS
- * @package    Bss_CustomOrderNumber
+ * @package    Bss_BCDemo
  * @author     Extension Team
  * @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
  * @license    http://bsscommerce.com/Bss-Commerce-License.txt
- *
- -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="Bss_CustomOrderNumber" setup_version="1.0.0" />
-    <sequence>
-        <module name="Magento_Sales"/>
-        <module name="Magento_Stores"/>
-    </sequence>
-</config>
+ */
+\Magento\Framework\Component\ComponentRegistrar::register(
+    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+    'Bss_BCDemo',
+    __DIR__
+);

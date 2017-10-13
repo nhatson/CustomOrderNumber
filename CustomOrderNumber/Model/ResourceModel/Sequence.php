@@ -31,7 +31,7 @@ namespace Bss\CustomOrderNumber\Model\ResourceModel;
 /**
  * Class Sequence represents sequence in logic
  */
-class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
      /**
      * @const ALPHA_NUMERIC
@@ -39,11 +39,11 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     const ALPHA_NUMERIC = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
-     * ResourceConnection
+     * AppResource
      *
-     * @var \Magento\Framework\Model\ResourceModel\Db\Context
+     * @var AppResource
      */
-    protected $resourceConnection;
+    protected $connection;
 
     /**
      * Helper
@@ -85,7 +85,7 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $this->helper = $helper;
         $this->datetime = $datetime;
         $this->meta = $meta;
-        $this->resourceConnection = $context->getResources();
+        $this->connection = $context->getResources()->getConnection();
         parent::__construct($context, $connectionName);
     }
 
@@ -116,16 +116,18 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     /**
      * Retrieve counter
      *
-     * @param string $table
+     * @param string $entityType
+     * @param int $storeId
      * @param int $startValue
      * @param int $step
      * @param string $pattern
      * @return int
      */
-    public function counter($table, $startValue, $step, $pattern)
+    public function counter($entityType, $storeId, $startValue, $step, $pattern)
     {
-        $this->resourceConnection->getConnection()->insert($table, []);
-        $lastIncrementId = $this->resourceConnection->getConnection()->lastInsertId($table);
+        $table = $this->getSequenceTable($entityType, $storeId);
+        $this->connection->insert($table, []);
+        $lastIncrementId = $this->connection->lastInsertId($table);
         $currentId = ($lastIncrementId - 1)*$step + $startValue;
         $counter = sprintf($pattern, $currentId);
         return $counter;
@@ -160,6 +162,10 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $rndLetters = $this->rndLetters($length);
         $rndAlphanumeric = $this->rndAlphanumeric($length);
 
+        if ($storeId == 0) {
+            $storeId = 1;
+        }
+
         $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{storeid}','{storeID}','{counter}',
             '{rndNumbers}', '{rndnumbers}', '{rndLetters}', '{rndletters}', '{rndAlphanumeric}', '{rndalphanumeric}'];
         $replace    = [$d, $dd, $m, $mm, $yy, $yyyy, $storeId, $storeId, $storeId, $counter, $rndNumbers, 
@@ -180,9 +186,108 @@ class Config extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     public function extra($entityType, $storeId)
     {
         $table = $this->getSequenceTable($entityType, $storeId);
-        $this->resourceConnection->getConnection()->insert($table, []);
-        $extra = '-'.$this->resourceConnection->getConnection()->lastInsertId($table);
+        $this->connection->insert($table, []);
+        $extra = '-'.$this->connection->lastInsertId($table);
         return $extra;
+    }
+
+    /**
+     * Set CronOrder
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return void
+     */
+    public function setCronOrder($storeId, $frequency)
+    {
+        $entityType = 'order';
+        if ($this->helper->isOrderEnable($storeId)) {
+            if ($this->helper->getOrderReset($storeId) == $frequency) {
+                if ($storeId == 1) {
+                    $storeId = 0;
+                }
+                $table = $this->getSequenceTable($entityType, $storeId);
+                $this->connection->truncateTable($table);
+            }        
+        }
+    }
+
+    /**
+     * Set CronInvoice
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return void
+     */
+    public function setCronInvoice($storeId, $frequency)
+    {
+        $entityType = 'invoice';
+        if ($this->helper->isInvoiceEnable($storeId) && (!$this->helper->isInvoiceSameOrder($storeId))) {
+            if ($this->helper->getInvoiceReset($storeId) == $frequency) {
+                if ($storeId == 1) {
+                    $storeId = 0;
+                }
+                $table = $this->getSequenceTable($entityType, $storeId);
+                $this->connection->truncateTable($table);
+            }      
+        }
+    }
+
+    /**
+     * Set CronShipment
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return void
+     */
+    public function setCronShipment($storeId, $frequency)
+    {
+        $entityType = 'shipment';
+        if ($this->helper->isShipmentEnable($storeId) && (!$this->helper->isShipmentSameOrder($storeId))) {
+            if ($this->helper->getShipmentReset($storeId) == $frequency) {
+                if ($storeId == 1) {
+                    $storeId = 0;
+                }
+                $table = $this->getSequenceTable($entityType, $storeId);
+                $this->connection->truncateTable($table);
+            }      
+        }
+    }
+
+    /**
+     * Set CronCreditmemo
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return void
+     */
+    public function setCronCreditmemo($storeId, $frequency)
+    {
+        $entityType = 'creditmemo';
+        if ($this->helper->isShipmentEnable($storeId) && (!$this->helper->isShipmentSameOrder($storeId))) {
+            if ($this->helper->getShipmentReset($storeId) == $frequency) {
+                if ($storeId == 1) {
+                    $storeId = 0;
+                }
+                $table = $this->getSequenceTable($entityType, $storeId);
+                $this->connection->truncateTable($table);
+            }
+        }
+    }
+
+    /**
+     * Set Cron
+     *
+     * @param int $storeId
+     * @param int $frequency
+     * @return void
+     */
+    public function setCron($storeId, $frequency)
+    {
+        $this->setCronOrder($storeId, $frequency);
+        $this->setCronInvoice($storeId, $frequency);
+        $this->setCronShipment($storeId, $frequency);
+        $this->setCronCreditmemo($storeId, $frequency);
     }
 
     /**

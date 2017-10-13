@@ -32,6 +32,8 @@ namespace Bss\CustomOrderNumber\Controller\Adminhtml\System\Config;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Bss\CustomOrderNumber\Model\ResourceModel\Sequence;
+use Magento\Framework\App\ResourceConnection as AppResource;
 
 class ResetCreditmemo extends Action
 {
@@ -43,26 +45,36 @@ class ResetCreditmemo extends Action
     protected $resultJsonFactory;
 
     /**
-     * ResetCreditmemo
+     * Sequence
      *
-     * @var ResetCreditmemo
+     * @var Sequence
      */
-    protected $resetCreditmemo;
+    protected $sequence;
+
+    /**
+     * AppResource
+     *
+     * @var AppResource
+     */
+    protected $connection;
 
     /**
      * Construct
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
-     * @param \Bss\CustomOrderNumber\Model\ResourceModel\ResetCreditmemo $resetCreditmemo
+     * @param Sequence $sequence
+     * @param AppResource $resource
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        \Bss\CustomOrderNumber\Model\ResourceModel\ResetCreditmemo $resetCreditmemo
+        Sequence $sequence,
+        AppResource $resource
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->resetCreditmemo = $resetCreditmemo;
+        $this->sequence = $sequence;
+        $this->connection = $resource->getConnection();
         parent::__construct($context);
     }
 
@@ -73,11 +85,13 @@ class ResetCreditmemo extends Action
      */
     public function execute()
     {
+        $entityType = 'creditmemo';
         $storeId = $this->getRequest()->getParam('storeId');
         if ($storeId == 1) {
             $storeId = 0;
         }
-        $this->resetCreditmemo->resetCreditmemo($storeId);
+        $table = $this->sequence->getSequenceTable($entityType, $storeId);
+        $this->connection->truncateTable($table);
         /* @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
 

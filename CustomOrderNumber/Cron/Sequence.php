@@ -34,11 +34,11 @@ use Bss\CustomOrderNumber\Model\Config\Source\Frequency;
 class Sequence 
 {
     /**
-     * Cron
+     * Sequence
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Cron
+     * @var Sequence
      */
-    protected $cron;
+    protected $sequence;
 
     /**
      * StoreManagerInterface
@@ -51,14 +51,14 @@ class Sequence
      * Construct
      *
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Cron $cron
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */
     public function __construct (
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Bss\CustomOrderNumber\Model\ResourceModel\Cron $cron
+        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
         $this->storeManager = $storeManager;
-        $this->cron = $cron;
+        $this->sequence = $sequence;
     }
 
     /**
@@ -71,7 +71,7 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->cron->setCron($storeId, Frequency::CRON_DAILY);
+            $this->sequence->setCron($storeId, Frequency::CRON_DAILY);
         }
         return $this;
     }
@@ -86,7 +86,7 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->cron->setCron($storeId, Frequency::CRON_WEEKLY);
+            $this->sequence->setCron($storeId, Frequency::CRON_WEEKLY);
         }
         return $this;
     }
@@ -101,7 +101,7 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->cron->setCron($storeId, Frequency::CRON_MONTHLY);
+            $this->sequence->setCron($storeId, Frequency::CRON_MONTHLY);
         }
         return $this;
     }
@@ -116,7 +116,7 @@ class Sequence
         $stores = $this->storeManager->getStores();
         foreach ($stores as $store) {
             $storeId = $store->getStoreId();
-            $this->cron->setCron($storeId, Frequency::CRON_YEARLY);
+            $this->sequence->setCron($storeId, Frequency::CRON_YEARLY);
         }
         return $this;
     }

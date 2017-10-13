@@ -62,11 +62,11 @@ class OrderObserver implements ObserverInterface
     protected $order;
 
     /**
-     * Config
+     * Sequence
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Config
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
-    protected $config;
+    protected $sequence;
 
     /**
      * Construct
@@ -75,19 +75,19 @@ class OrderObserver implements ObserverInterface
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Backend\Model\Session\Quote $session
      * @param \Magento\Sales\Api\Data\OrderInterface $order 
-     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Config $config
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Backend\Model\Session\Quote $session,
         \Magento\Sales\Api\Data\OrderInterface $order,
-        \Bss\CustomOrderNumber\Model\ResourceModel\Config $config
+        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
             $this->helper = $helper;
             $this->storeManager = $storeManager;
             $this->session = $session;
-            $this->config = $config;
+            $this->sequence = $sequence;
             $this->order = $order;
     }
 
@@ -113,20 +113,18 @@ class OrderObserver implements ObserverInterface
             $entityType = 'order';
             if ($this->helper->isIndividualOrderEnable($storeId)) {
                 if ($storeId == 1) {
-                    $table = $this->config->getSequenceTable($entityType, '0');
-                } else {
-                    $table = $this->config->getSequenceTable($entityType, $storeId);
+                    $storeId = 0;
                 }
             } else {
-                $table = $this->config->getSequenceTable($entityType, '0');
+                $storeId = 0;
             }
 
-            $counter = $this->config->counter($table, $startValue, $step, $pattern);
-            $result = $this->config->replace($format, $storeId, $counter, $padding);
+            $counter = $this->sequence->counter($entityType, $storeId, $startValue, $step, $pattern);
+            $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             try {
                 if ($this->order->loadByIncrementId($result)->getId() !== null) {
                     $storeId = 1;
-                    $extra = $this->config->extra($entityType, $storeId);
+                    $extra = $this->sequence->extra($entityType, $storeId);
                     $result = $result.$extra;
                 }
             } catch (\Exception $e) {

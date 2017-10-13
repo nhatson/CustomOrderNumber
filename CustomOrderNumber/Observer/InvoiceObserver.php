@@ -48,28 +48,28 @@ class InvoiceObserver implements ObserverInterface
     protected $invoice;
 
     /**
-     * Config
+     * Sequence
      *
-     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Config
+     * @var \Bss\CustomOrderNumber\Model\ResourceModel\Sequence
      */
-    protected $config;
+    protected $sequence;
 
     /**
      * Construct
      *
      * @param \Bss\CustomOrderNumber\Helper\Data $helper
      * @param \Magento\Sales\Api\Data\InvoiceInterface $invoice 
-     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Config $config
+     * @param \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
      */
 
     public function __construct(
         \Bss\CustomOrderNumber\Helper\Data $helper,
         \Magento\Sales\Api\Data\InvoiceInterface $invoice,
-        \Bss\CustomOrderNumber\Model\ResourceModel\Config $config
+        \Bss\CustomOrderNumber\Model\ResourceModel\Sequence $sequence
     ) {
             $this->helper = $helper;
             $this->invoice = $invoice;
-            $this->config = $config;
+            $this->sequence = $sequence;
     }
 
     /**
@@ -98,21 +98,19 @@ class InvoiceObserver implements ObserverInterface
 
                 if ($this->helper->isIndividualInvoiceEnable($storeId)) {
                     if ($storeId == 1) {
-                        $table = $this->config->getSequenceTable($entityType, '0');
-                    } else {
-                        $table = $this->config->getSequenceTable($entityType, $storeId);
+                        $storeId = 0;
                     }
                 } else {
-                    $table = $this->config->getSequenceTable($entityType, '0');
+                    $storeId = 0;
                 }
 
-                $counter = $this->config->counter($table, $startValue, $step, $pattern);
-                $result = $this->config->replace($format, $storeId, $counter, $padding);
+                $counter = $this->sequence->counter($entityType, $storeId, $startValue, $step, $pattern);
+                $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
             try {
                 if ($this->invoice->loadByIncrementId($result)->getId() !== null) {
                     $storeId = 1;
-                    $extra = $this->config->extra($entityType, $storeId);
+                    $extra = $this->sequence->extra($entityType, $storeId);
                     $result = $result.$extra;
                 }
             } catch (\Exception $e) {
