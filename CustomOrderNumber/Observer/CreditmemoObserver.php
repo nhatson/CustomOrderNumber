@@ -23,7 +23,7 @@
  * @category   BSS
  * @package    Bss_CustomOrderNumber
  * @author     Extension Team
- * @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
  * @license    http://bsscommerce.com/Bss-Commerce-License.txt
  */
 namespace Bss\CustomOrderNumber\Observer;
@@ -97,13 +97,15 @@ class CreditmemoObserver implements ObserverInterface
 
                 if ($this->helper->isIndividualCreditmemoEnable($storeId)) {
                     if ($storeId == 1) {
-                        $storeId = 0;
-                    } 
+                        $table = $this->sequence->getSequenceTable($entityType, '0');
+                    } else {
+                        $table = $this->sequence->getSequenceTable($entityType, $storeId);
+                    }
                 } else {
-                    $storeId = 0;
+                    $table = $this->sequence->getSequenceTable($entityType, '0');
                 }
 
-                $counter = $this->sequence->counter($entityType, $storeId, $startValue, $step, $pattern);
+                $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
                 $result = $this->sequence->replace($format, $storeId, $counter, $padding);
             }
             try {

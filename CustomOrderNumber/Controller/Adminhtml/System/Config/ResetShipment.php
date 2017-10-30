@@ -23,7 +23,7 @@
  * @category   BSS
  * @package    Bss_CustomOrderNumber
  * @author     Extension Team
- * @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
  * @license    http://bsscommerce.com/Bss-Commerce-License.txt
  */
 
@@ -33,7 +33,6 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Bss\CustomOrderNumber\Model\ResourceModel\Sequence;
-use Magento\Framework\App\ResourceConnection as AppResource;
 
 class ResetShipment extends Action
 {
@@ -52,29 +51,19 @@ class ResetShipment extends Action
     protected $sequence;
 
     /**
-     * AppResource
-     *
-     * @var AppResource
-     */
-    protected $connection;
-
-    /**
      * Construct
      *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param Sequence $sequence
-     * @param AppResource $resource
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        Sequence $sequence,
-        AppResource $resource
+        Sequence $sequence
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->sequence = $sequence;
-        $this->connection = $resource->getConnection();
         parent::__construct($context);
     }
 
@@ -90,8 +79,7 @@ class ResetShipment extends Action
         if ($storeId == 1) {
             $storeId = 0;
         }
-        $table = $this->sequence->getSequenceTable($entityType, $storeId);
-        $this->connection->truncateTable($table);
+        $this->sequence->resetSequence($entityType, $storeId);
         /* @var \Magento\Framework\Controller\Result\Json $result */
         $result = $this->resultJsonFactory->create();
         
@@ -105,6 +93,6 @@ class ResetShipment extends Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Bss_CustomOrderNumber::ordernumber');
+        return $this->_authorization->isAllowed('Bss_CustomOrderNumber::resetshipment');
     }
 }

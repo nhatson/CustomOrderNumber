@@ -23,8 +23,18 @@
  * @category   BSS
  * @package    Bss_CustomOrderNumber
  * @author     Extension Team
- * @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
  * @license    http://bsscommerce.com/Bss-Commerce-License.txt
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php 
+/**
+ * Product list template
+ * 
+ * @var $block \Bss\CustomOrderNumber\Block\System\Config\ResetShipment
  */
 ?>
 <?php if ($block->isShipmentEnable($block->getRequest()->getParam('store', 0))) { ?>
@@ -43,6 +53,8 @@
          src="<?php echo $block->getViewFileUrl('images/process_spinner.gif') ?>"/>
     <img class="success" hidden="hidden" alt="" style="margin:-3px 5px"
          src="<?php echo $block->getViewFileUrl('images/rule_component_apply.gif') ?>"/>
+    <img class="error" hidden="hidden" alt="" style="margin:-1px 3px"
+         src="<?php echo $block->getViewFileUrl('images/rule_component_remove.gif') ?>"/>
     <span id="shipment_message"></span>
     <span id="urlShipment" hidden="hidden"><?php echo $block->getAjaxUrl() ?></span>
     <span id="storeIdShip" hidden="hidden"><?php echo $block->getRequest()->getParam('store', 0) ?></span>

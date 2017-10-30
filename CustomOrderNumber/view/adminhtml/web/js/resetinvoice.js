@@ -22,7 +22,7 @@
  * @category   BSS
  * @package    Bss_CustomOrderNumber
  * @author     Extension Team
- * @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
  * @license    http://bsscommerce.com/Bss-Commerce-License.txt
  */
 define([
@@ -40,6 +40,7 @@ define([
                 asynchronous:   true,
                 onCreate: function() {
                     invoiceSpan.find('.success').hide();
+                    invoiceSpan.find('.error').hide();
                     invoiceSpan.find('.processing').show();
                     $('#invoice_message').text('');
                 },
@@ -48,11 +49,20 @@ define([
 
                     var resultText = '';
                     if (response.status > 200) {
-                        resultText = response.statusText;
+                        resultText = 'Request Timeout';
+                        invoiceSpan.find('.success').show();
                     } else {
                         resultText = 'Success';
                         invoiceSpan.find('.success').show();
                     }
+                    $('#invoice_message').text(resultText);
+                },
+                onFailure: function(response) {
+                    invoiceSpan.find('.processing').hide();
+
+                    var resultText = '';
+                    resultText = 'Not Allowed';
+                    invoiceSpan.find('.error').show();
                     $('#invoice_message').text(resultText);
                 }
             });
