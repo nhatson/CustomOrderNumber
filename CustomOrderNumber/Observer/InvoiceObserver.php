@@ -92,7 +92,7 @@ class InvoiceObserver implements ObserverInterface
                         $table = $this->sequence->getSequenceTable($entityType, $storeId);
                     }
                 } else {
-                    $storeId = 0;
+                    $table = $this->sequence->getSequenceTable($entityType, '0');
                 }
 
                 $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
