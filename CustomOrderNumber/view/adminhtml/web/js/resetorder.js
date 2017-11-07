@@ -8,17 +8,6 @@
  * It is also available through the world-wide-web at this URL:
  * http://bsscommerce.com/Bss-Commerce-License.txt
  *
- * =================================================================
- *
- * MAGENTO EDITION USAGE NOTICE
- * =================================================================
- * This package designed for Magento COMMUNITY edition
- * BSS Commerce does not guarantee correct work of this extension
- * on any other Magento edition except Magento COMMUNITY edition.
- * BSS Commerce does not provide extension support in case of
- * incorrect edition usage.
- * =================================================================
- *
  * @category   BSS
  * @package    Bss_CustomOrderNumber
  * @author     Extension Team
@@ -46,7 +35,6 @@ define([
                 },
                 onSuccess: function(response) {
                     orderSpan.find('.processing').hide();
-
                     var resultText = '';
                     if (response.status > 200) {
                         resultText = 'Request Timeout';
@@ -58,10 +46,8 @@ define([
                     $('#order_message').text(resultText);
                 },
                 onFailure: function(response) {
-                    orderSpan.find('.processing').hide();
-                    
-                    var resultText = '';
-                    resultText = 'Not Allowed';
+                    orderSpan.find('.processing').hide();               
+                    var resultText = 'Not Allowed';
                     orderSpan.find('.error').show();
                     $('#order_message').text(resultText);
                 }

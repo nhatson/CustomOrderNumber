@@ -9,17 +9,6 @@
  * It is also available through the world-wide-web at this URL:
  * http://bsscommerce.com/Bss-Commerce-License.txt
  *
- * =================================================================
- *
- * MAGENTO EDITION USAGE NOTICE
- * =================================================================
- * This package designed for Magento COMMUNITY edition
- * BSS Commerce does not guarantee correct work of this extension
- * on any other Magento edition except Magento COMMUNITY edition.
- * BSS Commerce does not provide extension support in case of
- * incorrect edition usage.
- * =================================================================
- *
  * @category   BSS
  * @package    Bss_CustomOrderNumber
  * @author     Extension Team
@@ -137,10 +126,9 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @param string $format
      * @param int $storeId
      * @param string $counter
-     * @param int $length
      * @return string
      */
-    public function replace($format, $storeId, $counter, $length)
+    public function replace($format, $storeId, $counter)
     {
         $timezone = $this->helper->timezone($storeId);
 
@@ -156,10 +144,65 @@ class Sequence extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $m = (int)$mm;
         $yy = date('y', strtotime($date));
         $yyyy = date('Y', strtotime($date));
-        $rndNumbers = $this->rndNumbers($length);
-        $rndLetters = $this->rndLetters($length);
-        $rndAlphanumeric = $this->rndAlphanumeric($length);
 
+        $rndNumbers = '';
+        $rndLetters = '';
+        $rndAlphanumeric = '';
+
+        if (strpos($format, '{rndNumbers') !== false) {
+            $rnd = "rndNumbers";
+            $index = strpos($format, $rnd) + strlen($rnd);
+            $length = substr($format, $index, 2);
+            $revert = $rnd.$length;
+            $format = str_replace($revert, $rnd, $format);
+            $rndNumbers = $this->rndNumbers((int)$length);
+        }
+
+        if (strpos($format, '{rndnumbers') !== false) {
+            $rnd = "rndnumbers";
+            $index = strpos($format, $rnd) + strlen($rnd);
+            $length = substr($format, $index, 2);
+            $revert = $rnd.$length;
+            $format = str_replace($revert, $rnd, $format);
+            $rndNumbers = $this->rndNumbers((int)$length);
+        }
+
+        if (strpos($format, '{rndLetters') !== false) {
+            $rnd = "rndLetters";
+            $index = strpos($format, $rnd) + strlen($rnd);
+            $length = substr($format, $index, 2);
+            $revert = $rnd.$length;
+            $format = str_replace($revert, $rnd, $format);
+            $rndLetters = $this->rndLetters((int)$length);
+        }
+
+        if (strpos($format, '{rndletters') !== false) {
+            $rnd = "rndletters";
+            $index = strpos($format, $rnd) + strlen($rnd);
+            $length = substr($format, $index, 2);
+            $revert = $rnd.$length;
+            $format = str_replace($revert, $rnd, $format);
+            $rndLetters = $this->rndLetters((int)$length);
+        }
+
+        if (strpos($format, '{rndAlphanumeric') !== false) {
+            $rnd = "rndAlphanumeric";
+            $index = strpos($format, $rnd) + strlen($rnd);
+            $length = substr($format, $index, 2);
+            $revert = $rnd.$length;
+            $format = str_replace($revert, $rnd, $format);
+            $rndAlphanumeric = $this->rndAlphanumeric((int)$length);
+        }
+
+        if (strpos($format, '{rndalphanumeric') !== false) {
+            $rnd = "rndalphanumeric";
+            $index = strpos($format, $rnd) + strlen($rnd);
+            $length = substr($format, $index, 2);
+            $revert = $rnd.$length;
+            $format = str_replace($revert, $rnd, $format);
+            $rndAlphanumeric = $this->rndAlphanumeric((int)$length);
+        }
+        
         $search     = ['{d}','{dd}','{m}','{mm}','{yy}','{yyyy}','{storeId}','{storeid}','{storeID}','{counter}',
             '{rndNumbers}', '{rndnumbers}', '{rndLetters}', '{rndletters}', '{rndAlphanumeric}', '{rndalphanumeric}'];
         $replace    = [$d, $dd, $m, $mm, $yy, $yyyy, $storeId, $storeId, $storeId, $counter, $rndNumbers, 

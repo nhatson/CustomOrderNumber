@@ -9,17 +9,6 @@
  * It is also available through the world-wide-web at this URL:
  * http://bsscommerce.com/Bss-Commerce-License.txt
  *
- * =================================================================
- *
- * MAGENTO EDITION USAGE NOTICE
- * =================================================================
- * This package designed for Magento COMMUNITY edition
- * BSS Commerce does not guarantee correct work of this extension
- * on any other Magento edition except Magento COMMUNITY edition.
- * BSS Commerce does not provide extension support in case of
- * incorrect edition usage.
- * =================================================================
- *
  * @category   BSS
  * @package    Bss_CustomOrderNumber
  * @author     Extension Team
@@ -122,7 +111,7 @@ class OrderObserver implements ObserverInterface
             }
 
             $counter = $this->sequence->counter($table, $startValue, $step, $pattern);
-            $result = $this->sequence->replace($format, $storeId, $counter, $padding);
+            $result = $this->sequence->replace($format, $storeId, $counter);
             try {
                 if ($this->order->loadByIncrementId($result)->getId() !== null) {
                     $storeId = 1;
