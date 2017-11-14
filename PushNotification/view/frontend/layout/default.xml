@@ -23,7 +23,7 @@
     </head>
     <body>
         <referenceBlock name="after.body.start">
-            <block class="Bss\PushNotification\Block\PushNotification" before="-" template="Bss_CookieNotice::cookienotice.phtml" />
+            <block class="Bss\PushNotification\Block\PushNotification" before="-" template="Bss_PushNotification::pushnotification.phtml" />
         </referenceBlock>
     </body>
 </page>
