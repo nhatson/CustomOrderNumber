@@ -18,6 +18,7 @@ var config = {
     map: {
         '*': {
             pushnotification: 'Bss_PushNotification/js/pushnotification'
+            // firebase-messaging-sw: 'Bss_PushNotification/js/firebase-messaging-sw'
         }
     }
 };

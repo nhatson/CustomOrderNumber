@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add id="Bss_PushNotification::pushnotification" title="Push Notifications" module="Bss_PushNotification" sortOrder="51" resource="Bss_PushNotification::pushnotification"/>
+		<add id="Bss_PushNotification::notification" title="Manage Notifications" module="Bss_PushNotification" sortOrder="10" action="Bss_PushNotification/notification" resource="Bss_PushNotification::notification" parent="Bss_PushNotification::pushnotification"/>
+		<add id="Bss_PushNotification::subscribers" title="Manage Subscribers" module="Bss_PushNotification" sortOrder="10" action="Bss_PushNotification/subscribers" resource="Bss_PushNotification::subscribers" parent="Bss_PushNotification::pushnotification"/>
+	</menu>
+</config>

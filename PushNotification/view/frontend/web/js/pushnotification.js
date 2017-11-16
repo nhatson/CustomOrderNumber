@@ -20,12 +20,12 @@ define([
 ], function ($) {
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyAfNgQwbGvK-gY9i9hytUZPEtfba1ggrLg",
-    authDomain: "m2-push-notification.firebaseapp.com",
-    databaseURL: "https://m2-push-notification.firebaseio.com",
-    projectId: "m2-push-notification",
-    storageBucket: "m2-push-notification.appspot.com",
-    messagingSenderId: "397391577043"
+    apiKey: "AIzaSyBDXz8DSnxphC7ywqhBGu9oZ0C35uO7QU8",
+    authDomain: "test-e2f58.firebaseapp.com",
+    databaseURL: "https://test-e2f58.firebaseio.com",
+    projectId: "test-e2f58",
+    storageBucket: "test-e2f58.appspot.com",
+    messagingSenderId: "384501794118"
   };
   firebase.initializeApp(config);
 
@@ -33,13 +33,13 @@ define([
   messaging.requestPermission()
     .then(function() {
       console.log('Have permission.');
-      // return messaging.getToken();
+      return messaging.getToken();
       // TODO(developer): Retrieve an Instance ID token for use with FCM.
       // ...
     })
-    // .then(function(token) {
-    //     console.log(token);
-    // })
+    .then(function(token) {
+        console.log(token);
+    })
     .catch(function(err) {
       console.log('Error Occured.');
       console.log(err);
