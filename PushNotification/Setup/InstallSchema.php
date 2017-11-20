@@ -101,10 +101,10 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                 $installer->getTable('bss_pushnotification_notification'),
                 $setup->getIdxName(
                     $installer->getTable('bss_pushnotification_notification'),
-                    ['title','description','destination_url','image','tags','send_time'],
+                    ['title','description','destination_url','image','tags'],
                     \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
                 ),
-                ['title','description','destination_url','image','tags','send_time'],
+                ['title','description','destination_url','image','tags'],
                 \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
             );
         }

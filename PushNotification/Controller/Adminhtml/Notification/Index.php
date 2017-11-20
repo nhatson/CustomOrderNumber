@@ -1,5 +1,9 @@
 <?php
-namespace Bss\PushNotification\Controller\Adminhtml\Post;
+/**
+ * Copyright © 2015 Inchoo d.o.o.
+ * created by Zoran Salamun(zoran.salamun@inchoo.net)
+ */
+namespace Bss\PushNotification\Controller\Adminhtml\Notification;
 
 class Index extends \Magento\Backend\App\Action
 {
@@ -24,7 +28,7 @@ class Index extends \Magento\Backend\App\Action
 	 */
 	protected function _isAllowed()
 	{
-		return $this->_authorization->isAllowed('Bss_PushNotification::notification_controller');
+		return $this->_authorization->isAllowed('Bss_PushNotification::notification_manage');
 	}
 
     public function getResultPage()
@@ -39,14 +43,12 @@ class Index extends \Magento\Backend\App\Action
     {
         $resultPage = $this->getResultPage();
         $resultPage->setActiveMenu('Bss_PushNotification::notification');
-        $resultPage->getConfig()->getTitle()->prepend((__('Notifications')));
+        $resultPage->getConfig()->getTitle()->prepend((__('Posts')));
 
         //Add bread crumb
         $resultPage->addBreadcrumb(__('Bss'), __('Bss'));
-        $resultPage->addBreadcrumb(__('Push Notification'), __('Manage Notifications'));
+        $resultPage->addBreadcrumb(__('PushNotification'), __('Manage Notification'));
 
         return $this;
     }
-
-
 }
